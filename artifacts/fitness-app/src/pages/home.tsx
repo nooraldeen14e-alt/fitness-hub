@@ -297,52 +297,6 @@ const Hero = () => {
   );
 };
 
-const Manifesto = () => {
-  return (
-    <section id="agency" className="relative py-32 md:py-48 px-6 bg-black">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
-        <div className="md:col-span-4">
-          <p className="font-mono text-muted-foreground uppercase text-xs tracking-widest">( 01 — Mission )</p>
-        </div>
-        <div className="md:col-span-8">
-          <motion.h2 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
-            className="font-display text-4xl md:text-6xl font-medium leading-tight text-white mb-12"
-          >
-            We deliver innovative and impactful marketing solutions that empower our clients to achieve their business goals and <span className="text-primary italic">inspire their audiences</span>.
-          </motion.h2>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-24">
-            {[
-              { num: "01", title: "Discovery", desc: "We get to know your business, industry, audience and conduct in-depth research & development." },
-              { num: "02", title: "Strategy", desc: "Development of brand strategy, including brand promise and tailored concept direction." },
-              { num: "03", title: "Identity", desc: "Our creatives define your unique visual elements — logo, color palette, fonts and branded templates." },
-              { num: "04", title: "Impact", desc: "Tracking performance and progress using measurable KPIs, optimising for real revenue growth." }
-            ].map((item, i) => (
-              <motion.div 
-                key={item.num}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="border-t border-white/10 pt-6"
-              >
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="font-display text-2xl text-white">{item.title}</h3>
-                  <span className="font-mono text-primary text-xs">{item.num}</span>
-                </div>
-                <p className="font-sans text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
 
 import subwayLogo from "@assets/logos/subway.png";
 import gloriaJeansLogo from "@assets/logos/gloria-jeans.png";
@@ -993,7 +947,6 @@ export default function Home() {
       <main>
         <Hero />
         <ServicesTicker />
-        <Manifesto />
         <Services />
         <OurClients />
         <Clients />
