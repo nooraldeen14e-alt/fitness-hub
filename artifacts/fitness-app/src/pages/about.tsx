@@ -2,30 +2,37 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import swissLogo from "@assets/66b7e0a1-9291-41da-82a2-6d89f100f8a3_1785308430142.jpg";
+import ScheduleModal from "@/components/ScheduleModal";
 
-const AboutNavbar = () => (
-  <nav className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/5">
-    <Link href="/">
-      <img src={swissLogo} alt="Swissulife Media" className="h-9 w-auto object-contain cursor-pointer" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
-    </Link>
-    <div className="hidden md:flex items-center gap-8">
-      <Link href="/"        className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Home</Link>
-      <Link href="/#services" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200 flex items-center gap-1">
-        We Offer
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l4 4 4-4"/></svg>
-      </Link>
-      <span className="font-sans text-base font-medium text-white cursor-default">About Us</span>
-      <Link href="/#contact" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Contact Us</Link>
-    </div>
-    <Link
-      href="/#contact"
-      className="hidden md:inline-flex items-center px-6 py-2.5 rounded-full text-white text-sm font-semibold hover:opacity-90 transition-opacity"
-      style={{ background: "hsl(25,100%,50%)" }}
-    >
-      Schedule a Meeting
-    </Link>
-  </nav>
-);
+const AboutNavbar = () => {
+  const [scheduleOpen, setScheduleOpen] = React.useState(false);
+  return (
+    <>
+      <ScheduleModal open={scheduleOpen} onClose={() => setScheduleOpen(false)} />
+      <nav className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/5">
+        <Link href="/">
+          <img src={swissLogo} alt="Swissulife Media" className="h-9 w-auto object-contain cursor-pointer" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
+        </Link>
+        <div className="hidden md:flex items-center gap-8">
+          <Link href="/"          className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Home</Link>
+          <Link href="/#services" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200 flex items-center gap-1">
+            We Offer
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l4 4 4-4"/></svg>
+          </Link>
+          <span className="font-sans text-base font-medium text-white cursor-default">About Us</span>
+          <Link href="/#contact" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Contact Us</Link>
+        </div>
+        <button
+          onClick={() => setScheduleOpen(true)}
+          className="hidden md:inline-flex items-center px-6 py-2.5 rounded-full text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+          style={{ background: "hsl(25,100%,50%)" }}
+        >
+          Schedule a Meeting
+        </button>
+      </nav>
+    </>
+  );
+};
 
 const values = [
   { num: "01", title: "Transparency", desc: "We keep clients in the loop at every stage — full visibility into strategy, spend, and results." },

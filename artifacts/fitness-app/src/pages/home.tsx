@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import ScheduleModal from "@/components/ScheduleModal";
 import { ArrowRight } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import heroBg from "@assets/hero-bg.jpg";
@@ -20,6 +21,7 @@ const NoiseOverlay = () => (
 );
 
 const Navbar = () => {
+  const [scheduleOpen, setScheduleOpen] = React.useState(false);
   const [active, setActive] = React.useState("home");
 
   React.useEffect(() => {
@@ -54,37 +56,40 @@ const Navbar = () => {
     }`;
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/5"
-    >
-      {/* Logo */}
-      <div className="flex items-center">
-        <img src={swissLogo} alt="Swissulife Media" className="h-9 w-auto object-contain" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
-      </div>
-
-      {/* Nav links */}
-      <div className="hidden md:flex items-center gap-8">
-        <a href="#hero"     className={linkClass("home")}>Home</a>
-        <a href="#services" className={linkClass("offer") + " flex items-center gap-1"}>
-          We Offer
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l4 4 4-4"/></svg>
-        </a>
-        <a href="/about"    className={linkClass("about")}>About Us</a>
-        <a href="#contact"  className={linkClass("contact")}>Contact Us</a>
-      </div>
-
-      {/* CTA */}
-      <a
-        href="#"
-        className="hidden md:inline-flex items-center px-6 py-2.5 rounded-full text-white text-sm font-semibold hover:opacity-90 transition-opacity"
-        style={{ background: "hsl(25,100%,50%)" }}
+    <>
+      <ScheduleModal open={scheduleOpen} onClose={() => setScheduleOpen(false)} />
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/5"
       >
-        Schedule a Meeting
-      </a>
-    </motion.nav>
+        {/* Logo */}
+        <div className="flex items-center">
+          <img src={swissLogo} alt="Swissulife Media" className="h-9 w-auto object-contain" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
+        </div>
+
+        {/* Nav links */}
+        <div className="hidden md:flex items-center gap-8">
+          <a href="#hero"     className={linkClass("home")}>Home</a>
+          <a href="#services" className={linkClass("offer") + " flex items-center gap-1"}>
+            We Offer
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l4 4 4-4"/></svg>
+          </a>
+          <a href="/about"    className={linkClass("about")}>About Us</a>
+          <a href="#contact"  className={linkClass("contact")}>Contact Us</a>
+        </div>
+
+        {/* CTA */}
+        <button
+          onClick={() => setScheduleOpen(true)}
+          className="hidden md:inline-flex items-center px-6 py-2.5 rounded-full text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+          style={{ background: "hsl(25,100%,50%)" }}
+        >
+          Schedule a Meeting
+        </button>
+      </motion.nav>
+    </>
   );
 };
 
