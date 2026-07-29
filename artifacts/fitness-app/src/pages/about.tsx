@@ -28,7 +28,7 @@ const AboutNavbar = () => {
                   "Marketing Strategy",
                   "Social Media Management",
                   "Google Ads",
-                  "Audio-Visual Production",
+
                   "Podcast Production",
                   "Website Design",
                   "Event Management",
