@@ -221,8 +221,8 @@ const Hero = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-mono uppercase text-white/30 mb-6"
-            style={{ fontSize: "0.65rem", letterSpacing: "0.45em" }}
+            className="font-serif italic text-white mb-6"
+            style={{ fontSize: "0.85rem", letterSpacing: "0.15em" }}
           >
             Dare to be different?
           </motion.p>
@@ -234,7 +234,7 @@ const Hero = () => {
             className="font-display font-black uppercase leading-[0.88] mb-8"
             style={{ fontSize: "clamp(3.5rem, 7vw, 6.5rem)" }}
           >
-            <span className="block text-white/20 text-2xl tracking-[0.45em] mb-2 font-normal">Meet</span>
+            <span className="block text-white text-2xl tracking-[0.45em] mb-2 font-serif italic font-light">Meet</span>
             <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 80px hsl(25 100% 50% / 0.4)" }}>Swiss</span>
             <span className="text-white">u</span>
             <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 80px hsl(25 100% 50% / 0.4)" }}>life</span>
