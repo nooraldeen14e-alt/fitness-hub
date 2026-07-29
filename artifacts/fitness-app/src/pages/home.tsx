@@ -175,6 +175,64 @@ const Manifesto = () => {
   );
 };
 
+const OurClients = () => {
+  const clients = [
+    "DHA", "DHA Building Dreams", "Farid Business Park", "Multiplierz Group",
+    "Media Galleria", "The Gardens", "Midtown", "NorthStones",
+    "Chooye Khana", "Tau's", "Casa Rica", "Gloria Jean's",
+    "Spice Factory", "Subway", "The English Table", "Dr. Nada's Clinic",
+    "Beyond Physiotherapy", "Gul Ahmed", "Mobilink", "HUM Network",
+    "Serena Hotels", "British Embassy The Hague", "ARN News Centre", "Lovin Dubai",
+  ];
+
+  return (
+    <section id="clients" className="relative py-32 px-6 overflow-hidden" style={{ background: "#050505" }}>
+      {/* Smoke / colour glow background like reference */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[400px] rounded-full opacity-20"
+          style={{ background: "radial-gradient(ellipse, #7c3aed 0%, transparent 70%)", filter: "blur(60px)" }} />
+        <div className="absolute top-0 right-1/4 w-[500px] h-[400px] rounded-full opacity-15"
+          style={{ background: "radial-gradient(ellipse, #0ea5e9 0%, transparent 70%)", filter: "blur(60px)" }} />
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full opacity-10"
+          style={{ background: "radial-gradient(ellipse, hsl(25,100%,50%) 0%, transparent 70%)", filter: "blur(40px)" }} />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <p className="font-mono text-primary uppercase tracking-[0.35em] text-xs mb-3">Some of our</p>
+          <h2 className="font-display font-bold text-6xl md:text-8xl uppercase text-white/80">Clients</h2>
+        </motion.div>
+
+        {/* Grid of cards */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {clients.map((name, i) => (
+            <motion.div
+              key={name}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.4, delay: (i % 6) * 0.06 }}
+              className="bg-white rounded-2xl aspect-square flex items-center justify-center p-4 hover:scale-105 transition-transform duration-300 cursor-default"
+            >
+              <span className="text-black font-bold text-center leading-tight"
+                style={{ fontSize: "clamp(0.55rem, 1.2vw, 0.8rem)" }}>
+                {name}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Services = () => {
   const services = [
     { num: "01", title: "Marketing Strategy", desc: "Discovery, brand strategy, identity, audience segmentation and KPI tracking for measurable growth." },
@@ -480,6 +538,7 @@ export default function Home() {
         <Hero />
         <Manifesto />
         <Services />
+        <OurClients />
         <Clients />
         <SelectedWorks />
         <Stats />
