@@ -71,13 +71,43 @@ const Navbar = () => {
 
         {/* Nav links */}
         <div className="hidden md:flex items-center gap-8">
-          <a href="#hero"     className={linkClass("home")}>Home</a>
-          <a href="#services" className={linkClass("offer") + " flex items-center gap-1"}>
-            We Offer
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l4 4 4-4"/></svg>
-          </a>
-          <a href="/about"    className={linkClass("about")}>About Us</a>
-          <a href="#contact"  className={linkClass("contact")}>Contact Us</a>
+          <a href="#hero" className={linkClass("home")}>Home</a>
+
+          {/* We Offer dropdown */}
+          <div className="relative group">
+            <button className={linkClass("offer") + " flex items-center gap-1"}>
+              We Offer
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-200 group-hover:rotate-180"><path d="M2 4l4 4 4-4"/></svg>
+            </button>
+            {/* Dropdown panel */}
+            <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-64 py-2">
+                {[
+                  { icon: "📊", label: "Marketing Strategy" },
+                  { icon: "📱", label: "Social Media Management" },
+                  { icon: "🎯", label: "Google Ads" },
+                  { icon: "🎬", label: "Audio-Visual Production" },
+                  { icon: "🎙️", label: "Podcast Production" },
+                  { icon: "💻", label: "Website Design" },
+                  { icon: "🎪", label: "Event Management" },
+                  { icon: "🤝", label: "Influencer Marketing" },
+                  { icon: "📰", label: "PR Management" },
+                ].map((s) => (
+                  <a
+                    key={s.label}
+                    href="#services"
+                    className="flex items-center gap-3 px-5 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <span className="text-base">{s.icon}</span>
+                    <span className="font-sans">{s.label}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <a href="/about"   className={linkClass("about")}>About Us</a>
+          <a href="#contact" className={linkClass("contact")}>Contact Us</a>
         </div>
 
         {/* CTA */}

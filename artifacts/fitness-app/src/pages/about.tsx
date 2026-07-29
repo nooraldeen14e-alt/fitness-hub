@@ -14,11 +14,40 @@ const AboutNavbar = () => {
           <img src={swissLogo} alt="Swissulife Media" className="h-9 w-auto object-contain cursor-pointer" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
         </Link>
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/"          className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Home</Link>
-          <Link href="/#services" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200 flex items-center gap-1">
-            We Offer
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l4 4 4-4"/></svg>
-          </Link>
+          <Link href="/" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Home</Link>
+
+          {/* We Offer dropdown */}
+          <div className="relative group">
+            <button className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200 flex items-center gap-1">
+              We Offer
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-200 group-hover:rotate-180"><path d="M2 4l4 4 4-4"/></svg>
+            </button>
+            <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-64 py-2">
+                {[
+                  { icon: "📊", label: "Marketing Strategy" },
+                  { icon: "📱", label: "Social Media Management" },
+                  { icon: "🎯", label: "Google Ads" },
+                  { icon: "🎬", label: "Audio-Visual Production" },
+                  { icon: "🎙️", label: "Podcast Production" },
+                  { icon: "💻", label: "Website Design" },
+                  { icon: "🎪", label: "Event Management" },
+                  { icon: "🤝", label: "Influencer Marketing" },
+                  { icon: "📰", label: "PR Management" },
+                ].map((s) => (
+                  <Link
+                    key={s.label}
+                    href="/#services"
+                    className="flex items-center gap-3 px-5 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                  >
+                    <span className="text-base">{s.icon}</span>
+                    <span className="font-sans">{s.label}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <span className="font-sans text-base font-medium text-white cursor-default">About Us</span>
           <Link href="/#contact" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Contact Us</Link>
         </div>
