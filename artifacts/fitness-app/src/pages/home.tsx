@@ -248,14 +248,6 @@ const Hero = () => {
           </motion.div>
 
           {/* scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.2 }}
-            className="absolute bottom-10 left-10 md:left-16 flex items-center gap-3"
-          >
-            <div className="w-px h-12 bg-white/20" style={{ animation: "pulse 2s ease-in-out infinite" }} />
-          </motion.div>
         </div>
 
         {/* ── RIGHT: full-bleed image ── */}
