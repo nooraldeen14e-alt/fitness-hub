@@ -9,6 +9,66 @@ import work2 from "@assets/work-2.jpg";
 import work3 from "@assets/work-3.jpg";
 import swissLogo from "@assets/66b7e0a1-9291-41da-82a2-6d89f100f8a3_1785308430142.jpg";
 
+/* ── Glowing cursor ── */
+const GlowCursor = () => {
+  const [pos, setPos] = React.useState({ x: -200, y: -200 });
+  const [visible, setVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const move = (e: MouseEvent) => { setPos({ x: e.clientX, y: e.clientY }); setVisible(true); };
+    const hide = () => setVisible(false);
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseleave", hide);
+    return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseleave", hide); };
+  }, []);
+
+  return (
+    <div
+      className="pointer-events-none fixed z-[9999]"
+      style={{
+        left: pos.x,
+        top: pos.y,
+        transform: "translate(-50%, -50%)",
+        opacity: visible ? 1 : 0,
+        transition: "left 0.06s linear, top 0.06s linear, opacity 0.3s ease",
+      }}
+    >
+      {/* outer glow */}
+      <div className="absolute rounded-full"
+        style={{ width: 40, height: 40, top: -20, left: -20, background: "hsl(25,100%,50%)", opacity: 0.15, filter: "blur(12px)" }} />
+      {/* inner dot */}
+      <div className="absolute rounded-full"
+        style={{ width: 10, height: 10, top: -5, left: -5, background: "hsl(25,100%,50%)", opacity: 0.9 }} />
+    </div>
+  );
+};
+
+/* ── Services ticker ── */
+const ServicesTicker = () => {
+  const items = [
+    "Marketing Strategy", "Social Media Management", "Google Ads",
+    "Podcast Production", "Website Design", "Event Management",
+    "Influencer Marketing", "PR Management",
+  ];
+  const doubled = [...items, ...items];
+
+  return (
+    <div className="w-full overflow-hidden border-y py-5" style={{ borderColor: "hsl(25,100%,50%,0.25)", background: "#050505" }}>
+      <div className="flex animate-ticker" style={{ width: "max-content" }}>
+        {doubled.map((item, i) => (
+          <div key={i} className="flex items-center gap-6 px-6 whitespace-nowrap">
+            <span className="font-display font-bold text-lg uppercase tracking-widest"
+              style={{ color: i % 2 === 0 ? "hsl(25,100%,50%)" : "rgba(255,255,255,0.25)" }}>
+              {item}
+            </span>
+            <span style={{ color: "hsl(25,100%,50%)", opacity: 0.4 }}>✦</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const NoiseOverlay = () => (
   <div className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-20 mix-blend-overlay">
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="h-full w-full opacity-40">
@@ -422,7 +482,18 @@ const Services = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
-              className="border border-white/10 p-8 group hover:border-primary/50 hover:bg-white/[0.02] transition-all duration-300 cursor-default"
+              className="relative rounded-2xl p-8 group cursor-default overflow-hidden transition-all duration-300"
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                backdropFilter: "blur(12px)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
+              }}
+              whileHover={{
+                background: "rgba(255,100,0,0.06)",
+                borderColor: "rgba(255,100,0,0.35)",
+                boxShadow: "0 0 30px rgba(255,100,0,0.12), inset 0 1px 0 rgba(255,255,255,0.08)",
+              }}
             >
               <div className="flex justify-between items-start mb-6">
                 <span className="font-mono text-primary text-xs">{s.num}</span>
@@ -840,12 +911,14 @@ const Footer = () => {
 
 export default function Home() {
   return (
-    <div className="bg-black min-h-screen text-foreground selection:bg-primary selection:text-white">
+    <div className="bg-black min-h-screen text-foreground selection:bg-primary selection:text-white" style={{ cursor: "none" }}>
+      <GlowCursor />
       <NoiseOverlay />
       <Navbar />
       
       <main>
         <Hero />
+        <ServicesTicker />
         <Manifesto />
         <Services />
         <OurClients />
