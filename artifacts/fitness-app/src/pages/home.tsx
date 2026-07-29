@@ -175,19 +175,62 @@ const Manifesto = () => {
   );
 };
 
+import subwayLogo from "@assets/logos/subway.png";
+import gloriaJeansLogo from "@assets/logos/gloria-jeans.png";
+import gulAhmedLogo from "@assets/logos/gul-ahmed.png";
+import jazzLogo from "@assets/logos/jazz.png";
+import humNetworkLogo from "@assets/logos/hum-network.png";
+import serenaHotelsLogo from "@assets/logos/serena-hotels.png";
+import dhaLogo from "@assets/logos/dha.png";
+import arnNewsLogo from "@assets/logos/arn-news.png";
+import lovinDubaiLogo from "@assets/logos/lovin-dubai.png";
+import spiceFactoryLogo from "@assets/logos/spice-factory.png";
+import englishTableLogo from "@assets/logos/english-table.png";
+import beyondPhysioLogo from "@assets/logos/beyond-physio.png";
+import casaRicaLogo from "@assets/logos/casa-rica.png";
+import multiplierzLogo from "@assets/logos/multiplierz.png";
+import northstonesLogo from "@assets/logos/northstones.png";
+import midtownLogo from "@assets/logos/midtown.png";
+import theGardensLogo from "@assets/logos/the-gardens.png";
+import faridBpLogo from "@assets/logos/farid-bp.png";
+import mediaGalleriaLogo from "@assets/logos/media-galleria.png";
+import choyeKhanaLogo from "@assets/logos/chooye-khana.png";
+import tausLogo from "@assets/logos/taus.png";
+import drNadasLogo from "@assets/logos/dr-nadas.png";
+import britishEmbassyLogo from "@assets/logos/british-embassy.png";
+import dhaBuildingLogo from "@assets/logos/dha-building.png";
+
 const OurClients = () => {
   const clients = [
-    "DHA", "DHA Building Dreams", "Farid Business Park", "Multiplierz Group",
-    "Media Galleria", "The Gardens", "Midtown", "NorthStones",
-    "Chooye Khana", "Tau's", "Casa Rica", "Gloria Jean's",
-    "Spice Factory", "Subway", "The English Table", "Dr. Nada's Clinic",
-    "Beyond Physiotherapy", "Gul Ahmed", "Mobilink", "HUM Network",
-    "Serena Hotels", "British Embassy The Hague", "ARN News Centre", "Lovin Dubai",
+    { name: "DHA", logo: dhaLogo },
+    { name: "DHA Building Dreams", logo: dhaBuildingLogo },
+    { name: "Farid Business Park", logo: faridBpLogo },
+    { name: "Multiplierz Group", logo: multiplierzLogo },
+    { name: "Media Galleria", logo: mediaGalleriaLogo },
+    { name: "The Gardens", logo: theGardensLogo },
+    { name: "Midtown", logo: midtownLogo },
+    { name: "NorthStones", logo: northstonesLogo },
+    { name: "Chooye Khana", logo: choyeKhanaLogo },
+    { name: "Tau's", logo: tausLogo },
+    { name: "Casa Rica", logo: casaRicaLogo },
+    { name: "Gloria Jean's", logo: gloriaJeansLogo },
+    { name: "Spice Factory", logo: spiceFactoryLogo },
+    { name: "Subway", logo: subwayLogo },
+    { name: "The English Table", logo: englishTableLogo },
+    { name: "Dr. Nada's Clinic", logo: drNadasLogo },
+    { name: "Beyond Physiotherapy", logo: beyondPhysioLogo },
+    { name: "Gul Ahmed", logo: gulAhmedLogo },
+    { name: "Mobilink", logo: jazzLogo },
+    { name: "HUM Network", logo: humNetworkLogo },
+    { name: "Serena Hotels", logo: serenaHotelsLogo },
+    { name: "British Embassy The Hague", logo: britishEmbassyLogo },
+    { name: "ARN News Centre", logo: arnNewsLogo },
+    { name: "Lovin Dubai", logo: lovinDubaiLogo },
   ];
 
   return (
     <section id="clients" className="relative py-32 px-6 overflow-hidden" style={{ background: "#050505" }}>
-      {/* Smoke / colour glow background like reference */}
+      {/* Smoke / colour glow background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[500px] h-[400px] rounded-full opacity-20"
           style={{ background: "radial-gradient(ellipse, #7c3aed 0%, transparent 70%)", filter: "blur(60px)" }} />
@@ -210,21 +253,22 @@ const OurClients = () => {
           <h2 className="font-display font-bold text-6xl md:text-8xl uppercase text-white/80">Clients</h2>
         </motion.div>
 
-        {/* Grid of cards */}
+        {/* Grid of logo cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {clients.map((name, i) => (
+          {clients.map((client, i) => (
             <motion.div
-              key={name}
+              key={client.name}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.4, delay: (i % 6) * 0.06 }}
-              className="bg-white rounded-2xl aspect-square flex items-center justify-center p-4 hover:scale-105 transition-transform duration-300 cursor-default"
+              className="bg-white rounded-2xl aspect-square flex items-center justify-center p-5 hover:scale-105 transition-transform duration-300 cursor-default group"
             >
-              <span className="text-black font-bold text-center leading-tight"
-                style={{ fontSize: "clamp(0.55rem, 1.2vw, 0.8rem)" }}>
-                {name}
-              </span>
+              <img
+                src={client.logo}
+                alt={client.name}
+                className="w-full h-full object-contain"
+              />
             </motion.div>
           ))}
         </div>
