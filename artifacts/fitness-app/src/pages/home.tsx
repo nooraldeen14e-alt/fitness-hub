@@ -890,7 +890,8 @@ const Footer = () => {
   return (
     <footer id="footer" className="bg-black pt-32 pb-12 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 border-t border-white/10 pt-12">
+        <OurClients />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 border-t border-white/10 pt-12 mt-16">
           <div className="col-span-1 md:col-span-2">
             <div className="mb-6">
               <img src={swissLogo} alt="Swissulife Media" className="h-10 w-auto object-contain" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
@@ -930,7 +931,6 @@ export default function Home() {
         <Hero />
         <ServicesTicker />
         <Services />
-        <OurClients />
         <Clients />
         <SelectedWorks />
         <Stats />
