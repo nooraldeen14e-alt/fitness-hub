@@ -25,23 +25,22 @@ const AboutNavbar = () => {
             <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-64 py-2">
                 {[
-                  { icon: "📊", label: "Marketing Strategy" },
-                  { icon: "📱", label: "Social Media Management" },
-                  { icon: "🎯", label: "Google Ads" },
-                  { icon: "🎬", label: "Audio-Visual Production" },
-                  { icon: "🎙️", label: "Podcast Production" },
-                  { icon: "💻", label: "Website Design" },
-                  { icon: "🎪", label: "Event Management" },
-                  { icon: "🤝", label: "Influencer Marketing" },
-                  { icon: "📰", label: "PR Management" },
+                  "Marketing Strategy",
+                  "Social Media Management",
+                  "Google Ads",
+                  "Audio-Visual Production",
+                  "Podcast Production",
+                  "Website Design",
+                  "Event Management",
+                  "Influencer Marketing",
+                  "PR Management",
                 ].map((s) => (
                   <Link
-                    key={s.label}
+                    key={s}
                     href="/#services"
-                    className="flex items-center gap-3 px-5 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors"
+                    className="block px-5 py-2.5 text-sm font-sans text-white/70 hover:text-white hover:bg-white/5 transition-colors"
                   >
-                    <span className="text-base">{s.icon}</span>
-                    <span className="font-sans">{s.label}</span>
+                    {s}
                   </Link>
                 ))}
               </div>
