@@ -184,85 +184,114 @@ const Navbar = () => {
 
 const Hero = () => {
   return (
-    <section id="hero" className="relative w-full overflow-hidden bg-black flex flex-col justify-center px-6 md:px-16 pt-28 pb-20">
-      {/* Pure black background — needed for mix-blend-mode: screen on the logo */}
-      <div className="absolute inset-0 z-0 bg-black" />
+    <section id="hero" className="relative w-full bg-black overflow-hidden" style={{ minHeight: "100vh" }}>
+      <div className="flex flex-col md:flex-row h-full" style={{ minHeight: "100vh" }}>
 
-      <div className="z-10 w-full max-w-6xl mx-auto flex flex-col">
+        {/* ── LEFT: text panel ── */}
+        <div className="relative z-10 flex flex-col justify-center px-10 md:px-16 pt-32 pb-16 md:py-0 w-full md:w-[42%] shrink-0">
 
-        {/* ── Row 1: tagline centered ── */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-center font-mono font-normal text-white uppercase mb-4"
-          style={{ fontSize: "0.7rem", letterSpacing: "0.45em" }}
-        >
-          Dare to be different?
-        </motion.p>
-
-        {/* ── Row 2: MEET SWISSULIFE centered ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-14"
-        >
-          <h1 className="font-display font-black uppercase leading-[0.9]">
-            <span className="block text-white/25 text-2xl md:text-3xl tracking-[0.5em] mb-1">Meet</span>
-            <span className="block text-[11vw] md:text-[90px] lg:text-[110px] tracking-tight">
-              <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 60px hsl(25 100% 50% / 0.35), 0 0 120px hsl(25 100% 50% / 0.15)" }}>Swiss</span>
-              <span style={{ color: "#ffffff" }}>u</span>
-              <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 60px hsl(25 100% 50% / 0.35), 0 0 120px hsl(25 100% 50% / 0.15)" }}>life</span>
-            </span>
-          </h1>
-        </motion.div>
-
-        {/* ── Row 3: centered content ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col items-center text-center"
-        >
-          <h2 className="font-display font-bold leading-tight mb-6"
-            style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)" }}>
-            <span className="text-white">A 360° Result-Oriented</span>
-            <br />
-            <span className="inline-flex flex-wrap justify-center gap-x-[0.3em]">
-              {["Digital", "Marketing", "Agency"].map((word, i) => (
-                <motion.span
-                  key={word}
-                  className="text-white/35 inline-block"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  {word}
-                </motion.span>
-              ))}
-            </span>
-          </h2>
-
-          <p className="text-white/45 text-sm leading-relaxed max-w-lg mb-1">
-            At Swissulife Media, we promise results.
-          </p>
-          <p className="text-white/45 text-sm leading-relaxed max-w-lg mb-10">
-            Our exceptional success rate comes from tested and proven strategies,
-            having worked with a diverse portfolio of niches.
-          </p>
-
-          <a
-            href="#agency"
-            className="group inline-flex items-center gap-0 px-8 py-3 rounded-full border border-white/80 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="font-mono uppercase text-white/30 mb-6"
+            style={{ fontSize: "0.65rem", letterSpacing: "0.45em" }}
           >
-            More About Us
-            <span className="overflow-hidden w-0 group-hover:w-5 transition-all duration-300 ease-out flex items-center">
-              <ArrowRight size={15} className="ml-1 shrink-0" />
-            </span>
-          </a>
+            Dare to be different?
+          </motion.p>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display font-black uppercase leading-[0.88] mb-8"
+            style={{ fontSize: "clamp(3.5rem, 7vw, 6.5rem)" }}
+          >
+            <span className="block text-white/20 text-2xl tracking-[0.45em] mb-2 font-normal">Meet</span>
+            <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 80px hsl(25 100% 50% / 0.4)" }}>Swiss</span>
+            <span className="text-white">u</span>
+            <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 80px hsl(25 100% 50% / 0.4)" }}>life</span>
+          </motion.h1>
+
+          {/* Orange accent bar */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            style={{ originX: 0, height: 3, background: "linear-gradient(90deg, hsl(25,100%,50%), transparent)", borderRadius: 2 }}
+            className="w-48 mb-8"
+          />
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.55 }}
+          >
+            <h2 className="font-display font-bold text-white leading-tight mb-4"
+              style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}>
+              A 360° Result-Oriented<br />
+              <span className="text-white/35">Digital Marketing Agency</span>
+            </h2>
+            <p className="text-white/40 text-sm leading-relaxed mb-10 max-w-sm">
+              At Swissulife Media, we promise results. Tested strategies, diverse niches, zero compromises.
+            </p>
+
+            <a
+              href="#agency"
+              className="group inline-flex items-center gap-0 px-8 py-3 rounded-full border border-white/30 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
+            >
+              More About Us
+              <span className="overflow-hidden w-0 group-hover:w-5 transition-all duration-300 ease-out flex items-center">
+                <ArrowRight size={15} className="ml-1 shrink-0" />
+              </span>
+            </a>
+          </motion.div>
+
+          {/* scroll indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+            className="absolute bottom-10 left-10 md:left-16 flex items-center gap-3"
+          >
+            <div className="w-px h-12 bg-white/20" style={{ animation: "pulse 2s ease-in-out infinite" }} />
+            <span className="font-mono text-[10px] uppercase tracking-widest text-white/20">Scroll</span>
+          </motion.div>
+        </div>
+
+        {/* ── RIGHT: full-bleed image ── */}
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-full md:flex-1 overflow-hidden"
+          style={{ minHeight: "50vh" }}
+        >
+          <img
+            src={heroBg}
+            alt="Campaign"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ opacity: 0.85 }}
+          />
+          {/* Left gradient fade into black */}
+          <div className="absolute inset-y-0 left-0 w-32 md:w-48"
+            style={{ background: "linear-gradient(90deg, #000 0%, transparent 100%)" }} />
+          {/* overlay tint */}
+          <div className="absolute inset-0"
+            style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.5) 100%)" }} />
+
+          {/* floating stat badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.7 }}
+            className="absolute bottom-10 right-10 text-right"
+          >
+            <p className="font-display font-black text-5xl text-white leading-none">3M+</p>
+            <p className="font-mono text-xs uppercase tracking-widest text-white/50 mt-1">Monthly Reach</p>
+          </motion.div>
         </motion.div>
+
       </div>
     </section>
   );
@@ -510,59 +539,105 @@ const Services = () => {
 
 const SelectedWorks = () => {
   const works = [
-    { title: "Neon Edge", client: "Aura Fashion", type: "Editorial / Campaign", img: work1 },
-    { title: "Titanium Core", client: "Chronos Swiss", type: "Product / Strategy", img: work2 },
-    { title: "Void Protocol", client: "Nexus Hardware", type: "Digital / Web", img: work3 }
+    { title: "Neon Edge", client: "Aura Fashion", type: "Editorial / Campaign", img: work1, num: "01" },
+    { title: "Titanium Core", client: "Chronos Swiss", type: "Product / Strategy", img: work2, num: "02" },
+    { title: "Void Protocol", client: "Nexus Hardware", type: "Digital / Web", img: work3, num: "03" },
   ];
 
   return (
-    <section id="work" className="py-32 bg-secondary">
-      <div className="max-w-[1400px] mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8">
-          <div>
-            <p className="font-mono text-muted-foreground uppercase text-xs tracking-widest mb-6">( 02 — Work )</p>
-            <h2 className="font-display text-6xl md:text-8xl font-bold uppercase text-white">Selected<br />Campaigns</h2>
-          </div>
-          <button className="group flex items-center gap-4 font-mono text-sm uppercase tracking-widest text-white hover:text-primary transition-colors pb-4">
-            View All Archive
-            <span className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center group-hover:border-primary transition-colors">
-              <ArrowRight size={16} />
-            </span>
-          </button>
+    <section id="work">
+      {/* Section header */}
+      <div className="bg-black px-10 md:px-16 pt-24 pb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <p className="font-mono text-white/30 uppercase text-xs tracking-widest mb-4">( Selected Campaigns )</p>
+          <h2 className="font-display text-6xl md:text-8xl font-black uppercase text-white leading-none">
+            Our<br /><span style={{ color: "hsl(25,100%,50%)" }}>Work</span>
+          </h2>
         </div>
-
-        <div className="flex flex-col gap-32">
-          {works.map((work, i) => (
-            <motion.div 
-              key={work.title}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8 }}
-              className={`flex flex-col ${i % 2 === 1 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-12 md:gap-24 items-center`}
-            >
-              <div className="w-full md:w-3/5 overflow-hidden relative group cursor-pointer bg-black aspect-[4/3] md:aspect-[16/10]">
-                <motion.img 
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                  src={work.img} 
-                  alt={work.title} 
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" 
-                />
-                <div className="absolute inset-0 bg-primary/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              </div>
-              <div className="w-full md:w-2/5 flex flex-col items-start">
-                <p className="font-mono text-primary text-xs uppercase tracking-widest mb-4">{work.client}</p>
-                <h3 className="font-display text-4xl md:text-5xl font-bold text-white mb-6">{work.title}</h3>
-                <p className="font-sans text-muted-foreground mb-8">{work.type}</p>
-                <button className="px-6 py-3 border border-white/20 text-white font-mono text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all">
-                  Case Study
-                </button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <button className="group flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-white/40 hover:text-primary transition-colors self-start md:self-end pb-2">
+          View All
+          <span className="w-8 h-8 border border-white/15 rounded-full flex items-center justify-center group-hover:border-primary transition-colors">
+            <ArrowRight size={14} />
+          </span>
+        </button>
       </div>
+
+      {/* Sticky scroll panels */}
+      <div>
+        {works.map((work, i) => (
+          <div
+            key={work.title}
+            className="sticky"
+            style={{ top: 0, zIndex: 10 + i }}
+          >
+            {/* Full-bleed panel */}
+            <div className="relative w-full overflow-hidden bg-black" style={{ height: "100vh" }}>
+
+              {/* Full-bleed image */}
+              <motion.img
+                src={work.img}
+                alt={work.title}
+                className="absolute inset-0 w-full h-full object-cover"
+                initial={{ scale: 1.08 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+                style={{ opacity: 0.65 }}
+              />
+
+              {/* Dark gradient overlays */}
+              <div className="absolute inset-0"
+                style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.75) 100%)" }} />
+              <div className="absolute inset-y-0 left-0 w-1/2"
+                style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.7) 0%, transparent 100%)" }} />
+
+              {/* Content overlay */}
+              <div className="absolute inset-0 flex flex-col justify-end px-10 md:px-16 pb-16">
+                <div className="flex items-end justify-between">
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-80px" }}
+                    transition={{ duration: 0.8, delay: 0.1 }}
+                  >
+                    <p className="font-mono text-primary text-xs uppercase tracking-widest mb-3">{work.client}</p>
+                    <h3 className="font-display font-black text-5xl md:text-7xl text-white uppercase leading-none mb-3">
+                      {work.title}
+                    </h3>
+                    <p className="font-sans text-white/40 text-sm">{work.type}</p>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    className="hidden md:flex flex-col items-end gap-4"
+                  >
+                    <span className="font-mono text-white/20 text-6xl font-bold leading-none">{work.num}</span>
+                    <button className="px-6 py-3 rounded-full border border-white/25 text-white font-mono text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all">
+                      Case Study
+                    </button>
+                  </motion.div>
+                </div>
+
+                {/* Orange accent line at bottom */}
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="mt-8"
+                  style={{ height: 2, background: "linear-gradient(90deg, hsl(25,100%,50%), transparent)", originX: 0 }}
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Spacer after sticky panels */}
+      <div className="bg-black h-24" />
     </section>
   );
 };
