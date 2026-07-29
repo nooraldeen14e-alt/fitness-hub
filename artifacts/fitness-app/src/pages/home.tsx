@@ -55,8 +55,8 @@ const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-center font-display font-bold text-white uppercase tracking-[0.15em] text-2xl md:text-3xl mb-4"
-          style={{ textShadow: "0 0 30px rgba(255,255,255,0.6)" }}
+          className="text-center font-mono font-normal text-white uppercase mb-4"
+          style={{ fontSize: "0.7rem", letterSpacing: "0.45em" }}
         >
           Dare to be different?
         </motion.p>
