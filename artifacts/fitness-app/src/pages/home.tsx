@@ -143,15 +143,15 @@ const Manifesto = () => {
             transition={{ duration: 0.8 }}
             className="font-display text-4xl md:text-6xl font-medium leading-tight text-white mb-12"
           >
-            In a landscape of noise, we are the <span className="text-primary italic">signal</span>. Swiss precision merged with global ambition. We build campaigns that force the world to pay attention.
+            We deliver innovative and impactful marketing solutions that empower our clients to achieve their business goals and <span className="text-primary italic">inspire their audiences</span>.
           </motion.h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-24">
             {[
-              { num: "01", title: "Strategy", desc: "No guesswork. Data-backed positioning for market leaders." },
-              { num: "02", title: "Creative", desc: "Award-winning art direction that breaks industry molds." },
-              { num: "03", title: "Distribution", desc: "Global media buying with surgical targeting." },
-              { num: "04", title: "Impact", desc: "Measurable growth. We optimize for revenue, not just reach." }
+              { num: "01", title: "Discovery", desc: "We get to know your business, industry, audience and conduct in-depth research & development." },
+              { num: "02", title: "Strategy", desc: "Development of brand strategy, including brand promise and tailored concept direction." },
+              { num: "03", title: "Identity", desc: "Our creatives define your unique visual elements — logo, color palette, fonts and branded templates." },
+              { num: "04", title: "Impact", desc: "Tracking performance and progress using measurable KPIs, optimising for real revenue growth." }
             ].map((item, i) => (
               <motion.div 
                 key={item.num}
@@ -169,6 +169,49 @@ const Manifesto = () => {
               </motion.div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const Services = () => {
+  const services = [
+    { num: "01", title: "Marketing Strategy", desc: "Discovery, brand strategy, identity, audience segmentation and KPI tracking for measurable growth." },
+    { num: "02", title: "Social Media Management", desc: "Full-service management across Instagram, Facebook, TikTok, Snapchat and more." },
+    { num: "03", title: "Google Ads", desc: "Strategic planning, keyword research, ad copywriting and continuous data-driven optimisation." },
+    { num: "04", title: "Audio-Visual Production", desc: "Professional photography, video production, audio editing and sound engineering." },
+    { num: "05", title: "Podcast Production", desc: "End-to-end podcast setup, recording, editing and marketing distribution." },
+    { num: "06", title: "Website Design", desc: "From wireframes to launch — beautiful, brand-aligned websites built for conversions." },
+    { num: "07", title: "Event Management", desc: "Before, during and after — full event coverage including influencer outreach and PR packages." },
+    { num: "08", title: "Influencer Marketing", desc: "Access to a curated network of regional influencers with verified reach and engagement." },
+    { num: "09", title: "PR Management", desc: "Strategic PR campaigns, media coverage and brand reputation management." },
+  ];
+
+  return (
+    <section id="services" className="py-32 px-6 bg-black border-t border-white/10">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-20">
+          <p className="font-mono text-muted-foreground uppercase text-xs tracking-widest mb-6">( 02 — Services )</p>
+          <h2 className="font-display text-5xl md:text-7xl font-bold uppercase text-white">What We<br />Do</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0">
+          {services.map((s, i) => (
+            <motion.div
+              key={s.num}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: (i % 3) * 0.1 }}
+              className="border border-white/10 p-8 group hover:border-primary/50 hover:bg-white/[0.02] transition-all duration-300 cursor-default"
+            >
+              <div className="flex justify-between items-start mb-6">
+                <span className="font-mono text-primary text-xs">{s.num}</span>
+              </div>
+              <h3 className="font-display text-xl text-white font-bold mb-3 group-hover:text-primary transition-colors">{s.title}</h3>
+              <p className="font-sans text-white/40 text-sm leading-relaxed">{s.desc}</p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
@@ -267,9 +310,9 @@ const Stats = () => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-6 divide-y md:divide-y-0 md:divide-x divide-black/20">
           {[
-            { value: "3.2B", label: "Global Impressions" },
-            { value: "$450M", label: "Client Revenue Generated" },
-            { value: "14", label: "Industry Awards" },
+            { value: "3M+", label: "Total Reach Per Month" },
+            { value: "1.8M", label: "Instagram Reach" },
+            { value: "293K", label: "Monthly Impressions" },
             { value: "0", label: "Compromises" }
           ].map((stat, i) => (
             <motion.div 
@@ -294,30 +337,36 @@ const Clients = () => {
   return (
     <section className="py-24 bg-black overflow-hidden border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 mb-12">
-         <p className="font-mono text-muted-foreground uppercase text-xs tracking-widest">( 03 — Partners )</p>
+         <p className="font-mono text-muted-foreground uppercase text-xs tracking-widest">( 04 — Industries We Serve )</p>
       </div>
       <div className="relative flex overflow-x-hidden group w-full">
         <div className="animate-marquee whitespace-nowrap flex items-center gap-24 py-4">
           {[...Array(2)].map((_, i) => (
             <React.Fragment key={i}>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">LVMH</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Porsche</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Balenciaga</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Acme Corp</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Rolex</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Polestar</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Fashion & Retail</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Food & Beverages</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Jewelry</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Healthcare</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Sports</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">E-Commerce</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Entertainment</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Beauty & Cosmetics</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Events</span>
             </React.Fragment>
           ))}
         </div>
         <div className="absolute top-0 animate-marquee2 whitespace-nowrap flex items-center gap-24 py-4">
           {[...Array(2)].map((_, i) => (
             <React.Fragment key={i}>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">LVMH</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Porsche</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Balenciaga</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Acme Corp</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Rolex</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Polestar</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Fashion & Retail</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Food & Beverages</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Jewelry</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Healthcare</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Sports</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">E-Commerce</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Entertainment</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Beauty & Cosmetics</span>
+              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Events</span>
             </React.Fragment>
           ))}
         </div>
@@ -332,7 +381,7 @@ const Team = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
           <div>
-            <p className="font-mono text-muted-foreground uppercase text-xs tracking-widest mb-6">( 04 — Leadership )</p>
+            <p className="font-mono text-muted-foreground uppercase text-xs tracking-widest mb-6">( 05 — Leadership )</p>
             <h2 className="font-display text-4xl md:text-6xl font-medium text-white max-w-2xl">
               Led by exactness. No account managers, only practitioners.
             </h2>
@@ -393,30 +442,26 @@ const Footer = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 border-t border-white/10 pt-12">
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="h-3 w-3 bg-primary"></div>
-              <span className="font-display font-bold text-xl uppercase tracking-widest text-white">Swissulife</span>
+            <div className="mb-6">
+              <img src={swissLogo} alt="Swissulife Media" className="h-10 w-auto object-contain" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
             </div>
             <p className="font-sans text-muted-foreground text-sm max-w-sm">
-              The premium media agency for brands that refuse to blend in. Precision execution at global scale.
+              Personalized, high-quality digital marketing services with a tailored approach. Cutting-edge strategies for effective results.
             </p>
           </div>
           
           <div>
-            <h4 className="font-mono text-white text-xs uppercase tracking-widest mb-6">Offices</h4>
+            <h4 className="font-mono text-white text-xs uppercase tracking-widest mb-6">Contact</h4>
             <ul className="space-y-4 font-sans text-muted-foreground text-sm">
-              <li>Zurich, CH</li>
-              <li>New York, US</li>
-              <li>Tokyo, JP</li>
+              <li><a href="tel:+971505725515" className="hover:text-primary transition-colors">+971 50 572 5515</a></li>
+              <li><a href="mailto:sales@swissulife.com" className="hover:text-primary transition-colors">sales@swissulife.com</a></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-mono text-white text-xs uppercase tracking-widest mb-6">Socials</h4>
             <ul className="space-y-4 font-sans text-muted-foreground text-sm">
-              <li><a href="#" className="hover:text-primary transition-colors">Instagram</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">LinkedIn</a></li>
-              <li><a href="#" className="hover:text-primary transition-colors">Twitter (X)</a></li>
+              <li><a href="https://instagram.com/swissulifemedia" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">@swissulifemedia</a></li>
             </ul>
           </div>
         </div>
@@ -434,6 +479,7 @@ export default function Home() {
       <main>
         <Hero />
         <Manifesto />
+        <Services />
         <Clients />
         <SelectedWorks />
         <Stats />
