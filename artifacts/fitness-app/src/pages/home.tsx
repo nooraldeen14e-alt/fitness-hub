@@ -69,14 +69,10 @@ const Hero = () => {
         >
           <h1 className="font-display font-black uppercase leading-[0.9]">
             <span className="block text-white/25 text-2xl md:text-3xl tracking-[0.5em] mb-1">Meet</span>
-            <span
-              className="block text-[11vw] md:text-[90px] lg:text-[110px] tracking-tight"
-              style={{
-                color: "hsl(25,100%,50%)",
-                textShadow: "0 0 60px hsl(25 100% 50% / 0.35), 0 0 120px hsl(25 100% 50% / 0.15)",
-              }}
-            >
-              Swissulife
+            <span className="block text-[11vw] md:text-[90px] lg:text-[110px] tracking-tight">
+              <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 60px hsl(25 100% 50% / 0.35), 0 0 120px hsl(25 100% 50% / 0.15)" }}>Swiss</span>
+              <span style={{ color: "#ffffff" }}>u</span>
+              <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 60px hsl(25 100% 50% / 0.35), 0 0 120px hsl(25 100% 50% / 0.15)" }}>life</span>
             </span>
           </h1>
         </motion.div>
