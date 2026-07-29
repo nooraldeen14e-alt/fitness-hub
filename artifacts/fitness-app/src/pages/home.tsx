@@ -165,7 +165,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <a href="#agency"  className={linkClass("about")}>About Us</a>
+          <a href="/about"   className={linkClass("about")}>About Us</a>
           <a href="#contact" className={linkClass("contact")}>Contact Us</a>
         </div>
 
