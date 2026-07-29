@@ -122,40 +122,6 @@ const Hero = () => {
             </a>
           </motion.div>
 
-          {/* Right column — real logo */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="flex items-center justify-center"
-          >
-            {/* Logo recreated as HTML — no background, blends perfectly */}
-            <div className="text-center select-none">
-              <div style={{
-                fontFamily: "var(--font-display, 'Arial Black', sans-serif)",
-                fontSize: "clamp(2.8rem, 5.5vw, 4.5rem)",
-                fontWeight: 800,
-                letterSpacing: "0.04em",
-                lineHeight: 1,
-                textTransform: "uppercase",
-              }}>
-                <span style={{ color: "hsl(25,100%,50%)", filter: "drop-shadow(0 0 20px hsl(25 100% 50% / 0.5))" }}>Swiss</span>
-                <span style={{ color: "#ffffff", filter: "none" }}>u</span>
-                <span style={{ color: "hsl(25,100%,50%)", filter: "drop-shadow(0 0 20px hsl(25 100% 50% / 0.5))" }}>life</span>
-              </div>
-              <div style={{
-                color: "#ffffff",
-                letterSpacing: "0.45em",
-                fontSize: "clamp(0.6rem, 1.1vw, 0.85rem)",
-                fontWeight: 500,
-                marginTop: "0.5em",
-                textTransform: "uppercase",
-                fontFamily: "var(--font-sans, sans-serif)",
-              }}>
-                Media
-              </div>
-            </div>
-          </motion.div>
 
         </div>
       </div>
