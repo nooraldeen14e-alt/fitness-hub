@@ -121,7 +121,7 @@ const Hero = () => {
             className="flex items-center justify-center"
           >
             {/* Logo recreated as HTML — no background, blends perfectly */}
-            <div className="text-center select-none" style={{ filter: "drop-shadow(0 0 30px hsl(25 100% 50% / 0.35))" }}>
+            <div className="text-center select-none">
               <div style={{
                 fontFamily: "var(--font-display, 'Arial Black', sans-serif)",
                 fontSize: "clamp(2.8rem, 5.5vw, 4.5rem)",
@@ -130,9 +130,9 @@ const Hero = () => {
                 lineHeight: 1,
                 textTransform: "uppercase",
               }}>
-                <span style={{ color: "hsl(25,100%,50%)" }}>Swiss</span>
-                <span style={{ color: "#ffffff" }}>u</span>
-                <span style={{ color: "hsl(25,100%,50%)" }}>life</span>
+                <span style={{ color: "hsl(25,100%,50%)", filter: "drop-shadow(0 0 20px hsl(25 100% 50% / 0.5))" }}>Swiss</span>
+                <span style={{ color: "#ffffff", filter: "none" }}>u</span>
+                <span style={{ color: "hsl(25,100%,50%)", filter: "drop-shadow(0 0 20px hsl(25 100% 50% / 0.5))" }}>life</span>
               </div>
               <div style={{
                 color: "#ffffff",
