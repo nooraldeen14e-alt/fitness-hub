@@ -255,7 +255,6 @@ const Hero = () => {
             className="absolute bottom-10 left-10 md:left-16 flex items-center gap-3"
           >
             <div className="w-px h-12 bg-white/20" style={{ animation: "pulse 2s ease-in-out infinite" }} />
-            <span className="font-mono text-[10px] uppercase tracking-widest text-white/20">Scroll</span>
           </motion.div>
         </div>
 
@@ -656,7 +655,6 @@ const Clients = () => {
   return (
     <section className="py-24 bg-black overflow-hidden border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 mb-12">
-         <p className="font-mono text-muted-foreground uppercase text-xs tracking-widest">( 04 — Industries We Serve )</p>
       </div>
       <div className="relative flex overflow-x-hidden group w-full">
         <div className="animate-marquee whitespace-nowrap flex items-center gap-24 py-4">
