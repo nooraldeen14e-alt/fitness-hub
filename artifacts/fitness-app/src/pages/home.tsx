@@ -6,6 +6,7 @@ import heroBg from "@assets/hero-bg.jpg";
 import work1 from "@assets/work-1.jpg";
 import work2 from "@assets/work-2.jpg";
 import work3 from "@assets/work-3.jpg";
+import swissLogo from "@assets/66b7e0a1-9291-41da-82a2-6d89f100f8a3_1785308430142.jpg";
 
 const NoiseOverlay = () => (
   <div className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-20 mix-blend-overlay">
@@ -26,9 +27,8 @@ const Navbar = () => {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-6 mix-blend-difference"
     >
-      <div className="flex items-center gap-2">
-        <div className="h-3 w-3 bg-primary"></div>
-        <span className="font-display font-bold text-xl uppercase tracking-widest text-white">Swissulife</span>
+      <div className="flex items-center">
+        <img src={swissLogo} alt="Swissulife Media" className="h-10 w-auto object-contain" />
       </div>
       <div className="flex items-center gap-8 text-white">
         <a href="#work" className="hidden md:block font-mono text-xs uppercase tracking-widest hover:text-primary transition-colors">Work</a>
@@ -118,46 +118,19 @@ const Hero = () => {
             </a>
           </motion.div>
 
-          {/* Right column — logo */}
+          {/* Right column — real logo */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="flex flex-col items-center justify-center gap-5"
+            className="flex items-center justify-center"
           >
-            <svg
-              viewBox="0 0 240 240"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-44 h-44 md:w-56 md:h-56"
-              style={{ filter: "drop-shadow(0 0 30px hsl(25 100% 50% / 0.5))" }}
-            >
-              {/* Outer hexagon ring */}
-              <polygon
-                points="120,8 220,62 220,178 120,232 20,178 20,62"
-                stroke="hsl(25,100%,50%)"
-                strokeWidth="2"
-                fill="none"
-                opacity="0.25"
-              />
-              {/* Bold S letterform built from paths */}
-              <path
-                d="M155 75 C155 75 90 75 80 75 C65 75 60 88 60 98 C60 115 75 122 95 128 L145 142 C165 148 175 158 175 172 C175 188 163 198 145 198 C130 198 85 198 85 198"
-                stroke="hsl(25,100%,50%)"
-                strokeWidth="18"
-                strokeLinecap="round"
-                fill="none"
-              />
-              {/* Inner glow dot */}
-              <circle cx="120" cy="120" r="4" fill="hsl(25,100%,50%)" />
-            </svg>
-
-            <div className="text-center">
-              <p className="font-mono text-white/70 uppercase tracking-[0.4em] text-xs">Swissulife Media</p>
-              <p className="font-mono uppercase tracking-[0.3em] text-[10px] mt-1" style={{ color: "hsl(25,100%,50%)" }}>
-                Digital Marketing
-              </p>
-            </div>
+            <img
+              src={swissLogo}
+              alt="Swissulife Media"
+              className="w-64 md:w-80 lg:w-96 object-contain"
+              style={{ filter: "drop-shadow(0 0 40px hsl(25 100% 50% / 0.3))" }}
+            />
           </motion.div>
 
         </div>
