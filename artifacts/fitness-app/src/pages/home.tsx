@@ -77,53 +77,48 @@ const Hero = () => {
           </h1>
         </motion.div>
 
-        {/* ── Row 3: two-column — left text, right logo ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+        {/* ── Row 3: centered content ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="flex flex-col items-center text-center"
+        >
+          <h2 className="font-display font-bold leading-tight mb-6"
+            style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)" }}>
+            <span className="text-white">A 360° Result-Oriented</span>
+            <br />
+            <span className="inline-flex flex-wrap justify-center gap-x-[0.3em]">
+              {["Digital", "Marketing", "Agency"].map((word, i) => (
+                <motion.span
+                  key={word}
+                  className="text-white/35 inline-block"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.5, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </span>
+          </h2>
 
-          {/* Left column */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+          <p className="text-white/45 text-sm leading-relaxed max-w-lg mb-1">
+            At Swissulife Media, we promise results.
+          </p>
+          <p className="text-white/45 text-sm leading-relaxed max-w-lg mb-10">
+            Our exceptional success rate comes from tested and proven strategies,
+            having worked with a diverse portfolio of niches.
+          </p>
+
+          <a
+            href="#agency"
+            className="inline-block px-8 py-3 rounded-full border border-white/80 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
           >
-            <h2 className="font-display font-bold leading-tight mb-5"
-              style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)" }}>
-              <span className="text-white">A 360° Result-Oriented</span>
-              <br />
-              <span className="inline-flex flex-wrap gap-x-[0.3em]">
-                {["Digital", "Marketing", "Agency"].map((word, i) => (
-                  <motion.span
-                    key={word}
-                    className="text-white/35 inline-block"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ duration: 0.5, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    {word}
-                  </motion.span>
-                ))}
-              </span>
-            </h2>
-
-            <p className="text-white/45 text-sm leading-relaxed mb-2">
-              At Swissulife Media, we promise results.
-            </p>
-            <p className="text-white/45 text-sm leading-relaxed mb-10">
-              Our exceptional success rate comes from tested and proven strategies,
-              having worked with a diverse portfolio of niches.
-            </p>
-
-            <a
-              href="#agency"
-              className="inline-block px-8 py-3 rounded-full border border-white/80 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
-            >
-              More About Us
-            </a>
-          </motion.div>
-
-
-        </div>
+            More About Us
+          </a>
+        </motion.div>
       </div>
     </section>
   );
