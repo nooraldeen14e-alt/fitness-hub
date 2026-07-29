@@ -281,31 +281,34 @@ import britishEmbassyLogo from "@assets/logos/british-embassy.png";
 import dhaBuildingLogo from "@assets/logos/dha-building.png";
 
 const TiltCard = ({ children }: { children: React.ReactNode }) => {
-  const ref = React.useRef<HTMLDivElement>(null);
+  const [style, setStyle] = React.useState<React.CSSProperties>({});
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = ref.current;
-    if (!el) return;
-    const { left, top, width, height } = el.getBoundingClientRect();
-    const x = (e.clientX - left) / width - 0.5;   // -0.5 to 0.5
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - left) / width - 0.5;
     const y = (e.clientY - top)  / height - 0.5;
-    el.style.transform = `perspective(600px) rotateY(${x * 20}deg) rotateX(${-y * 20}deg) scale3d(1.07,1.07,1.07)`;
-    el.style.boxShadow = `${-x * 12}px ${y * 12}px 30px rgba(255,100,0,0.25)`;
+    setStyle({
+      transform: `perspective(500px) rotateY(${x * 22}deg) rotateX(${-y * 22}deg) scale(1.08)`,
+      boxShadow: `${-x * 14}px ${y * 14}px 28px rgba(255,100,0,0.3)`,
+      transition: "transform 0.08s ease, box-shadow 0.08s ease",
+      zIndex: 10,
+    });
   };
 
   const handleMouseLeave = () => {
-    const el = ref.current;
-    if (!el) return;
-    el.style.transform = "perspective(600px) rotateY(0deg) rotateX(0deg) scale3d(1,1,1)";
-    el.style.boxShadow = "none";
+    setStyle({
+      transform: "perspective(500px) rotateY(0deg) rotateX(0deg) scale(1)",
+      boxShadow: "none",
+      transition: "transform 0.4s ease, box-shadow 0.4s ease",
+      zIndex: 1,
+    });
   };
 
   return (
     <div
-      ref={ref}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{ transition: "transform 0.15s ease, box-shadow 0.15s ease", willChange: "transform" }}
+      style={{ willChange: "transform", ...style }}
       className="bg-white rounded-2xl aspect-square flex items-center justify-center p-5 cursor-default"
     >
       {children}
