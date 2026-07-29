@@ -101,7 +101,7 @@ export default function ScheduleModal({ open, onClose }: Props) {
             {/* Header */}
             <div className="flex items-center justify-between px-7 py-5 border-b border-white/10">
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-primary mb-0.5">Schedule a Meeting</p>
+                <span className="inline-block px-3 py-1 rounded-full text-black text-[11px] font-bold tracking-wide mb-1.5" style={{ background: "hsl(25,100%,50%)" }}>Schedule a Meeting</span>
                 <h2 className="font-display font-bold text-xl text-white">
                   {step === 1 && "Pick a Date"}
                   {step === 2 && "Choose a Time"}
