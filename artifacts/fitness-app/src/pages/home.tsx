@@ -911,8 +911,7 @@ const Footer = () => {
 
 export default function Home() {
   return (
-    <div className="bg-black min-h-screen text-foreground selection:bg-primary selection:text-white" style={{ cursor: "none" }}>
-      <GlowCursor />
+    <div className="bg-black min-h-screen text-foreground selection:bg-primary selection:text-white">
       <NoiseOverlay />
       <Navbar />
       
