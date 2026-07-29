@@ -34,13 +34,13 @@ const Navbar = () => {
 
       {/* Nav links */}
       <div className="hidden md:flex items-center gap-8">
-        <a href="#" className="font-sans text-sm font-medium transition-colors hover:text-white active:text-white" style={{ color: "hsl(25,100%,50%)" }}>Home</a>
-        <a href="#services" className="font-sans text-sm font-medium transition-colors hover:text-white active:text-white flex items-center gap-1" style={{ color: "hsl(25,100%,50%)" }}>
+        <a href="#" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Home</a>
+        <a href="#services" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200 flex items-center gap-1">
           We Offer
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l4 4 4-4"/></svg>
         </a>
-        <a href="#agency" className="font-sans text-sm font-medium transition-colors hover:text-white active:text-white" style={{ color: "hsl(25,100%,50%)" }}>About Us</a>
-        <a href="#" className="font-sans text-sm font-medium transition-colors hover:text-white active:text-white" style={{ color: "hsl(25,100%,50%)" }}>Contact Us</a>
+        <a href="#agency" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">About Us</a>
+        <a href="#" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Contact Us</a>
       </div>
 
       {/* CTA */}
