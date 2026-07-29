@@ -72,7 +72,7 @@ const Navbar = () => {
           We Offer
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l4 4 4-4"/></svg>
         </a>
-        <a href="#agency"   className={linkClass("about")}>About Us</a>
+        <a href="/about"    className={linkClass("about")}>About Us</a>
         <a href="#contact"  className={linkClass("contact")}>Contact Us</a>
       </div>
 
