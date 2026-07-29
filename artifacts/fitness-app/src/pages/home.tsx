@@ -280,6 +280,39 @@ import drNadasLogo from "@assets/logos/dr-nadas.png";
 import britishEmbassyLogo from "@assets/logos/british-embassy.png";
 import dhaBuildingLogo from "@assets/logos/dha-building.png";
 
+const TiltCard = ({ children }: { children: React.ReactNode }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const { left, top, width, height } = el.getBoundingClientRect();
+    const x = (e.clientX - left) / width - 0.5;   // -0.5 to 0.5
+    const y = (e.clientY - top)  / height - 0.5;
+    el.style.transform = `perspective(600px) rotateY(${x * 20}deg) rotateX(${-y * 20}deg) scale3d(1.07,1.07,1.07)`;
+    el.style.boxShadow = `${-x * 12}px ${y * 12}px 30px rgba(255,100,0,0.25)`;
+  };
+
+  const handleMouseLeave = () => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.transform = "perspective(600px) rotateY(0deg) rotateX(0deg) scale3d(1,1,1)";
+    el.style.boxShadow = "none";
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ transition: "transform 0.15s ease, box-shadow 0.15s ease", willChange: "transform" }}
+      className="bg-white rounded-2xl aspect-square flex items-center justify-center p-5 cursor-default"
+    >
+      {children}
+    </div>
+  );
+};
+
 const OurClients = () => {
   const clients = [
     { name: "DHA", logo: dhaLogo },
@@ -342,13 +375,14 @@ const OurClients = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.4, delay: (i % 6) * 0.06 }}
-              className="bg-white rounded-2xl aspect-square flex items-center justify-center p-5 hover:scale-105 transition-transform duration-300 cursor-default group"
             >
-              <img
-                src={client.logo}
-                alt={client.name}
-                className="w-full h-full object-contain"
-              />
+              <TiltCard>
+                <img
+                  src={client.logo}
+                  alt={client.name}
+                  className="w-full h-full object-contain"
+                />
+              </TiltCard>
             </motion.div>
           ))}
         </div>
