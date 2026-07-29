@@ -913,7 +913,12 @@ const Footer = () => {
           <div>
             <h4 className="font-mono text-white text-xs uppercase tracking-widest mb-6">Socials</h4>
             <ul className="space-y-4 font-sans text-muted-foreground text-sm">
-              <li><a href="https://instagram.com/swissulifemedia" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">@swissulifemedia</a></li>
+              <li>
+                <a href="https://instagram.com/swissulifemedia" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                  @swissulifemedia
+                </a>
+              </li>
             </ul>
           </div>
         </div>
