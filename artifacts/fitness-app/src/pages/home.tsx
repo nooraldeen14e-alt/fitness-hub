@@ -90,7 +90,20 @@ const Hero = () => {
               style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)" }}>
               <span className="text-white">A 360° Result-Oriented</span>
               <br />
-              <span className="text-white/35">Digital Marketing Agency</span>
+              <span className="inline-flex flex-wrap gap-x-[0.3em]">
+                {["Digital", "Marketing", "Agency"].map((word, i) => (
+                  <motion.span
+                    key={word}
+                    className="text-white/35 inline-block"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.5, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </span>
             </h2>
 
             <p className="text-white/45 text-sm leading-relaxed mb-2">
