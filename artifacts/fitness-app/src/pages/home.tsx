@@ -115,9 +115,12 @@ const Hero = () => {
 
           <a
             href="#agency"
-            className="inline-block px-8 py-3 rounded-full border border-white/80 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
+            className="group inline-flex items-center gap-0 px-8 py-3 rounded-full border border-white/80 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
           >
             More About Us
+            <span className="overflow-hidden w-0 group-hover:w-5 transition-all duration-300 ease-out flex items-center">
+              <ArrowRight size={15} className="ml-1 shrink-0" />
+            </span>
           </a>
         </motion.div>
       </div>
