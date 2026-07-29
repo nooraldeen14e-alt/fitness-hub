@@ -890,24 +890,6 @@ const Footer = () => {
   return (
     <footer id="footer" className="bg-black pt-32 pb-12 px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col items-center text-center mb-32">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="w-16 h-16 bg-primary rounded-full mb-8 flex items-center justify-center text-black"
-          >
-            <ArrowRight size={24} className="rotate-45" />
-          </motion.div>
-          <h2 className="font-display text-5xl md:text-8xl font-bold text-white mb-12 uppercase leading-none">
-            Ready to <br />
-            Dominate?
-          </h2>
-          <button className="px-10 py-5 bg-white text-black font-mono text-sm uppercase tracking-[0.2em] hover:bg-primary hover:text-white transition-all duration-300 shadow-[4px_4px_0px_0px_hsl(var(--primary))] hover:shadow-none hover:translate-x-1 hover:translate-y-1">
-            Contact Us
-          </button>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 border-t border-white/10 pt-12">
           <div className="col-span-1 md:col-span-2">
             <div className="mb-6">
