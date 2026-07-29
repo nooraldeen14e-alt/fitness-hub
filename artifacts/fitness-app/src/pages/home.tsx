@@ -1,5 +1,5 @@
 import React from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import ScheduleModal from "@/components/ScheduleModal";
 import { ArrowRight } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
@@ -182,6 +182,33 @@ const Navbar = () => {
   );
 };
 
+const CyclingText = ({ words }: { words: string[] }) => {
+  const [index, setIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const id = setInterval(() => setIndex(i => (i + 1) % words.length), 2500);
+    return () => clearInterval(id);
+  }, [words.length]);
+
+  return (
+    <span className="inline-block relative overflow-hidden" style={{ minWidth: "18ch", verticalAlign: "bottom" }}>
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={index}
+          initial={{ y: "100%", opacity: 0 }}
+          animate={{ y: "0%", opacity: 1 }}
+          exit={{ y: "-100%", opacity: 0 }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          className="inline-block"
+          style={{ color: "hsl(25,100%,50%)" }}
+        >
+          {words[index]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+};
+
 const Hero = () => {
   return (
     <section id="hero" className="relative w-full bg-black overflow-hidden" style={{ minHeight: "100vh" }}>
@@ -230,7 +257,7 @@ const Hero = () => {
             <h2 className="font-display font-bold text-white leading-tight mb-4"
               style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}>
               A 360° Result-Oriented<br />
-              <span className="text-white/35">Digital Marketing Agency</span>
+              <CyclingText words={["Digital Marketing Agency", "Social Media Agency", "Brand Strategy Agency", "Influencer Marketing", "Google Ads Agency", "PR & Events Agency"]} />
             </h2>
             <p className="text-white/40 text-sm leading-relaxed mb-10 max-w-sm">
               At Swissulife Media, we promise results. Tested strategies, diverse niches, zero compromises.
