@@ -25,19 +25,32 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-6 mix-blend-difference"
+      className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/5"
     >
+      {/* Logo */}
       <div className="flex items-center">
-        <img src={swissLogo} alt="Swissulife Media" className="h-10 w-auto object-contain" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
+        <img src={swissLogo} alt="Swissulife Media" className="h-9 w-auto object-contain" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
       </div>
-      <div className="flex items-center gap-8 text-white">
-        <a href="#work" className="hidden md:block font-mono text-xs uppercase tracking-widest hover:text-primary transition-colors">Work</a>
-        <a href="#agency" className="hidden md:block font-mono text-xs uppercase tracking-widest hover:text-primary transition-colors">Agency</a>
-        <a href="#team" className="hidden md:block font-mono text-xs uppercase tracking-widest hover:text-primary transition-colors">Team</a>
-        <button className="px-6 py-3 bg-white text-black font-mono text-xs uppercase tracking-widest hover:bg-primary hover:text-white transition-colors">
-          Let's Talk
-        </button>
+
+      {/* Nav links */}
+      <div className="hidden md:flex items-center gap-8">
+        <a href="#" className="font-sans text-sm font-medium transition-colors" style={{ color: "hsl(25,100%,50%)" }}>Home</a>
+        <a href="#services" className="font-sans text-sm font-medium text-white hover:text-primary transition-colors flex items-center gap-1">
+          We Offer
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+        </a>
+        <a href="#agency" className="font-sans text-sm font-medium text-white hover:text-primary transition-colors">About Us</a>
+        <a href="#" className="font-sans text-sm font-medium transition-colors hover:opacity-80" style={{ color: "hsl(25,100%,50%)" }}>Contact Us</a>
       </div>
+
+      {/* CTA */}
+      <a
+        href="#"
+        className="hidden md:inline-flex items-center px-6 py-2.5 rounded-full text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+        style={{ background: "hsl(25,100%,50%)" }}
+      >
+        Schedule a Meeting
+      </a>
     </motion.nav>
   );
 };
