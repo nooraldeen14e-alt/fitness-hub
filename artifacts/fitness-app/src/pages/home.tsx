@@ -27,7 +27,7 @@ const Navbar = () => {
       { id: "home",    el: document.getElementById("hero") },
       { id: "offer",   el: document.getElementById("services") },
       { id: "about",   el: document.getElementById("agency") },
-      { id: "contact", el: document.getElementById("footer") },
+      { id: "contact", el: document.getElementById("contact") },
     ];
 
     const observer = new IntersectionObserver(
@@ -73,7 +73,7 @@ const Navbar = () => {
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l4 4 4-4"/></svg>
         </a>
         <a href="#agency"   className={linkClass("about")}>About Us</a>
-        <a href="#footer"   className={linkClass("contact")}>Contact Us</a>
+        <a href="#contact"  className={linkClass("contact")}>Contact Us</a>
       </div>
 
       {/* CTA */}
@@ -566,6 +566,155 @@ const Team = () => {
   );
 };
 
+const Contact = () => {
+  const [form, setForm] = React.useState({ name: "", email: "", message: "" });
+  const [sent, setSent] = React.useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSent(true);
+  };
+
+  return (
+    <section id="contact" className="bg-black py-24 px-6 border-t border-white/10">
+      <div className="max-w-7xl mx-auto">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="font-display font-black text-5xl md:text-6xl uppercase text-white mb-14"
+        >
+          Reach Out
+        </motion.h2>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* ── Left: info + form ── */}
+          <div className="flex flex-col gap-10">
+            {/* Info grid */}
+            <div className="grid grid-cols-2 gap-6">
+              {[
+                {
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                  ),
+                  label: "LOCATION",
+                  lines: ["Dubai,", "United Arab Emirates"],
+                },
+                {
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.09 4.18 2 2 0 015.07 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006.99 7l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+                  ),
+                  label: "PHONE",
+                  lines: ["+971 50 572 5515"],
+                },
+                {
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+                  ),
+                  label: "EMAIL",
+                  lines: ["sales@swissulife.com"],
+                },
+                {
+                  icon: (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  ),
+                  label: "HOURS",
+                  lines: ["Sunday – Thursday", "9:00 AM – 6:00 PM"],
+                },
+              ].map((item) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="flex flex-col gap-3"
+                >
+                  <div className="flex items-center gap-2 text-primary">
+                    {item.icon}
+                    <span className="font-mono text-xs font-bold tracking-widest">{item.label}</span>
+                  </div>
+                  <div className="font-sans text-sm text-white/70 leading-relaxed">
+                    {item.lines.map((l, i) => <p key={i}>{l}</p>)}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Form */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white/5 rounded-2xl p-8 border border-white/10"
+            >
+              <h3 className="font-display font-black text-2xl uppercase text-white mb-6">Drop a Line</h3>
+              {sent ? (
+                <p className="text-primary font-mono text-sm">Message sent! We'll be in touch soon.</p>
+              ) : (
+                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                  {[
+                    { key: "name", label: "NAME", type: "text", placeholder: "Your name" },
+                    { key: "email", label: "EMAIL", type: "email", placeholder: "your@email.com" },
+                  ].map((f) => (
+                    <div key={f.key}>
+                      <label className="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1.5 block">{f.label}</label>
+                      <input
+                        type={f.type}
+                        placeholder={f.placeholder}
+                        value={form[f.key as "name" | "email"]}
+                        onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}
+                        required
+                        className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-primary transition-colors"
+                      />
+                    </div>
+                  ))}
+                  <div>
+                    <label className="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-1.5 block">MESSAGE</label>
+                    <textarea
+                      rows={4}
+                      placeholder="Tell us about your project…"
+                      value={form.message}
+                      onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      required
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-primary transition-colors resize-none"
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full py-3 rounded-lg font-mono text-sm uppercase tracking-widest text-white font-bold transition-opacity hover:opacity-90"
+                    style={{ background: "hsl(25,100%,50%)" }}
+                  >
+                    Send Message
+                  </button>
+                </form>
+              )}
+            </motion.div>
+          </div>
+
+          {/* ── Right: map ── */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="rounded-2xl overflow-hidden border border-white/10 min-h-[500px] lg:min-h-full"
+          >
+            <iframe
+              title="Swissulife Media Location"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d462562.61292108404!2d54.94793630000001!3d25.075323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496ad9c645%3A0xbf7a3b4b5909f72f!2sDubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
+              width="100%"
+              height="100%"
+              style={{ border: 0, minHeight: "500px", filter: "invert(90%) hue-rotate(180deg)" }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Footer = () => {
   return (
     <footer id="footer" className="bg-black pt-32 pb-12 px-6">
@@ -633,6 +782,7 @@ export default function Home() {
         <SelectedWorks />
         <Stats />
         <Team />
+        <Contact />
       </main>
 
       <Footer />
