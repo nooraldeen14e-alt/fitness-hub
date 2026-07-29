@@ -20,8 +20,41 @@ const NoiseOverlay = () => (
 );
 
 const Navbar = () => {
+  const [active, setActive] = React.useState("home");
+
+  React.useEffect(() => {
+    const sections: { id: string; el: HTMLElement | null }[] = [
+      { id: "home",    el: document.getElementById("hero") },
+      { id: "offer",   el: document.getElementById("services") },
+      { id: "about",   el: document.getElementById("agency") },
+      { id: "contact", el: document.getElementById("footer") },
+    ];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const match = sections.find((s) => s.el === entry.target);
+            if (match) setActive(match.id);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    sections.forEach((s) => { if (s.el) observer.observe(s.el); });
+    return () => observer.disconnect();
+  }, []);
+
+  const linkClass = (id: string) =>
+    `font-sans font-medium transition-all duration-300 ${
+      active === id
+        ? "text-white text-base"
+        : "text-primary text-sm hover:text-white"
+    }`;
+
   return (
-    <motion.nav 
+    <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -34,13 +67,13 @@ const Navbar = () => {
 
       {/* Nav links */}
       <div className="hidden md:flex items-center gap-8">
-        <a href="#" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Home</a>
-        <a href="#services" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200 flex items-center gap-1">
+        <a href="#hero"     className={linkClass("home")}>Home</a>
+        <a href="#services" className={linkClass("offer") + " flex items-center gap-1"}>
           We Offer
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4l4 4 4-4"/></svg>
         </a>
-        <a href="#agency" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">About Us</a>
-        <a href="#" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors duration-200">Contact Us</a>
+        <a href="#agency"   className={linkClass("about")}>About Us</a>
+        <a href="#footer"   className={linkClass("contact")}>Contact Us</a>
       </div>
 
       {/* CTA */}
@@ -57,7 +90,7 @@ const Navbar = () => {
 
 const Hero = () => {
   return (
-    <section className="relative w-full overflow-hidden bg-black flex flex-col justify-center px-6 md:px-16 pt-28 pb-20">
+    <section id="hero" className="relative w-full overflow-hidden bg-black flex flex-col justify-center px-6 md:px-16 pt-28 pb-20">
       {/* Pure black background — needed for mix-blend-mode: screen on the logo */}
       <div className="absolute inset-0 z-0 bg-black" />
 
@@ -535,7 +568,7 @@ const Team = () => {
 
 const Footer = () => {
   return (
-    <footer className="bg-black pt-32 pb-12 px-6">
+    <footer id="footer" className="bg-black pt-32 pb-12 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center text-center mb-32">
           <motion.div 
