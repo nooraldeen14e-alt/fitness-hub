@@ -28,7 +28,7 @@ const Navbar = () => {
       className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-6 mix-blend-difference"
     >
       <div className="flex items-center">
-        <img src={swissLogo} alt="Swissulife Media" className="h-10 w-auto object-contain" />
+        <img src={swissLogo} alt="Swissulife Media" className="h-10 w-auto object-contain" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
       </div>
       <div className="flex items-center gap-8 text-white">
         <a href="#work" className="hidden md:block font-mono text-xs uppercase tracking-widest hover:text-primary transition-colors">Work</a>
@@ -45,13 +45,8 @@ const Navbar = () => {
 const Hero = () => {
   return (
     <section className="relative w-full overflow-hidden bg-black flex flex-col justify-center px-6 md:px-16 pt-28 pb-20">
-      {/* Subtle dark background */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-black" />
-        {/* Faint glow top-center like reference */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full opacity-20"
-          style={{ background: "radial-gradient(ellipse, hsl(25,100%,50%) 0%, transparent 70%)" }} />
-      </div>
+      {/* Pure black background — needed for mix-blend-mode: screen on the logo */}
+      <div className="absolute inset-0 z-0 bg-black" />
 
       <div className="z-10 w-full max-w-6xl mx-auto flex flex-col">
 
@@ -125,12 +120,32 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.5 }}
             className="flex items-center justify-center"
           >
-            <img
-              src={swissLogo}
-              alt="Swissulife Media"
-              className="w-64 md:w-80 lg:w-96 object-contain"
-              style={{ filter: "drop-shadow(0 0 40px hsl(25 100% 50% / 0.3))" }}
-            />
+            {/* Logo recreated as HTML — no background, blends perfectly */}
+            <div className="text-center select-none" style={{ filter: "drop-shadow(0 0 30px hsl(25 100% 50% / 0.35))" }}>
+              <div style={{
+                fontFamily: "var(--font-display, 'Arial Black', sans-serif)",
+                fontSize: "clamp(2.8rem, 5.5vw, 4.5rem)",
+                fontWeight: 800,
+                letterSpacing: "0.04em",
+                lineHeight: 1,
+                textTransform: "uppercase",
+              }}>
+                <span style={{ color: "hsl(25,100%,50%)" }}>Swiss</span>
+                <span style={{ color: "#ffffff" }}>u</span>
+                <span style={{ color: "hsl(25,100%,50%)" }}>life</span>
+              </div>
+              <div style={{
+                color: "#ffffff",
+                letterSpacing: "0.45em",
+                fontSize: "clamp(0.6rem, 1.1vw, 0.85rem)",
+                fontWeight: 500,
+                marginTop: "0.5em",
+                textTransform: "uppercase",
+                fontFamily: "var(--font-sans, sans-serif)",
+              }}>
+                Media
+              </div>
+            </div>
           </motion.div>
 
         </div>
