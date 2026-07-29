@@ -694,48 +694,6 @@ const Clients = () => {
   );
 };
 
-const Team = () => {
-  return (
-    <section id="team" className="py-32 px-6 bg-black border-t border-white/10">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
-          <div>
-            <p className="font-mono text-muted-foreground uppercase text-xs tracking-widest mb-6">( 05 — Leadership )</p>
-            <h2 className="font-display text-4xl md:text-6xl font-medium text-white max-w-2xl">
-              Led by exactness. No account managers, only practitioners.
-            </h2>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-6">
-          {[
-            { name: "Elias Vanguard", role: "Creative Director", prior: "Ex-LVMH" },
-            { name: "Sarah Chen", role: "Head of Strategy", prior: "Ex-McKinsey" },
-            { name: "Marcus Thorne", role: "Media Director", prior: "Ex-WPP" }
-          ].map((member, i) => (
-            <motion.div 
-              key={member.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="group cursor-pointer"
-            >
-              <div className="w-full aspect-[3/4] bg-white/5 mb-6 relative overflow-hidden">
-                <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out mix-blend-overlay" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                  <span className="font-mono text-white text-xs uppercase tracking-widest">{member.prior}</span>
-                </div>
-              </div>
-              <h4 className="font-display text-2xl text-white mb-2">{member.name}</h4>
-              <p className="font-mono text-primary text-xs uppercase tracking-widest">{member.role}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const Contact = () => {
   const [form, setForm] = React.useState({ name: "", email: "", message: "" });
@@ -921,7 +879,7 @@ const Footer = () => {
               </li>
               <li>
                 <a href="https://wa.me/971505725515" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-primary transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 32 32" fill="currentColor"><path d="M16 .5C7.44.5.5 7.44.5 16c0 2.75.72 5.37 2.08 7.67L.5 31.5l8.06-2.06A15.43 15.43 0 0016 31.5C24.56 31.5 31.5 24.56 31.5 16S24.56.5 16 .5zm0 28.3a13.2 13.2 0 01-6.73-1.84l-.48-.29-4.79 1.22 1.27-4.65-.31-.5A13.22 13.22 0 0116 2.7c7.3 0 13.22 5.93 13.22 13.22S23.3 29.2 16 29.2zm7.26-9.9c-.4-.2-2.35-1.16-2.71-1.29-.37-.13-.63-.2-.9.2s-1.03 1.29-1.27 1.56c-.23.26-.47.3-.87.1a10.9 10.9 0 01-3.21-1.98 12.04 12.04 0 01-2.22-2.76c-.23-.4-.02-.61.17-.81.18-.18.4-.47.6-.7.19-.24.26-.4.39-.67.13-.26.07-.5-.03-.7-.1-.2-.9-2.16-1.23-2.96-.32-.78-.65-.67-.9-.68l-.76-.01c-.27 0-.7.1-1.06.5-.37.4-1.4 1.37-1.4 3.33s1.43 3.86 1.63 4.13c.2.26 2.82 4.3 6.83 6.03.95.41 1.7.66 2.28.84.96.3 1.83.26 2.52.16.77-.12 2.35-.96 2.68-1.89.33-.92.33-1.71.23-1.88-.1-.16-.36-.26-.76-.46z"/></svg>
                   +971 50 572 5515
                 </a>
               </li>
@@ -946,7 +904,6 @@ export default function Home() {
         <Clients />
         <SelectedWorks />
         <Stats />
-        <Team />
       </main>
 
       <Footer />
