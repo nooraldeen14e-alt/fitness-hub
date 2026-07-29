@@ -43,95 +43,123 @@ const Navbar = () => {
 };
 
 const Hero = () => {
-  const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 1000], [0, 300]);
-  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
-
   return (
-    <section className="relative min-h-[100dvh] w-full overflow-hidden bg-black flex flex-col justify-center px-6 pt-24 pb-16">
-      {/* Background */}
-      <motion.div style={{ y, opacity }} className="absolute inset-0 z-0">
-        <img src={heroBg} alt="Background" className="w-full h-full object-cover opacity-20" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black" />
-      </motion.div>
+    <section className="relative w-full overflow-hidden bg-black flex flex-col justify-center px-6 md:px-16 pt-28 pb-20">
+      {/* Subtle dark background */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-black" />
+        {/* Faint glow top-center like reference */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full opacity-20"
+          style={{ background: "radial-gradient(ellipse, hsl(25,100%,50%) 0%, transparent 70%)" }} />
+      </div>
 
-      <div className="z-10 w-full max-w-7xl mx-auto flex flex-col">
-        {/* Top tagline — centered */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-center mb-4"
-        >
-          <span className="font-mono text-white/50 uppercase tracking-[0.3em] text-xs md:text-sm">
-            Dare to be different?
-          </span>
-        </motion.div>
+      <div className="z-10 w-full max-w-6xl mx-auto flex flex-col">
 
-        {/* Large brand headline — centered */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="text-center mb-16"
+        {/* ── Row 1: tagline centered ── */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="text-center font-mono text-white/40 uppercase tracking-[0.35em] text-xs mb-3"
         >
-          <h1 className="font-display font-bold uppercase leading-none">
-            <span className="text-white/30 text-2xl md:text-3xl tracking-widest block mb-1">Meet</span>
+          Dare to be different?
+        </motion.p>
+
+        {/* ── Row 2: MEET SWISSULIFE centered ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-14"
+        >
+          <h1 className="font-display font-black uppercase leading-[0.9]">
+            <span className="block text-white/25 text-2xl md:text-3xl tracking-[0.5em] mb-1">Meet</span>
             <span
-              className="text-[13vw] md:text-[100px] lg:text-[120px] tracking-tight"
-              style={{ color: "hsl(var(--primary))", textShadow: "0 0 80px hsl(var(--primary) / 0.4)" }}
+              className="block text-[11vw] md:text-[90px] lg:text-[110px] tracking-tight"
+              style={{
+                color: "hsl(25,100%,50%)",
+                textShadow: "0 0 60px hsl(25 100% 50% / 0.35), 0 0 120px hsl(25 100% 50% / 0.15)",
+              }}
             >
               Swissulife
             </span>
           </h1>
         </motion.div>
 
-        {/* Two-column: text left, logo right */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
-          {/* Left */}
+        {/* ── Row 3: two-column — left text, right logo ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+
+          {/* Left column */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <h2 className="font-display font-bold text-3xl md:text-5xl leading-tight mb-6">
-              <span className="text-white">A 360°</span>{" "}
-              <span className="text-white">Result-Oriented</span>
+            <h2 className="font-display font-bold leading-tight mb-5"
+              style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.6rem)" }}>
+              <span className="text-white">A 360° Result-Oriented</span>
               <br />
-              <span className="text-white/40">Digital Marketing Agency</span>
+              <span className="text-white/35">Digital Marketing Agency</span>
             </h2>
-            <p className="text-white/50 text-sm md:text-base leading-relaxed mb-8 max-w-md">
-              At Swissulife Media, we promise results. Our exceptional success rate comes from tested and proven strategies, having worked with a diverse portfolio of brands across the globe.
+
+            <p className="text-white/45 text-sm leading-relaxed mb-2">
+              At Swissulife Media, we promise results.
             </p>
+            <p className="text-white/45 text-sm leading-relaxed mb-10">
+              Our exceptional success rate comes from tested and proven strategies,
+              having worked with a diverse portfolio of niches.
+            </p>
+
             <a
               href="#agency"
-              className="inline-block px-8 py-4 border border-white text-white font-mono text-xs uppercase tracking-widest rounded-full hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
+              className="inline-block px-8 py-3 rounded-full border border-white/80 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
             >
               More About Us
             </a>
           </motion.div>
 
-          {/* Right — logo mark */}
+          {/* Right column — logo */}
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.9, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col items-center justify-center"
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="flex flex-col items-center justify-center gap-5"
           >
-            {/* Geometric S logo mark */}
-            <div className="relative w-48 h-48 md:w-64 md:h-64 mb-6">
-              <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-[0_0_40px_hsl(25_100%_50%/0.5)]">
-                {/* Outer diamond */}
-                <polygon points="100,10 190,100 100,190 10,100" stroke="hsl(25,100%,50%)" strokeWidth="2" fill="none" opacity="0.3"/>
-                {/* Inner S-like lightning bolt / arrow */}
-                <polygon points="100,30 170,100 130,100 160,170 100,170 30,100 70,100 40,30" stroke="hsl(25,100%,50%)" strokeWidth="2.5" fill="hsl(25,100%,50%)" fillOpacity="0.08"/>
-                {/* Central mark */}
-                <path d="M75 80 L100 50 L125 80 L110 80 L110 120 L125 120 L100 150 L75 120 L90 120 L90 80 Z" fill="hsl(25,100%,50%)" opacity="0.9"/>
-              </svg>
+            <svg
+              viewBox="0 0 240 240"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-44 h-44 md:w-56 md:h-56"
+              style={{ filter: "drop-shadow(0 0 30px hsl(25 100% 50% / 0.5))" }}
+            >
+              {/* Outer hexagon ring */}
+              <polygon
+                points="120,8 220,62 220,178 120,232 20,178 20,62"
+                stroke="hsl(25,100%,50%)"
+                strokeWidth="2"
+                fill="none"
+                opacity="0.25"
+              />
+              {/* Bold S letterform built from paths */}
+              <path
+                d="M155 75 C155 75 90 75 80 75 C65 75 60 88 60 98 C60 115 75 122 95 128 L145 142 C165 148 175 158 175 172 C175 188 163 198 145 198 C130 198 85 198 85 198"
+                stroke="hsl(25,100%,50%)"
+                strokeWidth="18"
+                strokeLinecap="round"
+                fill="none"
+              />
+              {/* Inner glow dot */}
+              <circle cx="120" cy="120" r="4" fill="hsl(25,100%,50%)" />
+            </svg>
+
+            <div className="text-center">
+              <p className="font-mono text-white/70 uppercase tracking-[0.4em] text-xs">Swissulife Media</p>
+              <p className="font-mono uppercase tracking-[0.3em] text-[10px] mt-1" style={{ color: "hsl(25,100%,50%)" }}>
+                Digital Marketing
+              </p>
             </div>
-            <p className="font-mono text-white/60 uppercase tracking-[0.4em] text-xs">Swissulife Media</p>
-            <p className="font-mono text-primary/60 uppercase tracking-[0.3em] text-[10px] mt-1">Digital Marketing</p>
           </motion.div>
+
         </div>
       </div>
     </section>
