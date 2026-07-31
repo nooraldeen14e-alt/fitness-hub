@@ -231,8 +231,16 @@ const Hero = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.18 }}
-            className="font-display font-bold uppercase text-white mb-1"
-            style={{ fontSize: "1rem", letterSpacing: "0.1em" }}
+            className="font-display font-bold uppercase mb-1"
+            style={{
+              fontSize: "1rem",
+              letterSpacing: "0.1em",
+              background: "linear-gradient(90deg, hsl(25,100%,50%), #ffffff)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              filter: "drop-shadow(0 0 8px hsl(25 100% 50% / 0.5))",
+            }}
           >
             Meet
           </motion.p>
