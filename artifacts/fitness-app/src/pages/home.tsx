@@ -625,10 +625,40 @@ const Clients = () => {
 const Contact = () => {
   const [form, setForm] = React.useState({ name: "", email: "", message: "" });
   const [sent, setSent] = React.useState(false);
+  const [sending, setSending] = React.useState(false);
+  const [error, setError] = React.useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
+    setSending(true);
+    setError("");
+    try {
+      const body = new URLSearchParams({
+        "form-name": "contact",
+        name: form.name,
+        email: form.email,
+        message: form.message,
+      });
+      const res = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString(),
+      });
+      if (res.ok) {
+        setSent(true);
+      } else {
+        // Fallback: open mailto link so the message still reaches the team
+        window.location.href =
+          `mailto:sales@swissulife.com?subject=Website%20enquiry%20from%20${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom%3A%20${encodeURIComponent(form.email)}`;
+        setSent(true);
+      }
+    } catch {
+      window.location.href =
+        `mailto:sales@swissulife.com?subject=Website%20enquiry%20from%20${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom%3A%20${encodeURIComponent(form.email)}`;
+      setSent(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -737,10 +767,11 @@ const Contact = () => {
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-3 rounded-lg font-mono text-sm uppercase tracking-widest text-white font-bold transition-opacity hover:opacity-90"
+                    disabled={sending}
+                    className="w-full py-3 rounded-lg font-mono text-sm uppercase tracking-widest text-white font-bold transition-opacity hover:opacity-90 disabled:opacity-60"
                     style={{ background: "hsl(25,100%,50%)" }}
                   >
-                    Send Message
+                    {sending ? "Sending…" : "Send Message"}
                   </button>
                 </form>
               )}
