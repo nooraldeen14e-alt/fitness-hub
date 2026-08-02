@@ -5,8 +5,7 @@
  */
 import { useRef, useMemo, type MutableRefObject } from "react";
 import {
-  siInstagram, siFacebook, siTiktok, siYoutube, siX,
-  siSnapchat, siWhatsapp, siPinterest,
+  siInstagram, siFacebook, siTiktok, siYoutube, siX, siSnapchat,
 } from "simple-icons";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
@@ -57,8 +56,6 @@ const ELEMENTS = [
   { name: "LinkedIn",    r: 2.2, speed: 0.25, phase: Math.PI * 1.10,     axisX:  0.18, axisZ: -0.22, appearsAt: 0.36 },
   { name: "Reels",       r: 2.5, speed: 0.32, phase: Math.PI * 1.32,     axisX: -0.28, axisZ:  0.14, appearsAt: 0.44 },
   { name: "Snapchat",    r: 2.1, speed: 0.20, phase: Math.PI * 1.54,     axisX:  0.14, axisZ:  0.26, appearsAt: 0.47 },
-  { name: "WhatsApp",    r: 2.7, speed: 0.27, phase: Math.PI * 1.76,     axisX: -0.16, axisZ: -0.16, appearsAt: 0.50 },
-  { name: "Pinterest",   r: 2.3, speed: 0.23, phase: Math.PI * 1.98,     axisX:  0.34, axisZ:  0.08, appearsAt: 0.53 },
 ];
 
 // ─── Platform icon sprites — canvas-texture billboards ────────────────────
@@ -75,8 +72,6 @@ const PLATFORM_CARDS = [
   { name: "LinkedIn",   color: "#0A66C2", path: LINKEDIN_PATH    },
   { name: "Reels",      color: "#C13584", path: siInstagram.path },
   { name: "Snapchat",   color: "#FFFC00", path: siSnapchat.path  },
-  { name: "WhatsApp",   color: "#25D366", path: siWhatsapp.path  },
-  { name: "Pinterest",  color: "#E60023", path: siPinterest.path },
 ] as const;
 
 const CARD_W = 200;

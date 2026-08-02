@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, Component, type ReactNode } from "react";
 import {
   siInstagram, siFacebook, siTiktok, siYoutube, siX,
-  siSnapchat, siWhatsapp, siPinterest,
+  siSnapchat,
 } from "simple-icons";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
@@ -38,8 +38,6 @@ const PLATFORM_ICONS = [
   { name: "LinkedIn",    color: "#0A66C2", icon: null        },
   { name: "Reels",       color: "#FF0069", icon: siInstagram },
   { name: "Snapchat",    color: "#FFFC00", icon: siSnapchat  },
-  { name: "WhatsApp",    color: "#25D366", icon: siWhatsapp  },
-  { name: "Pinterest",   color: "#BD081C", icon: siPinterest },
 ];
 
 function CSSCubeFallback() {
