@@ -7,7 +7,9 @@ import heroBg from "@assets/hero-bg.jpg";
 import work1 from "@assets/work-1.jpg";
 import work2 from "@assets/work-2.jpg";
 import work3 from "@assets/work-3.jpg";
-import swissLogo from "@assets/66b7e0a1-9291-41da-82a2-6d89f100f8a3_1785308430142.jpg";
+import clientsRow1 from "@assets/image_1785675109306.png";
+import clientsRow2 from "@assets/image_1785675118444.png";
+import clientsRow3 from "@assets/image_1785675125738.png";
 
 /* ── Glowing cursor ── */
 const GlowCursor = () => {
@@ -126,7 +128,9 @@ const Navbar = () => {
       >
         {/* Logo */}
         <div className="flex items-center">
-          <img src={swissLogo} alt="Swissulife Media" className="h-9 w-auto object-contain" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
+          <span className="font-display font-bold text-white tracking-widest uppercase text-lg">
+            SWISSULIFE <span style={{ color: "hsl(25,100%,50%)" }}>MEDIA</span>
+          </span>
         </div>
 
         {/* Nav links */}
@@ -333,30 +337,6 @@ const Hero = () => {
 };
 
 
-import subwayLogo from "@assets/logos/subway.png";
-import gloriaJeansLogo from "@assets/logos/gloria-jeans.png";
-import gulAhmedLogo from "@assets/logos/gul-ahmed.png";
-import jazzLogo from "@assets/logos/jazz.png";
-import humNetworkLogo from "@assets/logos/hum-network.png";
-import serenaHotelsLogo from "@assets/logos/serena-hotels.png";
-import dhaLogo from "@assets/logos/dha.png";
-import arnNewsLogo from "@assets/logos/arn-news.png";
-import lovinDubaiLogo from "@assets/logos/lovin-dubai.png";
-import spiceFactoryLogo from "@assets/logos/spice-factory.png";
-import englishTableLogo from "@assets/logos/english-table.png";
-import beyondPhysioLogo from "@assets/logos/beyond-physio.png";
-import casaRicaLogo from "@assets/logos/casa-rica.png";
-import multiplierzLogo from "@assets/logos/multiplierz.png";
-import northstonesLogo from "@assets/logos/northstones.png";
-import midtownLogo from "@assets/logos/midtown.png";
-import theGardensLogo from "@assets/logos/the-gardens.png";
-import faridBpLogo from "@assets/logos/farid-bp.png";
-import mediaGalleriaLogo from "@assets/logos/media-galleria.png";
-import choyeKhanaLogo from "@assets/logos/chooye-khana.png";
-import tausLogo from "@assets/logos/taus.png";
-import drNadasLogo from "@assets/logos/dr-nadas.png";
-import britishEmbassyLogo from "@assets/logos/british-embassy.png";
-import dhaBuildingLogo from "@assets/logos/dha-building.png";
 
 const TiltCard = ({ children }: { children: React.ReactNode }) => {
   const [style, setStyle] = React.useState<React.CSSProperties>({});
@@ -395,43 +375,18 @@ const TiltCard = ({ children }: { children: React.ReactNode }) => {
 };
 
 const OurClients = () => {
-  const clients = [
-    { name: "DHA", logo: dhaLogo },
-    { name: "DHA Building Dreams", logo: dhaBuildingLogo },
-    { name: "Farid Business Park", logo: faridBpLogo },
-    { name: "Multiplierz Group", logo: multiplierzLogo },
-    { name: "Media Galleria", logo: mediaGalleriaLogo },
-    { name: "The Gardens", logo: theGardensLogo },
-    { name: "Midtown", logo: midtownLogo },
-    { name: "NorthStones", logo: northstonesLogo },
-    { name: "Chooye Khana", logo: choyeKhanaLogo },
-    { name: "Tau's", logo: tausLogo },
-    { name: "Casa Rica", logo: casaRicaLogo },
-    { name: "Gloria Jean's", logo: gloriaJeansLogo },
-    { name: "Spice Factory", logo: spiceFactoryLogo },
-    { name: "Subway", logo: subwayLogo },
-    { name: "The English Table", logo: englishTableLogo },
-    { name: "Dr. Nada's Clinic", logo: drNadasLogo },
-    { name: "Beyond Physiotherapy", logo: beyondPhysioLogo },
-    { name: "Gul Ahmed", logo: gulAhmedLogo },
-    { name: "Mobilink", logo: jazzLogo },
-    { name: "HUM Network", logo: humNetworkLogo },
-    { name: "Serena Hotels", logo: serenaHotelsLogo },
-    { name: "British Embassy The Hague", logo: britishEmbassyLogo },
-    { name: "ARN News Centre", logo: arnNewsLogo },
-    { name: "Lovin Dubai", logo: lovinDubaiLogo },
+  const rows = [
+    { src: clientsRow1, alt: "Clients – Tilda, Casa Milano, Toyota, Samana Developers, VIP & Protocol, Farfetch and more" },
+    { src: clientsRow2, alt: "Clients – Infiniti, VW, Apple, Noon, Adidas, CAFU, Dior, L'Oréal, Costa, KFC, DHL, Red Bull, Samsung, Amazon and more" },
+    { src: clientsRow3, alt: "Clients – Sharjah Paintball, Damac, Rani, Ferrari, Lexus, Geely, Spotii, Carrefour and more" },
   ];
 
   return (
-    <section id="clients" className="relative py-32 px-6 overflow-hidden" style={{ background: "#050505" }}>
-      {/* Smoke / colour glow background */}
+    <section id="clients" className="relative py-24 px-6 overflow-hidden" style={{ background: "#050505" }}>
+      {/* Subtle glow */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[400px] rounded-full opacity-20"
-          style={{ background: "radial-gradient(ellipse, #7c3aed 0%, transparent 70%)", filter: "blur(60px)" }} />
-        <div className="absolute top-0 right-1/4 w-[500px] h-[400px] rounded-full opacity-15"
-          style={{ background: "radial-gradient(ellipse, #0ea5e9 0%, transparent 70%)", filter: "blur(60px)" }} />
-        <div className="absolute top-16 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full opacity-10"
-          style={{ background: "radial-gradient(ellipse, hsl(25,100%,50%) 0%, transparent 70%)", filter: "blur(40px)" }} />
+        <div className="absolute top-0 left-1/4 w-[500px] h-[400px] rounded-full opacity-10"
+          style={{ background: "radial-gradient(ellipse, hsl(25,100%,50%) 0%, transparent 70%)", filter: "blur(80px)" }} />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
@@ -447,23 +402,23 @@ const OurClients = () => {
           <h2 className="font-display font-bold text-6xl md:text-8xl uppercase text-white/80">Clients</h2>
         </motion.div>
 
-        {/* Grid of logo cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {clients.map((client, i) => (
+        {/* Client collage rows */}
+        <div className="flex flex-col gap-2">
+          {rows.map((row, i) => (
             <motion.div
-              key={client.name}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              key={i}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.4, delay: (i % 6) * 0.06 }}
+              transition={{ duration: 0.6, delay: i * 0.12 }}
+              className="w-full rounded-2xl overflow-hidden"
             >
-              <TiltCard>
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  className="w-full h-full object-contain"
-                />
-              </TiltCard>
+              <img
+                src={row.src}
+                alt={row.alt}
+                className="w-full h-auto object-cover"
+                style={{ display: "block" }}
+              />
             </motion.div>
           ))}
         </div>
@@ -505,12 +460,11 @@ const Stats = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-6 divide-y md:divide-y-0 md:divide-x divide-black/20">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-black/20">
           {[
             { value: "3M+", label: "Total Reach Per Month" },
             { value: "1.8M", label: "Instagram Reach" },
             { value: "293K", label: "Monthly Impressions" },
-            { value: "0", label: "Compromises" }
           ].map((stat, i) => (
             <motion.div 
               key={stat.label}
@@ -730,7 +684,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 border-t border-white/10 pt-12 mt-16">
           <div className="col-span-1 md:col-span-2">
             <div className="mb-6">
-              <img src={swissLogo} alt="Swissulife Media" className="h-10 w-auto object-contain" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} />
+              <span className="font-display font-bold text-white tracking-widest uppercase text-xl">
+                SWISSULIFE <span style={{ color: "hsl(25,100%,50%)" }}>MEDIA</span>
+              </span>
             </div>
             <p className="font-sans text-muted-foreground text-sm max-w-sm">
               Personalized, high-quality digital marketing services with a tailored approach. Cutting-edge strategies for effective results.
