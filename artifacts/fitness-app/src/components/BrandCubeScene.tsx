@@ -4,6 +4,10 @@
  * only the central object has changed from a cube to a living marketing ecosystem.
  */
 import { useRef, useMemo, type MutableRefObject } from "react";
+import {
+  siInstagram, siFacebook, siTiktok, siYoutube, siX,
+  siSnapchat, siWhatsapp, siPinterest,
+} from "simple-icons";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Text } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
@@ -57,9 +61,83 @@ const ELEMENTS = [
   { name: "Pinterest",   r: 2.3, speed: 0.23, phase: Math.PI * 1.98,     axisX:  0.34, axisZ:  0.08, appearsAt: 0.53 },
 ];
 
-// ─── Individual element meshes — Social Media themed ──────────────────────
+// ─── Platform icon sprites — canvas-texture billboards ────────────────────
 
-/** 1 — Instagram  #FF0069 hot-pink */
+// LinkedIn SVG path (no simple-icons entry in this version)
+const LINKEDIN_PATH = "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.605 0 4.276 2.368 4.276 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z";
+
+const PLATFORM_CARDS = [
+  { name: "Instagram",  color: "#FF0069", path: siInstagram.path },
+  { name: "Facebook",   color: "#0866FF", path: siFacebook.path  },
+  { name: "TikTok",     color: "#69C9D0", path: siTiktok.path    },
+  { name: "YouTube",    color: "#FF0000", path: siYoutube.path   },
+  { name: "X",          color: "#e7e9ea", path: siX.path         },
+  { name: "LinkedIn",   color: "#0A66C2", path: LINKEDIN_PATH    },
+  { name: "Reels",      color: "#C13584", path: siInstagram.path },
+  { name: "Snapchat",   color: "#FFFC00", path: siSnapchat.path  },
+  { name: "WhatsApp",   color: "#25D366", path: siWhatsapp.path  },
+  { name: "Pinterest",  color: "#E60023", path: siPinterest.path },
+] as const;
+
+const CARD_W = 200;
+const CARD_H = 232;
+
+function makePlatformTexture(name: string, color: string, iconPath: string): THREE.CanvasTexture {
+  const canvas = document.createElement("canvas");
+  canvas.width  = CARD_W;
+  canvas.height = CARD_H;
+  const ctx = canvas.getContext("2d")!;
+
+  // ── Rounded-rect background ──────────────────────────────────────────────
+  const r = 24, pad = 4;
+  ctx.beginPath();
+  ctx.moveTo(pad + r, pad);
+  ctx.lineTo(CARD_W - pad - r, pad);
+  ctx.arcTo(CARD_W - pad, pad, CARD_W - pad, pad + r, r);
+  ctx.lineTo(CARD_W - pad, CARD_H - pad - r);
+  ctx.arcTo(CARD_W - pad, CARD_H - pad, CARD_W - pad - r, CARD_H - pad, r);
+  ctx.lineTo(pad + r, CARD_H - pad);
+  ctx.arcTo(pad, CARD_H - pad, pad, CARD_H - pad - r, r);
+  ctx.lineTo(pad, pad + r);
+  ctx.arcTo(pad, pad, pad + r, pad, r);
+  ctx.closePath();
+  ctx.fillStyle   = color + "28";
+  ctx.fill();
+  ctx.strokeStyle = color + "cc";
+  ctx.lineWidth   = 4;
+  ctx.stroke();
+
+  // ── Platform icon (SVG path, 24×24 viewBox → 92×92 px) ──────────────────
+  const iconPx = 92;
+  const ix = (CARD_W - iconPx) / 2;
+  ctx.save();
+  ctx.translate(ix, 28);
+  ctx.scale(iconPx / 24, iconPx / 24);
+  ctx.fillStyle = color;
+  ctx.fill(new Path2D(iconPath));
+  ctx.restore();
+
+  // ── Name label ────────────────────────────────────────────────────────────
+  ctx.font      = "bold 19px monospace, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillStyle = color;
+  ctx.fillText(name.toUpperCase(), CARD_W / 2, CARD_H - 14);
+
+  return new THREE.CanvasTexture(canvas);
+}
+
+function PlatformSprite({ index }: { index: number }) {
+  const card = PLATFORM_CARDS[index];
+  const mat  = useMemo(() => {
+    const tex = makePlatformTexture(card.name, card.color, card.path);
+    return new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false });
+  }, [card.name, card.color, card.path]);
+
+  const aspect = CARD_H / CARD_W;
+  return <sprite material={mat} scale={[0.80, 0.80 * aspect, 1]} />;
+}
+
+// ── dead-code placeholder — kept so TS doesn't complain about unused mesh:
 function InstagramMesh() {
   return (
     <group>
@@ -322,35 +400,22 @@ function OrbitElement({
   scrollRef: MutableRefObject<number>;
   posRef: MutableRefObject<THREE.Vector3[]>;
 }) {
-  const groupRef  = useRef<THREE.Group>(null!);
-  const axis      = useMemo(() => new THREE.Vector3(def.axisX, 1, def.axisZ).normalize(), [def.axisX, def.axisZ]);
-  const baseVec   = useMemo(() => new THREE.Vector3(def.r, 0, 0), [def.r]);
-  const tmpVec    = useMemo(() => new THREE.Vector3(), []);
-  const MeshComp  = ELEMENT_MESHES[index];
+  const groupRef = useRef<THREE.Group>(null!);
+  const axis     = useMemo(() => new THREE.Vector3(def.axisX, 1, def.axisZ).normalize(), [def.axisX, def.axisZ]);
+  const baseVec  = useMemo(() => new THREE.Vector3(def.r, 0, 0), [def.r]);
+  const tmpVec   = useMemo(() => new THREE.Vector3(), []);
 
-  useFrame(({ clock }, delta) => {
-    const s = scrollRef.current;
+  useFrame(({ clock }) => {
     const t = clock.elapsedTime;
-
-    // Always visible — no scroll gate on visibility
-    groupRef.current.scale.setScalar(1);
-
-    // Orbit position
     const angle = def.speed * t + def.phase;
     tmpVec.copy(baseVec).applyAxisAngle(axis, angle);
     groupRef.current.position.copy(tmpVec);
-
-    // Store for connection lines
     posRef.current[index] = groupRef.current.position.clone();
-
-    // Gentle self-rotation for visual interest
-    groupRef.current.rotation.x += delta * 0.18;
-    groupRef.current.rotation.z += delta * 0.12;
   });
 
   return (
-    <group ref={groupRef} scale={1}>
-      <MeshComp />
+    <group ref={groupRef}>
+      <PlatformSprite index={index} />
     </group>
   );
 }
@@ -435,8 +500,8 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
   });
 
   // ── palette ──────────────────────────────────────────────────────────────
-  const NAVY   = "#0d1b2e";   // dark navy façade
-  const NGLASS = "#112240";   // slightly lighter for cylinder
+  const NAVY   = "#1a3358";   // rich dark-navy façade (clearly blue, not black)
+  const NGLASS = "#1e3d70";   // brighter navy-blue cylinder glass
   const GOLD   = "#c8a855";   // warm gold trim
   const AMBER  = "#d4833a";   // floor-line glow
   const WHITE  = "#e8eeff";   // illuminated signage

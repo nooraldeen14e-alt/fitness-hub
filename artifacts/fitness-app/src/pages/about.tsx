@@ -63,7 +63,7 @@ function CSSCubeFallback() {
           {/* Crown / parapet — carries "swissulife media" */}
           <div style={{
             width: 108, marginTop: 2,
-            background: "#0d1b2e",
+            background: "#1a3358",
             border: "1px solid #c8a85544",
             borderTop: "2px solid #c8a855",
             borderBottom: "1px solid #c8a85566",
