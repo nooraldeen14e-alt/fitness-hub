@@ -39,250 +39,302 @@ function getCamPos(s: number): [number, number, number] {
 // ─── Orbital element definitions ───────────────────────────────────────────
 // appearsAt: scroll progress (0–1) when this element becomes visible
 const ELEMENTS = [
-  { name: "Social Media",    r: 2.2, speed: 0.28, phase: 0,                  axisX:  0.12, axisZ:  0.18, appearsAt: 0.15 },
-  { name: "Branding",        r: 2.6, speed: 0.21, phase: Math.PI * 0.22,     axisX:  0.30, axisZ:  0.06, appearsAt: 0.18 },
-  { name: "Website Design",  r: 2.0, speed: 0.34, phase: Math.PI * 0.44,     axisX: -0.20, axisZ:  0.22, appearsAt: 0.21 },
-  { name: "Content Creation",r: 2.4, speed: 0.19, phase: Math.PI * 0.66,     axisX:  0.24, axisZ: -0.10, appearsAt: 0.30 },
-  { name: "Paid Advertising",r: 2.8, speed: 0.30, phase: Math.PI * 0.88,     axisX: -0.10, axisZ:  0.28, appearsAt: 0.33 },
-  { name: "Analytics",       r: 2.2, speed: 0.25, phase: Math.PI * 1.10,     axisX:  0.18, axisZ: -0.22, appearsAt: 0.36 },
-  { name: "Email Marketing", r: 2.5, speed: 0.32, phase: Math.PI * 1.32,     axisX: -0.28, axisZ:  0.14, appearsAt: 0.44 },
-  { name: "SEO",             r: 2.1, speed: 0.20, phase: Math.PI * 1.54,     axisX:  0.14, axisZ:  0.26, appearsAt: 0.47 },
-  { name: "AI Automation",   r: 2.7, speed: 0.27, phase: Math.PI * 1.76,     axisX: -0.16, axisZ: -0.16, appearsAt: 0.50 },
-  { name: "Strategy",        r: 2.3, speed: 0.23, phase: Math.PI * 1.98,     axisX:  0.34, axisZ:  0.08, appearsAt: 0.53 },
+  { name: "Instagram",   r: 2.2, speed: 0.28, phase: 0,                  axisX:  0.12, axisZ:  0.18, appearsAt: 0.15 },
+  { name: "Facebook",    r: 2.6, speed: 0.21, phase: Math.PI * 0.22,     axisX:  0.30, axisZ:  0.06, appearsAt: 0.18 },
+  { name: "TikTok",      r: 2.0, speed: 0.34, phase: Math.PI * 0.44,     axisX: -0.20, axisZ:  0.22, appearsAt: 0.21 },
+  { name: "YouTube",     r: 2.4, speed: 0.19, phase: Math.PI * 0.66,     axisX:  0.24, axisZ: -0.10, appearsAt: 0.30 },
+  { name: "Twitter / X", r: 2.8, speed: 0.30, phase: Math.PI * 0.88,     axisX: -0.10, axisZ:  0.28, appearsAt: 0.33 },
+  { name: "LinkedIn",    r: 2.2, speed: 0.25, phase: Math.PI * 1.10,     axisX:  0.18, axisZ: -0.22, appearsAt: 0.36 },
+  { name: "Reels",       r: 2.5, speed: 0.32, phase: Math.PI * 1.32,     axisX: -0.28, axisZ:  0.14, appearsAt: 0.44 },
+  { name: "Content",     r: 2.1, speed: 0.20, phase: Math.PI * 1.54,     axisX:  0.14, axisZ:  0.26, appearsAt: 0.47 },
+  { name: "Hashtag",     r: 2.7, speed: 0.27, phase: Math.PI * 1.76,     axisX: -0.16, axisZ: -0.16, appearsAt: 0.50 },
+  { name: "Analytics",   r: 2.3, speed: 0.23, phase: Math.PI * 1.98,     axisX:  0.34, axisZ:  0.08, appearsAt: 0.53 },
 ];
 
-// ─── Individual element meshes ─────────────────────────────────────────────
+// ─── Individual element meshes — Social Media themed ──────────────────────
 
-/** 1 — Social Media: smartphone */
-function SocialMediaMesh() {
+/** 1 — Instagram: camera body + viewfinder ring + lens glass */
+function InstagramMesh() {
   return (
     <group>
+      {/* body — rounded square */}
       <mesh>
-        <boxGeometry args={[0.38, 0.70, 0.06]} />
-        <meshStandardMaterial color="#0c0c0c" metalness={0.95} roughness={0.08} />
+        <boxGeometry args={[0.50, 0.50, 0.08]} />
+        <meshStandardMaterial color="#0c0c0c" metalness={0.95} roughness={0.07} />
       </mesh>
-      {/* screen glow */}
-      <mesh position={[0, 0.02, 0.035]}>
-        <boxGeometry args={[0.28, 0.52, 0.005]} />
-        <meshStandardMaterial color="#ff3300" emissive="#ff2200" emissiveIntensity={0.9} />
+      {/* outer lens ring */}
+      <mesh position={[0, 0, 0.045]}>
+        <torusGeometry args={[0.16, 0.025, 10, 36]} />
+        <meshStandardMaterial color="#ff4400" emissive="#ff3300" emissiveIntensity={0.7} />
       </mesh>
-      {/* home indicator */}
-      <mesh position={[0, -0.3, 0.035]}>
-        <boxGeometry args={[0.12, 0.015, 0.005]} />
+      {/* lens glass */}
+      <mesh position={[0, 0, 0.048]}>
+        <circleGeometry args={[0.13, 32]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff2200" emissiveIntensity={0.4} transparent opacity={0.5} />
+      </mesh>
+      {/* viewfinder dot (top-right) */}
+      <mesh position={[0.18, 0.18, 0.045]}>
+        <sphereGeometry args={[0.035, 8, 8]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={1.0} />
+      </mesh>
+    </group>
+  );
+}
+
+/** 2 — Facebook: thumbs-up "like" icon */
+function FacebookMesh() {
+  return (
+    <group>
+      {/* thumb shaft */}
+      <mesh position={[0.05, 0.06, 0]}>
+        <boxGeometry args={[0.16, 0.36, 0.07]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.95} roughness={0.07} />
+      </mesh>
+      {/* thumb knuckle curve (box approximation) */}
+      <mesh position={[0.14, 0.26, 0]} rotation={[0, 0, -0.5]}>
+        <boxGeometry args={[0.14, 0.16, 0.07]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.95} roughness={0.07} />
+      </mesh>
+      {/* palm base */}
+      <mesh position={[0, -0.18, 0]}>
+        <boxGeometry args={[0.30, 0.18, 0.07]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.95} roughness={0.07} />
+      </mesh>
+      {/* glowing edge highlight */}
+      <mesh position={[0.05, 0.06, 0.038]}>
+        <boxGeometry args={[0.15, 0.34, 0.005]} />
         <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.5} />
       </mesh>
     </group>
   );
 }
 
-/** 2 — Branding: glowing octahedron */
-function BrandingMesh() {
-  return (
-    <mesh>
-      <octahedronGeometry args={[0.36]} />
-      <meshStandardMaterial color="#0d0d0d" emissive="#ff4400" emissiveIntensity={0.2} metalness={0.96} roughness={0.05} />
-    </mesh>
-  );
-}
-
-/** 3 — Website Design: browser-style panel stack */
-function WebsiteMesh() {
-  const lineOffsets = [-0.04, 0.0, 0.04];
+/** 3 — TikTok: musical note (filled circle + stem + flag) */
+function TikTokMesh() {
   return (
     <group>
-      <mesh>
-        <boxGeometry args={[0.65, 0.48, 0.04]} />
-        <meshStandardMaterial color="#0a0a0a" metalness={0.92} roughness={0.08} />
+      {/* note head */}
+      <mesh position={[-0.08, -0.18, 0]}>
+        <cylinderGeometry args={[0.13, 0.13, 0.07, 24]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.95} roughness={0.07} />
       </mesh>
-      {/* header bar */}
-      <mesh position={[0, 0.19, 0.023]}>
-        <boxGeometry args={[0.61, 0.08, 0.005]} />
-        <meshStandardMaterial color="#ff4400" emissive="#ff3300" emissiveIntensity={0.55} />
+      {/* note stem */}
+      <mesh position={[0.05, 0.06, 0]}>
+        <boxGeometry args={[0.05, 0.44, 0.07]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.95} roughness={0.07} />
       </mesh>
-      {/* content lines */}
-      {lineOffsets.map((y, i) => (
-        <mesh key={i} position={[-0.08, y - 0.04, 0.023]}>
-          <boxGeometry args={[0.42, 0.022, 0.005]} />
-          <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.18} />
-        </mesh>
-      ))}
-    </group>
-  );
-}
-
-/** 4 — Content Creation: camera lens */
-function ContentMesh() {
-  return (
-    <group rotation={[Math.PI / 2, 0, 0]}>
-      {/* body */}
-      <mesh>
-        <cylinderGeometry args={[0.28, 0.32, 0.16, 32]} />
-        <meshStandardMaterial color="#0d0d0d" metalness={0.96} roughness={0.05} />
+      {/* note flag */}
+      <mesh position={[0.14, 0.22, 0]} rotation={[0, 0, 0.4]}>
+        <boxGeometry args={[0.18, 0.06, 0.07]} />
+        <meshStandardMaterial color="#ff4400" emissive="#ff3300" emissiveIntensity={0.7} />
       </mesh>
-      {/* lens ring */}
-      <mesh position={[0, 0.1, 0]}>
-        <torusGeometry args={[0.26, 0.03, 8, 32]} />
-        <meshStandardMaterial color="#ff4400" emissive="#ff3300" emissiveIntensity={0.6} />
-      </mesh>
-      {/* glass element */}
-      <mesh position={[0, 0.12, 0]}>
-        <cylinderGeometry args={[0.18, 0.18, 0.04, 32]} />
-        <meshStandardMaterial color="#ff5500" emissive="#ff3300" emissiveIntensity={0.3} metalness={0.3} roughness={0.1} transparent opacity={0.7} />
+      {/* glow on head */}
+      <mesh position={[-0.08, -0.18, 0.038]}>
+        <circleGeometry args={[0.10, 24]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff3300" emissiveIntensity={0.6} transparent opacity={0.6} />
       </mesh>
     </group>
   );
 }
 
-/** 5 — Paid Advertising: ad campaign panel */
-function PaidAdsMesh() {
+/** 4 — YouTube: play-button triangle inside a rounded rectangle */
+function YouTubeMesh() {
   return (
     <group>
+      {/* screen body */}
       <mesh>
-        <boxGeometry args={[0.60, 0.44, 0.04]} />
+        <boxGeometry args={[0.64, 0.46, 0.06]} />
         <meshStandardMaterial color="#0a0a0a" metalness={0.92} roughness={0.08} />
       </mesh>
-      {/* hero image area */}
-      <mesh position={[0, 0.08, 0.023]}>
-        <boxGeometry args={[0.52, 0.20, 0.005]} />
-        <meshStandardMaterial color="#ff2200" emissive="#ff1100" emissiveIntensity={0.5} />
+      {/* play triangle: three thin boxes arranged as a right-pointing arrow */}
+      <mesh position={[0.04, 0, 0.035]}>
+        <coneGeometry args={[0.16, 0.26, 3]} />
+        <meshStandardMaterial color="#ff3300" emissive="#ff2200" emissiveIntensity={0.85} />
       </mesh>
-      {/* CTA button */}
-      <mesh position={[0, -0.12, 0.023]}>
-        <boxGeometry args={[0.24, 0.07, 0.005]} />
+      {/* subtle screen glow */}
+      <mesh position={[0, 0, 0.033]}>
+        <boxGeometry args={[0.58, 0.40, 0.004]} />
+        <meshStandardMaterial color="#1a0800" emissive="#ff2200" emissiveIntensity={0.08} transparent opacity={0.5} />
+      </mesh>
+    </group>
+  );
+}
+
+/** 5 — Twitter / X: two crossed diagonal bars */
+function TwitterMesh() {
+  return (
+    <group>
+      {/* bar 1: top-left to bottom-right */}
+      <mesh rotation={[0, 0, Math.PI / 4]}>
+        <boxGeometry args={[0.08, 0.60, 0.07]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.95} roughness={0.07} />
+      </mesh>
+      {/* bar 2: top-right to bottom-left */}
+      <mesh rotation={[0, 0, -Math.PI / 4]}>
+        <boxGeometry args={[0.08, 0.60, 0.07]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.95} roughness={0.07} />
+      </mesh>
+      {/* orange glow overlay */}
+      <mesh rotation={[0, 0, Math.PI / 4]} position={[0, 0, 0.038]}>
+        <boxGeometry args={[0.05, 0.56, 0.005]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.7} />
+      </mesh>
+      <mesh rotation={[0, 0, -Math.PI / 4]} position={[0, 0, 0.038]}>
+        <boxGeometry args={[0.05, 0.56, 0.005]} />
         <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.7} />
       </mesh>
     </group>
   );
 }
 
-/** 6 — Analytics: rising bar chart */
+/** 6 — LinkedIn: briefcase silhouette */
+function LinkedInMesh() {
+  return (
+    <group>
+      {/* briefcase body */}
+      <mesh position={[0, -0.04, 0]}>
+        <boxGeometry args={[0.52, 0.36, 0.07]} />
+        <meshStandardMaterial color="#0a0a0a" metalness={0.93} roughness={0.07} />
+      </mesh>
+      {/* top handle arch */}
+      <mesh position={[0, 0.16, 0]}>
+        <torusGeometry args={[0.14, 0.035, 8, 20, Math.PI]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.93} roughness={0.07} />
+      </mesh>
+      {/* centre latch line */}
+      <mesh position={[0, -0.04, 0.038]}>
+        <boxGeometry args={[0.48, 0.015, 0.005]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.6} />
+      </mesh>
+      {/* corner rivets */}
+      {([-0.22, 0.22] as number[]).map((x, i) => (
+        <mesh key={i} position={[x, -0.04, 0.038]}>
+          <sphereGeometry args={[0.025, 8, 8]} />
+          <meshStandardMaterial color="#ff4400" emissive="#ff3300" emissiveIntensity={0.8} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+/** 7 — Reels: vertical phone with a spinning film-reel ring */
+function ReelsMesh() {
+  const ringRef = useRef<THREE.Mesh>(null!);
+  useFrame(({ clock }) => {
+    if (ringRef.current) ringRef.current.rotation.z = clock.elapsedTime * 1.4;
+  });
+  return (
+    <group>
+      {/* phone body */}
+      <mesh>
+        <boxGeometry args={[0.30, 0.56, 0.06]} />
+        <meshStandardMaterial color="#0c0c0c" metalness={0.95} roughness={0.07} />
+      </mesh>
+      {/* screen */}
+      <mesh position={[0, 0.02, 0.033]}>
+        <boxGeometry args={[0.22, 0.42, 0.005]} />
+        <meshStandardMaterial color="#ff2200" emissive="#ff1100" emissiveIntensity={0.7} />
+      </mesh>
+      {/* film reel ring — self-rotating */}
+      <mesh ref={ringRef} position={[0, 0, 0.034]}>
+        <torusGeometry args={[0.20, 0.022, 8, 6]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.8} />
+      </mesh>
+    </group>
+  );
+}
+
+/** 8 — Content / Camera: clapperboard */
+function ContentMesh() {
+  return (
+    <group>
+      {/* board body */}
+      <mesh>
+        <boxGeometry args={[0.54, 0.40, 0.05]} />
+        <meshStandardMaterial color="#0a0a0a" metalness={0.92} roughness={0.08} />
+      </mesh>
+      {/* clapper top strip */}
+      <mesh position={[0, 0.23, 0]} rotation={[0, 0, 0.18]}>
+        <boxGeometry args={[0.54, 0.09, 0.055]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.93} roughness={0.07} />
+      </mesh>
+      {/* diagonal stripes on clapper */}
+      {[-0.18, -0.06, 0.06, 0.18].map((x, i) => (
+        <mesh key={i} position={[x, 0.23, 0.029]} rotation={[0, 0, -Math.PI / 5]}>
+          <boxGeometry args={[0.04, 0.14, 0.005]} />
+          <meshStandardMaterial color={i % 2 === 0 ? "#ff4400" : "#1a1a1a"} emissive={i % 2 === 0 ? "#ff3300" : "#000"} emissiveIntensity={i % 2 === 0 ? 0.6 : 0} />
+        </mesh>
+      ))}
+      {/* hinge dot */}
+      <mesh position={[-0.24, 0.23, 0.031]}>
+        <sphereGeometry args={[0.03, 8, 8]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={1.0} />
+      </mesh>
+    </group>
+  );
+}
+
+/** 9 — Hashtag: # symbol from four thin boxes */
+function HashtagMesh() {
+  return (
+    <group>
+      {/* two vertical bars */}
+      {([-0.12, 0.12] as number[]).map((x, i) => (
+        <mesh key={i} position={[x, 0, 0]}>
+          <boxGeometry args={[0.055, 0.52, 0.07]} />
+          <meshStandardMaterial color="#0d0d0d" metalness={0.95} roughness={0.07} />
+        </mesh>
+      ))}
+      {/* two horizontal bars */}
+      {([-0.10, 0.10] as number[]).map((y, i) => (
+        <mesh key={i} position={[0, y, 0.005]}>
+          <boxGeometry args={[0.48, 0.055, 0.065]} />
+          <meshStandardMaterial color={i === 0 ? "#ff4400" : "#ff5500"} emissive={i === 0 ? "#ff3300" : "#ff4400"} emissiveIntensity={0.65} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+/** 10 — Social Analytics: follower growth chart */
 function AnalyticsMesh() {
   const bars = [
-    { h: 0.22, x: -0.24 },
-    { h: 0.36, x: -0.12 },
-    { h: 0.28, x:  0.00 },
-    { h: 0.52, x:  0.12 },
-    { h: 0.40, x:  0.24 },
+    { h: 0.18, x: -0.24 },
+    { h: 0.28, x: -0.12 },
+    { h: 0.22, x:  0.00 },
+    { h: 0.44, x:  0.12 },
+    { h: 0.36, x:  0.24 },
   ];
   return (
     <group>
       {bars.map((b, i) => (
-        <mesh key={i} position={[b.x, b.h / 2 - 0.26, 0]}>
+        <mesh key={i} position={[b.x, b.h / 2 - 0.22, 0]}>
           <boxGeometry args={[0.09, b.h, 0.07]} />
           <meshStandardMaterial
-            color={i === 3 ? "#ff4400" : "#151515"}
-            emissive={i === 3 ? "#ff2200" : "#110800"}
-            emissiveIntensity={i === 3 ? 0.55 : 0.05}
-            metalness={0.85}
-            roughness={0.15}
+            color={i === 3 ? "#ff4400" : "#141414"}
+            emissive={i === 3 ? "#ff2200" : "#110500"}
+            emissiveIntensity={i === 3 ? 0.6 : 0.04}
+            metalness={0.85} roughness={0.15}
           />
         </mesh>
       ))}
       {/* baseline */}
-      <mesh position={[0, -0.265, 0]}>
-        <boxGeometry args={[0.62, 0.012, 0.07]} />
-        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.3} />
+      <mesh position={[0, -0.225, 0]}>
+        <boxGeometry args={[0.60, 0.012, 0.07]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.35} />
       </mesh>
-    </group>
-  );
-}
-
-/** 7 — Email Marketing: envelope */
-function EmailMesh() {
-  return (
-    <group>
-      <mesh>
-        <boxGeometry args={[0.58, 0.40, 0.04]} />
-        <meshStandardMaterial color="#0d0d0d" metalness={0.92} roughness={0.08} />
-      </mesh>
-      {/* V flap left */}
-      <mesh position={[-0.14, 0.08, 0.023]} rotation={[0, 0, -Math.PI / 5]}>
-        <boxGeometry args={[0.32, 0.018, 0.005]} />
-        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.55} />
-      </mesh>
-      {/* V flap right */}
-      <mesh position={[0.14, 0.08, 0.023]} rotation={[0, 0, Math.PI / 5]}>
-        <boxGeometry args={[0.32, 0.018, 0.005]} />
-        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.55} />
-      </mesh>
-    </group>
-  );
-}
-
-/** 8 — SEO: magnifying glass */
-function SEOMesh() {
-  return (
-    <group>
-      <mesh>
-        <torusGeometry args={[0.22, 0.04, 10, 36]} />
-        <meshStandardMaterial color="#0d0d0d" metalness={0.96} roughness={0.05} />
-      </mesh>
-      {/* handle */}
-      <mesh position={[0.19, -0.19, 0]} rotation={[0, 0, -Math.PI / 4]}>
-        <cylinderGeometry args={[0.03, 0.03, 0.28, 10]} />
-        <meshStandardMaterial color="#ff4400" emissive="#ff3300" emissiveIntensity={0.55} metalness={0.9} />
-      </mesh>
-      {/* glass inside */}
-      <mesh>
-        <circleGeometry args={[0.18, 32]} />
-        <meshStandardMaterial color="#ff4400" emissive="#ff2200" emissiveIntensity={0.12} transparent opacity={0.25} />
-      </mesh>
-    </group>
-  );
-}
-
-/** 9 — AI Automation: neural node cluster */
-function AIMesh() {
-  const nodePositions: [number, number, number][] = [
-    [0, 0, 0], [-0.28, 0.18, 0.05], [0.28, 0.18, -0.05],
-    [-0.22, -0.20, -0.05], [0.22, -0.20, 0.05], [0, 0.32, 0],
-  ];
-  return (
-    <group>
-      {nodePositions.map(([x, y, z], i) => (
-        <mesh key={i} position={[x, y, z]}>
-          <sphereGeometry args={[i === 0 ? 0.14 : 0.07, 12, 12]} />
-          <meshStandardMaterial
-            color={i === 0 ? "#ff3300" : "#0d0d0d"}
-            emissive="#ff4400"
-            emissiveIntensity={i === 0 ? 1.0 : 0.35}
-            metalness={0.8}
-            roughness={0.2}
-          />
-        </mesh>
-      ))}
-    </group>
-  );
-}
-
-/** 10 — Strategy: concentric target rings */
-function StrategyMesh() {
-  return (
-    <group rotation={[Math.PI / 2, 0, 0]}>
-      {[0.38, 0.26, 0.14].map((r, i) => (
-        <mesh key={i}>
-          <torusGeometry args={[r, 0.025, 8, 36]} />
-          <meshStandardMaterial
-            color="#0d0d0d"
-            emissive="#ff4400"
-            emissiveIntensity={0.12 + i * 0.18}
-            metalness={0.92}
-            roughness={0.08}
-          />
-        </mesh>
-      ))}
-      {/* center dot */}
-      <mesh position={[0, 0.01, 0]}>
-        <sphereGeometry args={[0.055, 12, 12]} />
-        <meshStandardMaterial color="#ff4400" emissive="#ff2200" emissiveIntensity={1.5} />
+      {/* trending arrow */}
+      <mesh position={[0.26, 0.14, 0.04]} rotation={[0, 0, -Math.PI / 6]}>
+        <coneGeometry args={[0.055, 0.12, 3]} />
+        <meshStandardMaterial color="#ff4400" emissive="#ff2200" emissiveIntensity={0.8} />
       </mesh>
     </group>
   );
 }
 
 const ELEMENT_MESHES = [
-  SocialMediaMesh, BrandingMesh, WebsiteMesh, ContentMesh, PaidAdsMesh,
-  AnalyticsMesh, EmailMesh, SEOMesh, AIMesh, StrategyMesh,
+  InstagramMesh, FacebookMesh, TikTokMesh, YouTubeMesh, TwitterMesh,
+  LinkedInMesh, ReelsMesh, ContentMesh, HashtagMesh, AnalyticsMesh,
 ];
 
 // ─── Single orbiting element ───────────────────────────────────────────────
