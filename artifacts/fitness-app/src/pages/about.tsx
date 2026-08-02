@@ -1,4 +1,8 @@
 import React, { useRef, useEffect, Component, type ReactNode } from "react";
+import {
+  siInstagram, siFacebook, siTiktok, siYoutube, siX,
+  siSnapchat, siWhatsapp, siPinterest,
+} from "simple-icons";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import swissLogo from "@assets/66b7e0a1-9291-41da-82a2-6d89f100f8a3_1785308430142.jpg";
@@ -25,17 +29,17 @@ class WebGLBoundary extends Component<{ children: ReactNode; fallback: ReactNode
 }
 
 // ─── CSS fallback (no WebGL) — shows orbiting platform labels ────────────────
-const PLATFORM_LABELS = [
-  { name: "Instagram",   color: "#E1306C" },
-  { name: "Facebook",    color: "#1877F2" },
-  { name: "TikTok",      color: "#69C9D0" },
-  { name: "YouTube",     color: "#FF0000" },
-  { name: "Twitter / X", color: "#e7e9ea" },
-  { name: "LinkedIn",    color: "#0A66C2" },
-  { name: "Reels",       color: "#833AB4" },
-  { name: "Content",     color: "#FFB800" },
-  { name: "Hashtag",     color: "#9333EA" },
-  { name: "Analytics",   color: "#22C55E" },
+const PLATFORM_ICONS = [
+  { name: "Instagram",   color: "#FF0069", icon: siInstagram },
+  { name: "Facebook",    color: "#0866FF", icon: siFacebook  },
+  { name: "TikTok",      color: "#69C9D0", icon: siTiktok    },
+  { name: "YouTube",     color: "#FF0000", icon: siYoutube   },
+  { name: "Twitter / X", color: "#ffffff", icon: siX         },
+  { name: "LinkedIn",    color: "#0A66C2", icon: null        },
+  { name: "Reels",       color: "#FF0069", icon: siInstagram },
+  { name: "Snapchat",    color: "#FFFC00", icon: siSnapchat  },
+  { name: "WhatsApp",    color: "#25D366", icon: siWhatsapp  },
+  { name: "Pinterest",   color: "#BD081C", icon: siPinterest },
 ];
 
 function CSSCubeFallback() {
@@ -52,9 +56,9 @@ function CSSCubeFallback() {
         <div style={{ position: "absolute", inset: "50%", width: 200, height: 200, transform: "translate(-50%,-50%)", borderRadius: "50%", border: "1px solid rgba(255,85,0,0.2)", animation: "cssRingSpin 12s linear infinite reverse" }} />
 
         {/* Orbiting platform labels */}
-        {PLATFORM_LABELS.map(({ name, color }, i) => {
-          const delay = -(i / PLATFORM_LABELS.length) * 9;
-          const r = i % 2 === 0 ? 175 : 155;
+        {PLATFORM_ICONS.map(({ name, color, icon }, i) => {
+          const delay = -(i / PLATFORM_ICONS.length) * 9;
+          const r = i % 2 === 0 ? 178 : 152;
           return (
             <div
               key={name}
@@ -69,16 +73,43 @@ function CSSCubeFallback() {
               <div style={{
                 position: "absolute",
                 transform: `translate(-50%, -50%) translateX(${r}px)`,
-                whiteSpace: "nowrap",
-                fontSize: 10,
-                fontFamily: "monospace",
-                letterSpacing: "0.1em",
-                color,
-                textShadow: `0 0 10px ${color}88`,
-                fontWeight: 700,
-                textTransform: "uppercase",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 3,
               }}>
-                {name}
+                {/* Icon tile */}
+                <div style={{
+                  width: 32, height: 32,
+                  borderRadius: 8,
+                  background: `${color}18`,
+                  border: `1px solid ${color}55`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: `0 0 12px ${color}44`,
+                }}>
+                  {icon ? (
+                    <svg viewBox="0 0 24 24" width={16} height={16} fill={color}>
+                      <path d={icon.path} />
+                    </svg>
+                  ) : (
+                    /* LinkedIn — no simple-icon, render "in" text */
+                    <span style={{ color, fontSize: 11, fontWeight: 900, fontFamily: "sans-serif", lineHeight: 1 }}>in</span>
+                  )}
+                </div>
+                {/* Label */}
+                <span style={{
+                  color,
+                  fontSize: 8,
+                  fontFamily: "monospace",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  whiteSpace: "nowrap",
+                  textShadow: `0 0 8px ${color}66`,
+                }}>
+                  {name}
+                </span>
               </div>
             </div>
           );
