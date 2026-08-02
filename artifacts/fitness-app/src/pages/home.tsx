@@ -7,9 +7,12 @@ import heroBg from "@assets/hero-bg.jpg";
 import work1 from "@assets/work-1.jpg";
 import work2 from "@assets/work-2.jpg";
 import work3 from "@assets/work-3.jpg";
-import clientsRow1 from "@assets/image_1785675109306.png";
-import clientsRow2 from "@assets/image_1785675118444.png";
-import clientsRow3 from "@assets/image_1785675125738.png";
+import {
+  SiApple, SiSamsung, SiToyota, SiAdidas, SiVolkswagen,
+  SiAudi, SiFerrari, SiMcdonalds, SiDhl, SiDeliveroo,
+  SiKfc, SiRedbull, SiPorsche, SiInfiniti, SiRollsroyce,
+  SiCarrefour, SiDior, SiFarfetch,
+} from "react-icons/si";
 
 /* ── Glowing cursor ── */
 const GlowCursor = () => {
@@ -338,10 +341,12 @@ const Hero = () => {
 
 
 
-/* ── Client card with logo + text fallback ── */
-const ClientCard = ({ name, domain }: { name: string; domain?: string }) => {
+/* ── Client card: icon or text fallback ── */
+type IconComponent = React.ComponentType<{ size?: number; color?: string }>;
+
+const ClientCard = ({ name, Icon }: { name: string; Icon?: IconComponent }) => {
   const [tilt, setTilt] = React.useState<React.CSSProperties>({});
-  const [imgOk, setImgOk] = React.useState<boolean>(!!domain);
+  const fontSize = name.length > 16 ? "0.6rem" : name.length > 12 ? "0.7rem" : name.length > 8 ? "0.8rem" : "0.9rem";
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -362,27 +367,18 @@ const ClientCard = ({ name, domain }: { name: string; domain?: string }) => {
     zIndex: 1,
   });
 
-  const logoUrl = domain ? `https://logo.clearbit.com/${domain}` : null;
-  const fontSize = name.length > 16 ? "0.6rem" : name.length > 12 ? "0.7rem" : name.length > 8 ? "0.8rem" : "0.9rem";
-
   return (
     <div
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       style={{ willChange: "transform", ...tilt }}
-      className="bg-[#111] border border-white/8 rounded-2xl aspect-square flex flex-col items-center justify-center gap-2 p-4 cursor-default overflow-hidden"
+      className="bg-[#111] border border-white/8 rounded-2xl aspect-square flex items-center justify-center p-4 cursor-default overflow-hidden"
     >
-      {logoUrl && imgOk ? (
-        <img
-          src={logoUrl}
-          alt={name}
-          onError={() => setImgOk(false)}
-          className="w-full h-full object-contain"
-          style={{ filter: "brightness(0) invert(1)", padding: "12px" }}
-        />
+      {Icon ? (
+        <Icon size={52} color="rgba(255,255,255,0.85)" />
       ) : (
         <span
-          className="text-center font-sans font-semibold text-white/90 leading-tight px-1"
+          className="text-center font-sans font-semibold text-white/85 leading-tight px-1"
           style={{ fontSize }}
         >
           {name}
@@ -393,90 +389,90 @@ const ClientCard = ({ name, domain }: { name: string; domain?: string }) => {
 };
 
 const OurClients = () => {
-  const clients: { name: string; domain?: string }[] = [
+  const clients: { name: string; Icon?: IconComponent }[] = [
     // ── Image 1 ──
-    { name: "Tilda",                  domain: "tilda.cc" },
+    { name: "Tilda" },
     { name: "Casa Milano" },
-    { name: "Dream Dive",             domain: "dreamdive.ae" },
-    { name: "Toyota",                 domain: "toyota.com" },
-    { name: "Samana Developers",      domain: "samana.ae" },
+    { name: "Dream Dive" },
+    { name: "Toyota",              Icon: SiToyota },
+    { name: "Samana Developers" },
     { name: "VIP & Protocol" },
     { name: "ELE" },
-    { name: "Farfetch",               domain: "farfetch.com" },
-    { name: "Audi",                   domain: "audi.com" },
+    { name: "Farfetch",            Icon: SiFarfetch },
+    { name: "Audi",                Icon: SiAudi },
     { name: "Rashed" },
     { name: "SAVVA" },
-    { name: "Rolls Royce",            domain: "rolls-roycemotorcars.com" },
+    { name: "Rolls Royce",         Icon: SiRollsroyce },
     { name: "X-Space Real Estate" },
     { name: "Fashion Factor" },
-    { name: "Sharjah Golf & Shooting Club" },
+    { name: "Sharjah Golf & Shooting" },
     { name: "Casa Di Spicca" },
-    { name: "Mazzika",                domain: "mazzika.com" },
+    { name: "Mazzika" },
     { name: "Operation Level Up" },
     { name: "MASH Coffee" },
     { name: "Twisted Olive" },
     { name: "Fouziana" },
-    { name: "LinkinCard",             domain: "linkincard.com" },
+    { name: "LinkinCard" },
     // ── Image 2 ──
-    { name: "Infiniti",               domain: "infiniti.com" },
-    { name: "Volkswagen",             domain: "volkswagen.com" },
-    { name: "Apple",                  domain: "apple.com" },
-    { name: "Noon",                   domain: "noon.com" },
-    { name: "O Boticário",            domain: "boticario.com.br" },
-    { name: "Adidas",                 domain: "adidas.com" },
-    { name: "CAFU",                   domain: "cafu.com" },
+    { name: "Infiniti",            Icon: SiInfiniti },
+    { name: "Volkswagen",          Icon: SiVolkswagen },
+    { name: "Apple",               Icon: SiApple },
+    { name: "Noon" },
+    { name: "O Boticário" },
+    { name: "Adidas",              Icon: SiAdidas },
+    { name: "CAFU" },
     { name: "MERAA" },
-    { name: "StarzPlay",              domain: "starzplay.com" },
+    { name: "StarzPlay" },
     { name: "URBERR" },
-    { name: "Emaar",                  domain: "emaar.com" },
-    { name: "Dior",                   domain: "dior.com" },
-    { name: "L'Oréal",                domain: "loreal.com" },
-    { name: "Elizabeth Arden",        domain: "elizabetharden.com" },
-    { name: "The Dubai Mall",         domain: "thedubaimall.com" },
-    { name: "Chanel",                 domain: "chanel.com" },
-    { name: "MAC",                    domain: "maccosmetics.com" },
-    { name: "Oreo",                   domain: "oreo.com" },
-    { name: "Power Horse",            domain: "powerhorse.com" },
-    { name: "Babyshop",               domain: "babyshop.com" },
-    { name: "Costa Coffee",           domain: "costacoffee.com" },
-    { name: "KFC",                    domain: "kfc.com" },
-    { name: "DHL",                    domain: "dhl.com" },
-    { name: "Red Bull",               domain: "redbull.com" },
-    { name: "Samsung",                domain: "samsung.com" },
-    { name: "Amazon",                 domain: "amazon.com" },
-    { name: "Al Ain Farms",           domain: "alainfarms.com" },
-    { name: "McDonald's",             domain: "mcdonalds.com" },
-    { name: "Quaker",                 domain: "quakeroats.com" },
-    { name: "Deliveroo",              domain: "deliveroo.com" },
-    { name: "Canon",                  domain: "canon.com" },
+    { name: "Emaar" },
+    { name: "Dior",                Icon: SiDior },
+    { name: "L'Oréal" },
+    { name: "Elizabeth Arden" },
+    { name: "The Dubai Mall" },
+    { name: "Chanel" },
+    { name: "MAC" },
+    { name: "Oreo" },
+    { name: "Power Horse" },
+    { name: "Babyshop" },
+    { name: "Costa Coffee" },
+    { name: "KFC",                 Icon: SiKfc },
+    { name: "DHL",                 Icon: SiDhl },
+    { name: "Red Bull",            Icon: SiRedbull },
+    { name: "Samsung",             Icon: SiSamsung },
+    { name: "Amazon" },
+    { name: "Al Ain Farms" },
+    { name: "McDonald's",          Icon: SiMcdonalds },
+    { name: "Quaker" },
+    { name: "Deliveroo",           Icon: SiDeliveroo },
+    { name: "Canon" },
     { name: "Liv" },
-    { name: "Porsche",                domain: "porsche.com" },
-    { name: "Talabat",                domain: "talabat.com" },
+    { name: "Porsche",             Icon: SiPorsche },
+    { name: "Talabat" },
     // ── Image 3 ──
-    { name: "Sharjah Paintball Park" },
+    { name: "Sharjah Paintball" },
     { name: "Righteous Properties" },
     { name: "Village Arabia" },
-    { name: "fäm Properties",         domain: "famproperties.com" },
-    { name: "Escapology",             domain: "escapology.com" },
+    { name: "fäm Properties" },
+    { name: "Escapology" },
     { name: "Altitude Gym" },
     { name: "Seventy Fitness & Spa" },
     { name: "Sharqi Gents Salon" },
     { name: "Glitza By Ghalia" },
-    { name: "Sharjah Chamber of Commerce" },
+    { name: "Sharjah Chamber" },
     { name: "Altitude Spa" },
-    { name: "University of Sharjah",  domain: "sharjah.ac.ae" },
-    { name: "DAMAC",                  domain: "damacproperties.com" },
-    { name: "Rani",                   domain: "ranigroup.com" },
+    { name: "Univ. of Sharjah" },
+    { name: "DAMAC" },
+    { name: "Rani" },
     { name: "Meaza" },
-    { name: "Corniche Hotel Sharjah" },
+    { name: "Corniche Hotel" },
     { name: "Charms" },
-    { name: "Clemenceau Medical Center", domain: "cmchospital.com" },
-    { name: "Carrefour",              domain: "carrefour.com" },
+    { name: "Clemenceau Medical" },
+    { name: "Carrefour",           Icon: SiCarrefour },
     { name: "Urban Craft" },
-    { name: "Ferrari",                domain: "ferrari.com" },
-    { name: "Lexus",                  domain: "lexus.com" },
-    { name: "Geely",                  domain: "geely.com" },
-    { name: "Spotii",                 domain: "spotii.me" },
+    { name: "Ferrari",             Icon: SiFerrari },
+    { name: "Lexus" },
+    { name: "Geely" },
+    { name: "Spotii" },
   ];
 
   return (
