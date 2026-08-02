@@ -206,6 +206,18 @@ export default function Contact() {
                 <p className="text-white font-medium group-hover:text-primary transition-colors">sales@swissulife.com</p>
               </div>
             </a>
+            <a href="tel:+971505725515" className="flex items-center gap-3 group mt-4">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: "hsl(25,100%,50%)" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.09 4.18 2 2 0 015.07 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L9.09 9.91a16 16 0 006.99 7l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/>
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs text-white/40 font-mono uppercase tracking-wider mb-0.5">Call us</p>
+                <p className="text-white font-medium group-hover:text-primary transition-colors">+971 50 572 5515</p>
+              </div>
+            </a>
           </div>
 
           {/* Response time badge */}
