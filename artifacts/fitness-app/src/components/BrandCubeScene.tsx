@@ -438,8 +438,18 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
   const BODY   = "#080808";
   const bodyMat = { metalness: 0.95, roughness: 0.07, color: BODY } as const;
 
-  // Window rows on front face (z = +0.36 face of main tower)
-  const WINDOW_ROWS = 9;
+  // One colour per floor row — platform brand colours bottom → top
+  const WIN_COLORS = [
+    "#0A66C2", // LinkedIn blue
+    "#0866FF", // Facebook blue
+    "#69C9D0", // TikTok cyan
+    "#25D366", // WhatsApp green
+    "#FF0000", // YouTube red
+    "#FFFC00", // Snapchat yellow
+    "#FF0069", // Instagram pink
+    "#BD081C", // Pinterest red
+    "#FF5500", // Swissulife orange (top)
+  ];
 
   return (
     <group ref={groupRef}>
@@ -493,77 +503,82 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
         </mesh>
       ))}
 
-      {/* ── Window rows — front face (z+) ── */}
-      {Array.from({ length: WINDOW_ROWS }, (_, i) => {
-        const y    = -1.22 + i * 0.36;
-        const top  = i >= WINDOW_ROWS - 2;               // top floors brighter
-        const glow = top ? 0.95 : 0.30;
-        return (
-          <mesh key={`win-f-${i}`} position={[0, y, 0.363]}>
-            <boxGeometry args={[0.96, 0.055, 0.004]} />
-            <meshStandardMaterial color={ORANGE} emissive={ORANGE} emissiveIntensity={glow} />
-          </mesh>
-        );
-      })}
-
-      {/* ── Window rows — back face (z-) ── */}
-      {Array.from({ length: WINDOW_ROWS }, (_, i) => (
-        <mesh key={`win-b-${i}`} position={[0, -1.22 + i * 0.36, -0.363]}>
-          <boxGeometry args={[0.96, 0.040, 0.004]} />
-          <meshStandardMaterial color={ORANGE} emissive={ORANGE} emissiveIntensity={0.18} />
+      {/* ── Window rows — front face — each row a platform colour ── */}
+      {WIN_COLORS.map((wc, i) => (
+        <mesh key={`win-f-${i}`} position={[0, -1.22 + i * 0.36, 0.363]}>
+          <boxGeometry args={[0.96, 0.055, 0.004]} />
+          <meshStandardMaterial color={wc} emissive={wc} emissiveIntensity={0.75} />
         </mesh>
       ))}
 
-      {/* ── Company name on front face ── */}
+      {/* ── Window rows — back face ── */}
+      {WIN_COLORS.map((wc, i) => (
+        <mesh key={`win-b-${i}`} position={[0, -1.22 + i * 0.36, -0.363]}>
+          <boxGeometry args={[0.96, 0.040, 0.004]} />
+          <meshStandardMaterial color={wc} emissive={wc} emissiveIntensity={0.30} />
+        </mesh>
+      ))}
+
+      {/* ── Coloured edge strips ── */}
+      <mesh position={[-0.555, 0.1, 0]}>
+        <boxGeometry args={[0.022, 3.12, 0.022]} />
+        <meshStandardMaterial color="#0866FF" emissive="#0866FF" emissiveIntensity={0.55} />
+      </mesh>
+      <mesh position={[0.555, 0.1, 0]}>
+        <boxGeometry args={[0.022, 3.12, 0.022]} />
+        <meshStandardMaterial color="#FF0069" emissive="#FF0069" emissiveIntensity={0.55} />
+      </mesh>
+
+      {/* ── Company name — top of front face ── */}
       <Text
-        position={[0, 0.62, 0.370]}
-        fontSize={0.115}
+        position={[0, 1.36, 0.370]}
+        fontSize={0.112}
+        color="#ffffff"
+        anchorX="center"
+        anchorY="middle"
+        maxWidth={0.92}
+        textAlign="center"
+        letterSpacing={0.13}
+      >
+        SWISSULIFE
+      </Text>
+      <Text
+        position={[0, 1.16, 0.370]}
+        fontSize={0.078}
         color={ORANGE}
         anchorX="center"
         anchorY="middle"
         maxWidth={0.92}
         textAlign="center"
-        letterSpacing={0.12}
-      >
-        SWISSULIFE
-      </Text>
-      <Text
-        position={[0, 0.36, 0.370]}
-        fontSize={0.082}
-        color="#cc4400"
-        anchorX="center"
-        anchorY="middle"
-        maxWidth={0.92}
-        textAlign="center"
-        letterSpacing={0.18}
+        letterSpacing={0.20}
       >
         MEDIA
       </Text>
 
-      {/* ── Company name on back face ── */}
+      {/* ── Company name — top of back face ── */}
       <Text
-        position={[0, 0.62, -0.370]}
+        position={[0, 1.36, -0.370]}
         rotation={[0, Math.PI, 0]}
-        fontSize={0.115}
+        fontSize={0.112}
+        color="#ffffff"
+        anchorX="center"
+        anchorY="middle"
+        maxWidth={0.92}
+        textAlign="center"
+        letterSpacing={0.13}
+      >
+        SWISSULIFE
+      </Text>
+      <Text
+        position={[0, 1.16, -0.370]}
+        rotation={[0, Math.PI, 0]}
+        fontSize={0.078}
         color={ORANGE}
         anchorX="center"
         anchorY="middle"
         maxWidth={0.92}
         textAlign="center"
-        letterSpacing={0.12}
-      >
-        SWISSULIFE
-      </Text>
-      <Text
-        position={[0, 0.36, -0.370]}
-        rotation={[0, Math.PI, 0]}
-        fontSize={0.082}
-        color="#cc4400"
-        anchorX="center"
-        anchorY="middle"
-        maxWidth={0.92}
-        textAlign="center"
-        letterSpacing={0.18}
+        letterSpacing={0.20}
       >
         MEDIA
       </Text>

@@ -76,15 +76,18 @@ function CSSCubeFallback() {
             <div style={{ position: "absolute", left: 0,  top: 0, bottom: 0, width: 1.5, background: "linear-gradient(180deg,#ff5500,#ff220055)", opacity: 0.6 }} />
             <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 1.5, background: "linear-gradient(180deg,#ff5500,#ff220055)", opacity: 0.6 }} />
 
-            {/* Company name */}
-            <div style={{ marginTop: 8, marginBottom: 4, textAlign: "center", lineHeight: 1.1 }}>
-              <div style={{ fontSize: 8.5, fontFamily: "monospace", letterSpacing: "0.18em", color: "#ff5500", textShadow: "0 0 8px #ff4400", fontWeight: 700 }}>SWISSULIFE</div>
-              <div style={{ fontSize: 6.5, fontFamily: "monospace", letterSpacing: "0.22em", color: "#cc4400", marginTop: 2 }}>MEDIA</div>
+            {/* Company name — TOP of tower */}
+            <div style={{ marginTop: 6, marginBottom: 6, textAlign: "center", lineHeight: 1.2 }}>
+              <div style={{ fontSize: 8.5, fontFamily: "monospace", letterSpacing: "0.18em", color: "#ffffff", textShadow: "0 0 10px #ffffff88", fontWeight: 700 }}>SWISSULIFE</div>
+              <div style={{ fontSize: 6.5, fontFamily: "monospace", letterSpacing: "0.22em", color: "#ff5500", textShadow: "0 0 8px #ff440088", marginTop: 2 }}>MEDIA</div>
             </div>
 
-            {/* Window rows */}
-            {Array.from({ length: 7 }, (_, i) => (
-              <div key={i} style={{ width: 68, height: 2, background: "#ff5500", opacity: i >= 5 ? 0.75 : 0.22, boxShadow: i >= 5 ? "0 0 4px #ff4400" : "none", marginBottom: 8 }} />
+            {/* Colourful window rows — platform brand colours */}
+            {[
+              "#0A66C2","#0866FF","#69C9D0","#25D366",
+              "#FF0000","#FFFC00","#FF0069","#BD081C","#FF5500"
+            ].map((c, i) => (
+              <div key={i} style={{ width: 68, height: 2, background: c, boxShadow: `0 0 6px ${c}`, marginBottom: 7, opacity: 0.85 }} />
             ))}
           </div>
 
