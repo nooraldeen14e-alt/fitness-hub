@@ -472,9 +472,6 @@ const OurClients = () => {
     { name: "Farfetch",        si: siFarfetch, dark: true },
     { name: "Chanel",          logoUrl: local("chanel.svg") },
     { name: "L'Oréal",         logoUrl: local("loreal.svg") },
-    { name: "MAC Cosmetics",   logoUrl: cb("maccosmetics.com") },
-    { name: "Elizabeth Arden", logoUrl: cb("elizabetharden.com") },
-    { name: "O Boticário",     logoUrl: cb("boticario.com.br") },
 
     // ── Food & beverage ──────────────────────────────────────────
     { name: "KFC",          si: siKfc },
@@ -488,30 +485,22 @@ const OurClients = () => {
     // ── Retail & e-commerce ──────────────────────────────────────
     { name: "Carrefour",      si: siCarrefour },
     { name: "Noon",           logoUrl: local("noon.svg") },
-    { name: "Babyshop",       logoUrl: cb("babyshop.com") },
-    { name: "The Dubai Mall", logoUrl: cb("thedubaimall.com") },
 
     // ── Logistics & delivery ─────────────────────────────────────
     { name: "DHL",       si: siDhl },
     { name: "Deliveroo", si: siDeliveroo, dark: true },
     { name: "Talabat",   logoUrl: local("talabat.svg") },
-    { name: "CAFU",      logoUrl: cb("cafu.com") },
-    { name: "Spotii",    logoUrl: cb("spotii.me") },
 
     // ── UAE / regional ───────────────────────────────────────────
     { name: "Emaar",          logoUrl: local("emaar.svg") },
     { name: "DAMAC",          logoUrl: local("damac.svg") },
     { name: "fäm Properties", logoUrl: local("fam.svg") },
-    { name: "Samana Dev.",    logoUrl: cb("samana.ae") },
     { name: "Escapology",     logoUrl: local("escapology.png") },
     { name: "Liv Bank",       logoUrl: local("liv.svg") },
     { name: "StarzPlay",      logoUrl: local("starzplay.png") },
     { name: "Tilda",          logoUrl: local("tilda.svg") },
     { name: "Rani",           logoUrl: local("rani.png") },
     { name: "Corniche Hotel", logoUrl: local("corniche.png") },
-    { name: "Univ. Sharjah",  logoUrl: cb("sharjah.ac.ae") },
-    { name: "LinkinCard",     logoUrl: cb("linkincard.com") },
-    { name: "Mazzika",        logoUrl: cb("mazzika.com") },
   ];
 
   return (
