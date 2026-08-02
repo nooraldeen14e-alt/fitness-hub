@@ -7,13 +7,13 @@ import heroBg from "@assets/hero-bg.jpg";
 import work1 from "@assets/work-1.jpg";
 import work2 from "@assets/work-2.jpg";
 import work3 from "@assets/work-3.jpg";
-/* ── Portfolio client pages (sprites) ── */
-// img1 = UAE regional/Sharjah (562×279, dark bg)
-// img2 = International brands (567×260, light top + dark bottom)
-// img3 = UAE agency clients  (578×272, light top strip + dark lower)
-import img1 from "@assets/image_1785677351006.png";
-import img2 from "@assets/image_1785677352565.png";
-import img3 from "@assets/image_1785677353795.png";
+/* portfolio reference images are no longer needed */
+// simple-icons — locally bundled official SVG logos with brand colours
+import {
+  siToyota, siAudi, siVolkswagen, siFerrari, siPorsche, siInfiniti, siRollsroyce,
+  siApple, siSamsung, siAdidas, siDior, siFarfetch,
+  siKfc, siMcdonalds, siDhl, siRedbull, siDeliveroo, siCarrefour,
+} from "simple-icons";
 
 /* ── Glowing cursor ── */
 const GlowCursor = () => {
@@ -343,23 +343,22 @@ const Hero = () => {
 
 
 /* ─────────────────────────────────────────────────────────────────
-   CSS-sprite client card
-   Formula (responsive — works at any card width W):
-     imgNatW / effectiveDim * 100  → image rendered width as % of card
-     50 - cx/effectiveDim*100      → left% that centres logo horizontally
-     50 - cy/effectiveDim*100      → top%  that centres logo vertically
-   where cx/cy = logo centre in source pixels, effectiveDim = max(w,h)*pad
+   Official-logo client card
+   si        → simple-icons (locally bundled SVG + brand hex — works in preview & prod)
+   logoUrl   → Clearbit transparent PNG  (works in prod; graceful fallback in sandbox)
+   neither   → dashed placeholder
 ───────────────────────────────────────────────────────────────── */
-type SpriteEntry = {
+type SimpleIcon = { path: string; hex: string; title: string };
+type ClientEntry = {
   name: string;
-  src: string;
-  imgNatW: number;   // source image natural width
-  x: number; y: number; w: number; h: number; // logo crop in source px
-  dark?: boolean;    // true → dark card bg (#1a1a1a), false/omit → white
+  si?: SimpleIcon;          // simple-icons entry
+  logoUrl?: string;         // Clearbit / other URL fallback
+  dark?: boolean;           // dark card background
 };
 
-const SpriteCard = ({ s }: { s: SpriteEntry }) => {
-  const [tilt, setTilt] = React.useState<React.CSSProperties>({});
+const ClientCard = ({ c }: { c: ClientEntry }) => {
+  const [tilt, setTilt]     = React.useState<React.CSSProperties>({});
+  const [imgFailed, setFailed] = React.useState(false);
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
@@ -379,157 +378,168 @@ const SpriteCard = ({ s }: { s: SpriteEntry }) => {
     zIndex: 1,
   });
 
-  const pad = 1.35;
-  const eff = Math.max(s.w, s.h) * pad;
-  const cx  = s.x + s.w / 2;
-  const cy  = s.y + s.h / 2;
-  const wPct  = (s.imgNatW / eff) * 100;
-  const lPct  = 50 - (cx / eff) * 100;
-  const tPct  = 50 - (cy / eff) * 100;
+  const bg = c.dark ? "#111" : "#fff";
+  const borderColor = c.dark ? "rgba(255,255,255,0.13)" : "rgba(0,0,0,0.11)";
+  const textColor   = c.dark ? "rgba(255,255,255,0.32)" : "rgba(0,0,0,0.28)";
+
+  const renderContent = () => {
+    /* 1 — simple-icons: inline SVG with official brand colour */
+    if (c.si) {
+      const color = `#${c.si.hex}`;
+      return (
+        <svg
+          role="img"
+          viewBox="0 0 24 24"
+          aria-label={c.name}
+          style={{ width: "60%", height: "60%", flexShrink: 0 }}
+        >
+          <path d={c.si.path} fill={color} />
+        </svg>
+      );
+    }
+
+    /* 2 — Clearbit / external PNG (works in prod; falls back to placeholder in sandbox) */
+    if (c.logoUrl && !imgFailed) {
+      return (
+        <img
+          src={c.logoUrl}
+          alt={c.name}
+          onError={() => setFailed(true)}
+          draggable={false}
+          style={{ width: "72%", height: "72%", objectFit: "contain",
+                   pointerEvents: "none", userSelect: "none" }}
+        />
+      );
+    }
+
+    /* 3 — placeholder */
+    return (
+      <div
+        className="w-full h-full rounded-xl flex items-center justify-center"
+        style={{ border: `1.5px dashed ${borderColor}` }}
+      >
+        <span style={{
+          fontSize: "0.5rem", fontWeight: 700, letterSpacing: "0.07em",
+          textTransform: "uppercase", color: textColor,
+          textAlign: "center", lineHeight: 1.4, padding: "0 6px",
+        }}>{c.name}</span>
+      </div>
+    );
+  };
 
   return (
     <div
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      style={{ willChange: "transform", background: s.dark ? "#1a1a1a" : "#fff", ...tilt }}
-      className="rounded-2xl aspect-square relative overflow-hidden cursor-default"
-      title={s.name}
+      title={c.name}
+      style={{ willChange: "transform", background: bg, ...tilt }}
+      className="rounded-2xl aspect-square flex items-center justify-center p-[15%] cursor-default overflow-hidden"
     >
-      <img
-        src={s.src}
-        alt={s.name}
-        draggable={false}
-        style={{
-          position: "absolute",
-          width: `${wPct}%`,
-          height: "auto",
-          left: `${lPct}%`,
-          top: `${tPct}%`,
-          pointerEvents: "none",
-          userSelect: "none",
-        }}
-      />
+      {renderContent()}
     </div>
   );
 };
 
 const OurClients = () => {
-  // ── image dimensions ──────────────────────────────────────────
-  // img3 = image_1785677353795.png  578 × 272  (UAE agency clients)
-  // img2 = image_1785677352565.png  567 × 260  (international brands)
-  // img1 = image_1785677351006.png  562 × 279  (UAE regional / Sharjah)
+  const cb = (d: string) => `https://logo.clearbit.com/${d}`;
 
-  const W3 = 578; // img3 natural width
-  const W2 = 567;
-  const W1 = 562;
+  const clients: ClientEntry[] = [
+    // ── Automotive — simple-icons (official SVG + brand colour) ──
+    { name: "Toyota",      si: siToyota },
+    { name: "Audi",        si: siAudi },
+    { name: "Volkswagen",  si: siVolkswagen,  dark: true },
+    { name: "Ferrari",     si: siFerrari,     dark: true },
+    { name: "Porsche",     si: siPorsche,     dark: true },
+    { name: "Infiniti",    si: siInfiniti,    dark: true },
+    { name: "Rolls Royce", si: siRollsroyce,  dark: true },
+    // Lexus & Geely have no simple-icons entry → Clearbit fallback
+    { name: "Lexus",       logoUrl: cb("lexus.com"),  dark: true },
+    { name: "GEELY",       logoUrl: cb("geely.com"),  dark: true },
 
-  const clients: SpriteEntry[] = [
-    // ── img3 top strip (light bg) ─ y 0-88 ──────────────────────
-    { name: "Tilda",           src: img3, imgNatW: W3, x:   0, y:  0, w:  64, h: 88 },
-    { name: "Casa Milano",     src: img3, imgNatW: W3, x:  64, y:  0, w:  66, h: 88 },
-    { name: "Toyota",          src: img3, imgNatW: W3, x: 178, y:  0, w:  42, h: 88 },
-    { name: "Samana Dev.",     src: img3, imgNatW: W3, x: 220, y:  0, w:  86, h: 88 },
-    { name: "VIP & Protocol",  src: img3, imgNatW: W3, x: 338, y:  0, w:  84, h: 88 },
-    { name: "ELE",             src: img3, imgNatW: W3, x: 422, y:  0, w:  48, h: 88 },
-    { name: "Farfetch",        src: img3, imgNatW: W3, x: 470, y:  0, w: 108, h: 88 },
+    // ── Tech / consumer ──────────────────────────────────────────
+    { name: "Apple",       si: siApple,   dark: true },
+    { name: "Samsung",     si: siSamsung },
+    { name: "Canon",       logoUrl: cb("canon.com") },
+    { name: "Amazon",      logoUrl: cb("amazon.com") },
 
-    // ── img3 dark row 1 (y 88-181) ──────────────────────────────
-    { name: "Audi",            src: img3, imgNatW: W3, x:   0, y: 88, w: 116, h: 93, dark: true },
-    { name: "Rashed",          src: img3, imgNatW: W3, x: 116, y: 88, w: 116, h: 93, dark: true },
-    { name: "SAVVA",           src: img3, imgNatW: W3, x: 232, y: 88, w: 116, h: 93, dark: true },
-    { name: "Rolls Royce",     src: img3, imgNatW: W3, x: 348, y: 88, w: 115, h: 93, dark: true },
-    { name: "X-Space RE",      src: img3, imgNatW: W3, x: 463, y: 88, w: 115, h: 93, dark: true },
+    // ── Fashion & luxury ─────────────────────────────────────────
+    { name: "Adidas",          si: siAdidas,   dark: true },
+    { name: "Dior",            si: siDior,     dark: true },
+    { name: "Farfetch",        si: siFarfetch, dark: true },
+    { name: "Chanel",          logoUrl: cb("chanel.com"),          dark: true },
+    { name: "MAC Cosmetics",   logoUrl: cb("maccosmetics.com"),    dark: true },
+    { name: "Elizabeth Arden", logoUrl: cb("elizabetharden.com") },
+    { name: "L'Oréal",         logoUrl: cb("loreal.com") },
+    { name: "O Boticário",     logoUrl: cb("boticario.com.br") },
 
-    // ── img3 dark row 2 (y 181-226) ─────────────────────────────
-    { name: "Fashion Factor",  src: img3, imgNatW: W3, x:   0, y: 181, w: 116, h: 45, dark: true },
-    { name: "Sharjah Golf",    src: img3, imgNatW: W3, x: 116, y: 181, w: 116, h: 45, dark: true },
-    { name: "Casa Di Spicca",  src: img3, imgNatW: W3, x: 348, y: 181, w: 115, h: 45, dark: true },
-    { name: "Mazzika",         src: img3, imgNatW: W3, x: 463, y: 181, w: 115, h: 45, dark: true },
+    // ── Food & beverage ──────────────────────────────────────────
+    { name: "KFC",          si: siKfc },
+    { name: "McDonald's",   si: siMcdonalds },
+    { name: "Red Bull",     si: siRedbull,   dark: true },
+    { name: "Costa Coffee", logoUrl: cb("costa.co.uk"),    dark: true },
+    { name: "Subway",       logoUrl: cb("subway.com") },
+    { name: "Quaker",       logoUrl: cb("quakeroats.com") },
+    { name: "Oreo",         logoUrl: cb("oreo.com") },
 
-    // ── img3 dark row 3 (y 226-272) ─────────────────────────────
-    { name: "Op. Level Up",    src: img3, imgNatW: W3, x:   0, y: 226, w: 116, h: 46, dark: true },
-    { name: "MASH Coffee",     src: img3, imgNatW: W3, x: 116, y: 226, w: 116, h: 46, dark: true },
-    { name: "Twisted Olive",   src: img3, imgNatW: W3, x: 232, y: 226, w: 116, h: 46, dark: true },
-    { name: "Fouziana",        src: img3, imgNatW: W3, x: 348, y: 226, w: 115, h: 46, dark: true },
-    { name: "LinkinCard",      src: img3, imgNatW: W3, x: 463, y: 226, w: 115, h: 46, dark: true },
+    // ── Retail & e-commerce ──────────────────────────────────────
+    { name: "Carrefour",      si: siCarrefour },
+    { name: "Noon",           logoUrl: cb("noon.com"),        dark: true },
+    { name: "Babyshop",       logoUrl: cb("babyshop.com") },
+    { name: "The Dubai Mall", logoUrl: cb("thedubaimall.com") },
 
-    // ── img2 light row 1 (y 0-43) ───────────────────────────────
-    { name: "Infiniti",        src: img2, imgNatW: W2, x:   0, y:  0, w:  63, h: 43 },
-    { name: "Volkswagen",      src: img2, imgNatW: W2, x:  63, y:  0, w:  63, h: 43 },
-    { name: "Apple",           src: img2, imgNatW: W2, x: 126, y:  0, w:  63, h: 43 },
-    { name: "Noon",            src: img2, imgNatW: W2, x: 189, y:  0, w:  63, h: 43 },
-    { name: "O Boticário",     src: img2, imgNatW: W2, x: 252, y:  0, w:  63, h: 43 },
-    { name: "Adidas",          src: img2, imgNatW: W2, x: 315, y:  0, w:  63, h: 43 },
-    { name: "CAFU",            src: img2, imgNatW: W2, x: 378, y:  0, w:  63, h: 43 },
-    { name: "MERAA",           src: img2, imgNatW: W2, x: 441, y:  0, w:  63, h: 43 },
-    { name: "StarzPlay",       src: img2, imgNatW: W2, x: 504, y:  0, w:  63, h: 43 },
+    // ── Logistics & delivery ─────────────────────────────────────
+    { name: "DHL",       si: siDhl },
+    { name: "Deliveroo", si: siDeliveroo, dark: true },
+    { name: "Talabat",   logoUrl: cb("talabat.com") },
+    { name: "CAFU",      logoUrl: cb("cafu.com"),   dark: true },
+    { name: "Spotii",    logoUrl: cb("spotii.me") },
 
-    // ── img2 light row 2 (y 43-87) ──────────────────────────────
-    { name: "URBERR",          src: img2, imgNatW: W2, x: 189, y: 43, w:  63, h: 44 },
-    { name: "Emaar",           src: img2, imgNatW: W2, x: 315, y: 43, w:  80, h: 44 },
-    { name: "Dior",            src: img2, imgNatW: W2, x: 378, y: 43, w:  80, h: 44 },
-    { name: "L'Oréal",         src: img2, imgNatW: W2, x: 441, y: 43, w:  63, h: 44 },
+    // ── UAE / regional ───────────────────────────────────────────
+    { name: "Emaar",          logoUrl: cb("emaar.com") },
+    { name: "DAMAC",          logoUrl: cb("damacproperties.com"), dark: true },
+    { name: "fäm Properties", logoUrl: cb("famproperties.com") },
+    { name: "Samana Dev.",    logoUrl: cb("samana.ae") },
+    { name: "Escapology",     logoUrl: cb("escapology.com") },
+    { name: "Liv Bank",       logoUrl: cb("liv.me"),           dark: true },
+    { name: "StarzPlay",      logoUrl: cb("starzplay.com"),    dark: true },
+    { name: "Univ. Sharjah",  logoUrl: cb("sharjah.ac.ae") },
+    { name: "Tilda",          logoUrl: cb("tilda.cc") },
+    { name: "LinkinCard",     logoUrl: cb("linkincard.com"),   dark: true },
+    { name: "Mazzika",        logoUrl: cb("mazzika.com"),      dark: true },
 
-    // ── img2 light row 3 (y 87-130) ─────────────────────────────
-    { name: "Elizabeth Arden", src: img2, imgNatW: W2, x:   0, y: 87, w:  81, h: 43 },
-    { name: "The Dubai Mall",  src: img2, imgNatW: W2, x:  81, y: 87, w:  81, h: 43 },
-    { name: "Chanel",          src: img2, imgNatW: W2, x: 162, y: 87, w:  81, h: 43 },
-    { name: "MAC",             src: img2, imgNatW: W2, x: 243, y: 87, w:  81, h: 43 },
-    { name: "Oreo Sweden",     src: img2, imgNatW: W2, x: 324, y: 87, w:  81, h: 43 },
-    { name: "Power Horse",     src: img2, imgNatW: W2, x: 405, y: 87, w:  81, h: 43 },
-    { name: "Babyshop",        src: img2, imgNatW: W2, x: 486, y: 87, w:  81, h: 43 },
-
-    // ── img2 dark row 4 (y 130-195) ─────────────────────────────
-    { name: "Costa Coffee",    src: img2, imgNatW: W2, x:   0, y: 130, w:  95, h: 65, dark: true },
-    { name: "KFC",             src: img2, imgNatW: W2, x:  95, y: 130, w:  95, h: 65, dark: true },
-    { name: "DHL",             src: img2, imgNatW: W2, x: 190, y: 130, w:  95, h: 65, dark: true },
-    { name: "Red Bull",        src: img2, imgNatW: W2, x: 285, y: 130, w:  94, h: 65, dark: true },
-    { name: "Samsung",         src: img2, imgNatW: W2, x: 379, y: 130, w:  94, h: 65, dark: true },
-    { name: "Amazon",          src: img2, imgNatW: W2, x: 473, y: 130, w:  94, h: 65, dark: true },
-
-    // ── img2 dark row 5 (y 195-260) ─────────────────────────────
-    { name: "Al Ain Farms",    src: img2, imgNatW: W2, x:   0, y: 195, w:  71, h: 65, dark: true },
-    { name: "McDonald's",      src: img2, imgNatW: W2, x:  71, y: 195, w:  71, h: 65, dark: true },
-    { name: "Quaker",          src: img2, imgNatW: W2, x: 142, y: 195, w:  71, h: 65, dark: true },
-    { name: "Deliveroo",       src: img2, imgNatW: W2, x: 213, y: 195, w:  71, h: 65, dark: true },
-    { name: "Canon",           src: img2, imgNatW: W2, x: 284, y: 195, w:  71, h: 65, dark: true },
-    { name: "Liv",             src: img2, imgNatW: W2, x: 355, y: 195, w:  71, h: 65, dark: true },
-    { name: "Porsche",         src: img2, imgNatW: W2, x: 426, y: 195, w:  71, h: 65, dark: true },
-    { name: "Talabat",         src: img2, imgNatW: W2, x: 497, y: 195, w:  70, h: 65, dark: true },
-
-    // ── img1 row 1 (y 0-50) ─────────────────────────────────────
-    { name: "Sharjah Paintball", src: img1, imgNatW: W1, x:   0, y:  0, w: 94, h: 50, dark: true },
-    { name: "Righteous Prop.",   src: img1, imgNatW: W1, x:  94, y:  0, w: 94, h: 50, dark: true },
-    { name: "Village Arabia",    src: img1, imgNatW: W1, x: 188, y:  0, w: 94, h: 50, dark: true },
-    { name: "fäm Properties",    src: img1, imgNatW: W1, x: 282, y:  0, w: 94, h: 50, dark: true },
-    { name: "Escapology",        src: img1, imgNatW: W1, x: 376, y:  0, w: 94, h: 50, dark: true },
-    { name: "Altitude Gym",      src: img1, imgNatW: W1, x: 470, y:  0, w: 92, h: 50, dark: true },
-
-    // ── img1 row 2 (y 50-103) ───────────────────────────────────
-    { name: "Seventy Fitness",   src: img1, imgNatW: W1, x:   0, y: 50, w: 94, h: 53, dark: true },
-    { name: "Sharqi Salon",      src: img1, imgNatW: W1, x:  94, y: 50, w: 94, h: 53, dark: true },
-    { name: "Glitza By Ghalia",  src: img1, imgNatW: W1, x: 188, y: 50, w: 94, h: 53, dark: true },
-    { name: "Sharjah Chamber",   src: img1, imgNatW: W1, x: 282, y: 50, w: 94, h: 53, dark: true },
-    { name: "Altitude Spa",      src: img1, imgNatW: W1, x: 376, y: 50, w: 94, h: 53, dark: true },
-    { name: "Univ. of Sharjah",  src: img1, imgNatW: W1, x: 470, y: 50, w: 92, h: 53, dark: true },
-
-    // ── img1 row 3 (y 103-156) ──────────────────────────────────
-    { name: "DAMAC",             src: img1, imgNatW: W1, x:  94, y: 103, w: 94, h: 53, dark: true },
-    { name: "Rani",              src: img1, imgNatW: W1, x: 188, y: 103, w: 94, h: 53, dark: true },
-    { name: "Carrefour",         src: img1, imgNatW: W1, x: 376, y: 103, w: 94, h: 53, dark: true },
-    { name: "Urban Craft",       src: img1, imgNatW: W1, x: 470, y: 103, w: 92, h: 53, dark: true },
-
-    // ── img1 row 4 (y 156-210) ──────────────────────────────────
-    { name: "Meaza",             src: img1, imgNatW: W1, x:   0, y: 156, w: 94, h: 54, dark: true },
-    { name: "Corniche Hotel",    src: img1, imgNatW: W1, x:  94, y: 156, w: 94, h: 54, dark: true },
-    { name: "Charms",            src: img1, imgNatW: W1, x: 188, y: 156, w: 94, h: 54, dark: true },
-    { name: "CMC Hospital",      src: img1, imgNatW: W1, x: 282, y: 156, w: 94, h: 54, dark: true },
-
-    // ── img1 row 5 (y 210-279) — larger logos ───────────────────
-    { name: "Ferrari",           src: img1, imgNatW: W1, x:   0, y: 210, w: 112, h: 69, dark: true },
-    { name: "Lexus",             src: img1, imgNatW: W1, x: 112, y: 210, w: 112, h: 69, dark: true },
-    { name: "GEELY",             src: img1, imgNatW: W1, x: 336, y: 210, w: 112, h: 69, dark: true },
-    { name: "Spotii",            src: img1, imgNatW: W1, x: 448, y: 210, w: 114, h: 69, dark: true },
+    // ── Placeholders — local brands (no public logo available) ───
+    { name: "Casa Milano" },
+    { name: "VIP & Protocol" },
+    { name: "ELE" },
+    { name: "Rashed",           dark: true },
+    { name: "SAVVA",            dark: true },
+    { name: "X-Space RE" },
+    { name: "Fashion Factor",   dark: true },
+    { name: "Sharjah Golf",     dark: true },
+    { name: "Casa Di Spicca",   dark: true },
+    { name: "Op. Level Up",     dark: true },
+    { name: "MASH Coffee",      dark: true },
+    { name: "Twisted Olive",    dark: true },
+    { name: "Fouziana",         dark: true },
+    { name: "MERAA" },
+    { name: "URBERR",           dark: true },
+    { name: "Power Horse" },
+    { name: "Al Ain Farms" },
+    { name: "Sharjah Paintball",dark: true },
+    { name: "Righteous Prop.",  dark: true },
+    { name: "Village Arabia",   dark: true },
+    { name: "Altitude Gym",     dark: true },
+    { name: "Seventy Fitness",  dark: true },
+    { name: "Sharqi Salon",     dark: true },
+    { name: "Glitza By Ghalia", dark: true },
+    { name: "Sharjah Chamber",  dark: true },
+    { name: "Altitude Spa",     dark: true },
+    { name: "Rani",             dark: true },
+    { name: "Urban Craft",      dark: true },
+    { name: "Meaza",            dark: true },
+    { name: "Corniche Hotel",   dark: true },
+    { name: "Charms",           dark: true },
+    { name: "CMC Hospital",     dark: true },
   ];
 
   return (
@@ -547,7 +557,7 @@ const OurClients = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
           {clients.map((c) => (
-            <SpriteCard key={c.name} s={c} />
+            <ClientCard key={c.name} c={c} />
           ))}
         </div>
       </div>
