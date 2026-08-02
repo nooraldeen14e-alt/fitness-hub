@@ -3,6 +3,7 @@ import healthRouter from "./health";
 import exercisesRouter from "./exercises";
 import workoutsRouter from "./workouts";
 import statsRouter from "./stats";
+import bookingRouter from "./booking";
 
 const router: IRouter = Router();
 
@@ -10,5 +11,6 @@ router.use(healthRouter);
 router.use(exercisesRouter);
 router.use(workoutsRouter);
 router.use(statsRouter);
+router.use(bookingRouter);
 
 export default router;

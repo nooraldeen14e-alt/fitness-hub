@@ -67,9 +67,32 @@ export default function ScheduleModal({ open, onClose }: Props) {
     setStep(2);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [sending, setSending] = React.useState(false);
+  const [sendError, setSendError] = React.useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setSending(true);
+    setSendError(null);
+    try {
+      const res = await fetch("/api/book-meeting", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          date: selectedDate ? formatDate(selectedDate) : "",
+          time: selectedTime ?? "",
+        }),
+      });
+      if (!res.ok) throw new Error("Server error");
+      setSubmitted(true);
+    } catch {
+      setSendError("Something went wrong — please try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   const formatDate = (d: Date) =>
@@ -260,12 +283,16 @@ export default function ScheduleModal({ open, onClose }: Props) {
                             />
                           </div>
                         ))}
+                        {sendError && (
+                          <p className="text-red-400 text-xs text-center font-mono">{sendError}</p>
+                        )}
                         <button
                           type="submit"
-                          className="w-full py-3.5 rounded-xl font-mono text-sm uppercase tracking-widest text-black font-bold mt-1 hover:opacity-90 transition-opacity"
+                          disabled={sending}
+                          className="w-full py-3.5 rounded-xl font-mono text-sm uppercase tracking-widest text-black font-bold mt-1 hover:opacity-90 transition-opacity disabled:opacity-50"
                           style={{ background: "hsl(25,100%,50%)" }}
                         >
-                          Confirm Booking
+                          {sending ? "Sending…" : "Confirm Booking"}
                         </button>
                       </form>
                       <button onClick={() => setStep(2)} className="mt-4 font-mono text-xs text-white/30 hover:text-white uppercase tracking-widest transition-colors flex items-center gap-2">
