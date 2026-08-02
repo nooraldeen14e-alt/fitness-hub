@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import ScheduleModal from "@/components/ScheduleModal";
+import MobileNav from "@/components/MobileNav";
 import { ArrowRight } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import heroBg from "@assets/hero-bg.jpg";
@@ -174,17 +175,20 @@ const Navbar = () => {
           </div>
 
           <a href="/about"   className={linkClass("about")}>About Us</a>
-          <a href="#contact" className={linkClass("contact")}>Contact Us</a>
+          <a href="/contact" className={linkClass("contact")}>Contact Us</a>
         </div>
 
-        {/* CTA */}
-        <button
-          onClick={() => setScheduleOpen(true)}
-          className="hidden md:inline-flex items-center px-6 py-2.5 rounded-full text-white text-sm font-semibold hover:opacity-90 transition-opacity"
-          style={{ background: "hsl(25,100%,50%)" }}
-        >
-          Schedule a Meeting
-        </button>
+        {/* CTA + mobile hamburger */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setScheduleOpen(true)}
+            className="hidden md:inline-flex items-center px-6 py-2.5 rounded-full text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+            style={{ background: "hsl(25,100%,50%)" }}
+          >
+            Schedule a Meeting
+          </button>
+          <MobileNav active="home" />
+        </div>
       </motion.nav>
     </>
   );

@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import Home from '@/pages/home';
 import About from '@/pages/about';
+import Contact from '@/pages/contact';
 
 const queryClient = new QueryClient();
 
@@ -12,6 +13,7 @@ function App() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
           <Route>
             <div className="min-h-screen flex items-center justify-center bg-background text-foreground font-sans">
               <div className="text-center">

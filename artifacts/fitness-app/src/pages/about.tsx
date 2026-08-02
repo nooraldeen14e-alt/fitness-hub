@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import swissLogo from "@assets/66b7e0a1-9291-41da-82a2-6d89f100f8a3_1785308430142.jpg";
 import ScheduleModal from "@/components/ScheduleModal";
 import { BrandCubeCanvas } from "@/components/BrandCubeScene";
+import MobileNav from "@/components/MobileNav";
 
 // ─── WebGL gate ─────────────────────────────────────────────────────────────
 function useWebGLSupport() {
@@ -246,9 +247,12 @@ const AboutNavbar = () => {
             </div>
           </div>
           <span className="font-sans text-base font-medium text-white cursor-default">About Us</span>
-          <Link href="/#contact" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors">Contact Us</Link>
+          <Link href="/contact" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors">Contact Us</Link>
         </div>
+        <div className="flex items-center gap-3">
         <button onClick={() => setScheduleOpen(true)} className="hidden md:inline-flex px-6 py-2.5 rounded-full text-white text-sm font-semibold hover:opacity-90 transition-opacity" style={{ background: "hsl(25,100%,50%)" }}>Schedule a Meeting</button>
+          <MobileNav active="about" />
+        </div>
       </nav>
     </>
   );
