@@ -143,22 +143,17 @@ export default function Contact() {
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
           className="flex flex-col gap-10">
 
-          {/* Direct contact */}
+          {/* Services we cover */}
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/30 mb-4">Direct Contact</p>
-            <a href="mailto:sales@swissulife.com"
-              className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ background: "hsl(25,100%,50%)" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5">
-                  <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/>
-                </svg>
-              </div>
-              <div>
-                <p className="text-xs text-white/40 font-mono uppercase tracking-wider mb-0.5">Email us</p>
-                <p className="text-white font-medium group-hover:text-primary transition-colors">sales@swissulife.com</p>
-              </div>
-            </a>
+            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/30 mb-4">What We Offer</p>
+            <div className="flex flex-wrap gap-2">
+              {SERVICES.map(s => (
+                <span key={s} className="px-3 py-1.5 rounded-full border text-xs font-mono"
+                  style={{ borderColor: "hsl(25,100%,50%,0.35)", color: "hsl(25,100%,50%)", background: "hsl(25,100%,50%,0.06)" }}>
+                  {s}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Locations */}
@@ -195,17 +190,22 @@ export default function Contact() {
             />
           </div>
 
-          {/* Services we cover */}
+          {/* Direct contact */}
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/30 mb-4">What We Offer</p>
-            <div className="flex flex-wrap gap-2">
-              {SERVICES.map(s => (
-                <span key={s} className="px-3 py-1.5 rounded-full border text-xs font-mono"
-                  style={{ borderColor: "hsl(25,100%,50%,0.35)", color: "hsl(25,100%,50%)", background: "hsl(25,100%,50%,0.06)" }}>
-                  {s}
-                </span>
-              ))}
-            </div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/30 mb-4">Direct Contact</p>
+            <a href="mailto:sales@swissulife.com"
+              className="flex items-center gap-3 group">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ background: "hsl(25,100%,50%)" }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/>
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs text-white/40 font-mono uppercase tracking-wider mb-0.5">Email us</p>
+                <p className="text-white font-medium group-hover:text-primary transition-colors">sales@swissulife.com</p>
+              </div>
+            </a>
           </div>
 
           {/* Response time badge */}
