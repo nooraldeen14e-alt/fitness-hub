@@ -495,16 +495,8 @@ const OurClients = () => {
         </motion.div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {clients.map((client, i) => (
-            <motion.div
-              key={client.name}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.35, delay: (i % 6) * 0.05 }}
-            >
-              <ClientCard name={client.name} domain={client.domain} />
-            </motion.div>
+          {clients.map((client) => (
+            <ClientCard key={client.name} name={client.name} Icon={client.Icon} />
           ))}
         </div>
       </div>
@@ -764,7 +756,6 @@ const Footer = () => {
   return (
     <footer id="footer" className="bg-black pt-32 pb-12 px-6">
       <div className="max-w-7xl mx-auto">
-        <OurClients />
         <Contact />
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-6 border-t border-white/10 pt-12 mt-16">
           <div className="col-span-1 md:col-span-2">
@@ -818,6 +809,7 @@ export default function Home() {
       <main>
         <Hero />
         <ServicesTicker />
+        <OurClients />
         <Clients />
         <Stats />
       </main>
