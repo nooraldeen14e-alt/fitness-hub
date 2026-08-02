@@ -1,6 +1,7 @@
 /**
- * BrandCubeScene — a scroll-driven cinematic 3D experience.
- * The Brand Cube assembles, rotates, and transforms as the visitor scrolls.
+ * BrandCubeScene — The Marketing Ecosystem
+ * A scroll-driven cinematic 3D experience. Same camera / scroll timeline as before;
+ * only the central object has changed from a cube to a living marketing ecosystem.
  */
 import { useRef, useMemo, type MutableRefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
@@ -8,11 +9,11 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
 // ─── Utilities ─────────────────────────────────────────────────────────────
-const ss = (t: number) => { const c = Math.max(0, Math.min(1, t)); return c * c * (3 - 2 * c); };
-const lp = (a: number, b: number, t: number) => a + (b - a) * t;
+const ss  = (t: number) => { const c = Math.max(0, Math.min(1, t)); return c * c * (3 - 2 * c); };
+const lp  = (a: number, b: number, t: number) => a + (b - a) * t;
 const clamp = (v: number, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, v));
 
-// ─── Camera keyframes [scrollProgress, x, y, z] ───────────────────────────
+// ─── Camera keyframes — identical to previous version ─────────────────────
 const CAM_KF = [
   [0.00,  0,   1.5,   9.0],
   [0.15,  0,   0.3,   6.0],
@@ -35,122 +36,440 @@ function getCamPos(s: number): [number, number, number] {
   return [lp(a[1], b[1], lo), lp(a[2], b[2], lo), lp(a[3], b[3], lo)];
 }
 
-// ─── Cube panel definitions ────────────────────────────────────────────────
-//    assembled pos, assembled rot (euler xyz), scatter start, open direction
-const PANEL_DEF = [
-  { ap:[0,0,1.03],  ar:[0,0,0],              sc:[0,0,9],   od:[0,0,1]  },
-  { ap:[0,0,-1.03], ar:[0,Math.PI,0],        sc:[0,0,-9],  od:[0,0,-1] },
-  { ap:[1.03,0,0],  ar:[0,-Math.PI/2,0],     sc:[9,0,0],   od:[1,0,0]  },
-  { ap:[-1.03,0,0], ar:[0, Math.PI/2,0],     sc:[-9,0,0],  od:[-1,0,0] },
-  { ap:[0,1.03,0],  ar:[-Math.PI/2,0,0],     sc:[0,9,0],   od:[0,1,0]  },
-  { ap:[0,-1.03,0], ar:[ Math.PI/2,0,0],     sc:[0,-9,0],  od:[0,-1,0] },
+// ─── Orbital element definitions ───────────────────────────────────────────
+// appearsAt: scroll progress (0–1) when this element becomes visible
+const ELEMENTS = [
+  { name: "Social Media",    r: 2.2, speed: 0.28, phase: 0,                  axisX:  0.12, axisZ:  0.18, appearsAt: 0.15 },
+  { name: "Branding",        r: 2.6, speed: 0.21, phase: Math.PI * 0.22,     axisX:  0.30, axisZ:  0.06, appearsAt: 0.18 },
+  { name: "Website Design",  r: 2.0, speed: 0.34, phase: Math.PI * 0.44,     axisX: -0.20, axisZ:  0.22, appearsAt: 0.21 },
+  { name: "Content Creation",r: 2.4, speed: 0.19, phase: Math.PI * 0.66,     axisX:  0.24, axisZ: -0.10, appearsAt: 0.30 },
+  { name: "Paid Advertising",r: 2.8, speed: 0.30, phase: Math.PI * 0.88,     axisX: -0.10, axisZ:  0.28, appearsAt: 0.33 },
+  { name: "Analytics",       r: 2.2, speed: 0.25, phase: Math.PI * 1.10,     axisX:  0.18, axisZ: -0.22, appearsAt: 0.36 },
+  { name: "Email Marketing", r: 2.5, speed: 0.32, phase: Math.PI * 1.32,     axisX: -0.28, axisZ:  0.14, appearsAt: 0.44 },
+  { name: "SEO",             r: 2.1, speed: 0.20, phase: Math.PI * 1.54,     axisX:  0.14, axisZ:  0.26, appearsAt: 0.47 },
+  { name: "AI Automation",   r: 2.7, speed: 0.27, phase: Math.PI * 1.76,     axisX: -0.16, axisZ: -0.16, appearsAt: 0.50 },
+  { name: "Strategy",        r: 2.3, speed: 0.23, phase: Math.PI * 1.98,     axisX:  0.34, axisZ:  0.08, appearsAt: 0.53 },
 ];
 
-// ─── Single Panel ─────────────────────────────────────────────────────────
-function CubePanel({ def, scrollRef }: { def: (typeof PANEL_DEF)[0]; scrollRef: MutableRefObject<number> }) {
-  const meshRef = useRef<THREE.Mesh>(null!);
+// ─── Individual element meshes ─────────────────────────────────────────────
 
-  useFrame(() => {
-    const s = scrollRef.current;
-    const asm   = ss(clamp(s / 0.16));
-    const open3 = ss(clamp((s - 0.30) / 0.13));
-    const shut3 = ss(clamp((s - 0.46) / 0.10));
-    const open7 = ss(clamp((s - 0.87) / 0.12));
-    const openAmt = open3 * (1 - shut3) * 1.6 + open7 * 2.6;
-
-    meshRef.current.position.set(
-      lp(def.sc[0], def.ap[0], asm) + def.od[0] * openAmt,
-      lp(def.sc[1], def.ap[1], asm) + def.od[1] * openAmt,
-      lp(def.sc[2], def.ap[2], asm) + def.od[2] * openAmt,
-    );
-    const mat = meshRef.current.material as THREE.MeshStandardMaterial;
-    mat.emissiveIntensity = lp(0.04, 0.5, open7);
-    mat.opacity = lp(1.0, 0.55, clamp(open7 * 1.2));
-  });
-
+/** 1 — Social Media: smartphone */
+function SocialMediaMesh() {
   return (
-    <mesh ref={meshRef} rotation={def.ar as [number,number,number]}>
-      <boxGeometry args={[2, 2, 0.06]} />
-      <meshStandardMaterial
-        color="#0c0c0c"
-        emissive="#ff4400"
-        emissiveIntensity={0.04}
-        metalness={0.96}
-        roughness={0.07}
-        transparent
-        opacity={1}
-      />
+    <group>
+      <mesh>
+        <boxGeometry args={[0.38, 0.70, 0.06]} />
+        <meshStandardMaterial color="#0c0c0c" metalness={0.95} roughness={0.08} />
+      </mesh>
+      {/* screen glow */}
+      <mesh position={[0, 0.02, 0.035]}>
+        <boxGeometry args={[0.28, 0.52, 0.005]} />
+        <meshStandardMaterial color="#ff3300" emissive="#ff2200" emissiveIntensity={0.9} />
+      </mesh>
+      {/* home indicator */}
+      <mesh position={[0, -0.3, 0.035]}>
+        <boxGeometry args={[0.12, 0.015, 0.005]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.5} />
+      </mesh>
+    </group>
+  );
+}
+
+/** 2 — Branding: glowing octahedron */
+function BrandingMesh() {
+  return (
+    <mesh>
+      <octahedronGeometry args={[0.36]} />
+      <meshStandardMaterial color="#0d0d0d" emissive="#ff4400" emissiveIntensity={0.2} metalness={0.96} roughness={0.05} />
     </mesh>
   );
 }
 
-// ─── Cube panel edge glow (thin border strips) ────────────────────────────
-function EdgeGlow({ def, scrollRef }: { def: (typeof PANEL_DEF)[0]; scrollRef: MutableRefObject<number> }) {
-  const ref = useRef<THREE.Mesh>(null!);
-  useFrame(() => {
-    const s = scrollRef.current;
-    const asm   = ss(clamp(s / 0.16));
-    const open3 = ss(clamp((s - 0.30) / 0.13));
-    const shut3 = ss(clamp((s - 0.46) / 0.10));
-    const open7 = ss(clamp((s - 0.87) / 0.12));
-    const openAmt = open3 * (1 - shut3) * 1.6 + open7 * 2.6;
-    ref.current.position.set(
-      lp(def.sc[0], def.ap[0], asm) + def.od[0] * openAmt,
-      lp(def.sc[1], def.ap[1], asm) + def.od[1] * openAmt,
-      lp(def.sc[2], def.ap[2], asm) + def.od[2] * openAmt,
-    );
-    const mat = ref.current.material as THREE.MeshBasicMaterial;
-    mat.opacity = 0.18 + open7 * 0.4;
-  });
+/** 3 — Website Design: browser-style panel stack */
+function WebsiteMesh() {
+  const lineOffsets = [-0.04, 0.0, 0.04];
   return (
-    <mesh ref={ref} rotation={def.ar as [number,number,number]}>
-      <boxGeometry args={[2.01, 2.01, 0.065]} />
-      <meshBasicMaterial color="#ff5500" wireframe transparent opacity={0.18} />
-    </mesh>
+    <group>
+      <mesh>
+        <boxGeometry args={[0.65, 0.48, 0.04]} />
+        <meshStandardMaterial color="#0a0a0a" metalness={0.92} roughness={0.08} />
+      </mesh>
+      {/* header bar */}
+      <mesh position={[0, 0.19, 0.023]}>
+        <boxGeometry args={[0.61, 0.08, 0.005]} />
+        <meshStandardMaterial color="#ff4400" emissive="#ff3300" emissiveIntensity={0.55} />
+      </mesh>
+      {/* content lines */}
+      {lineOffsets.map((y, i) => (
+        <mesh key={i} position={[-0.08, y - 0.04, 0.023]}>
+          <boxGeometry args={[0.42, 0.022, 0.005]} />
+          <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.18} />
+        </mesh>
+      ))}
+    </group>
   );
 }
 
-// ─── Inner core ───────────────────────────────────────────────────────────
-function CubeCore({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
-  const sphereRef = useRef<THREE.Mesh>(null!);
+/** 4 — Content Creation: camera lens */
+function ContentMesh() {
+  return (
+    <group rotation={[Math.PI / 2, 0, 0]}>
+      {/* body */}
+      <mesh>
+        <cylinderGeometry args={[0.28, 0.32, 0.16, 32]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.96} roughness={0.05} />
+      </mesh>
+      {/* lens ring */}
+      <mesh position={[0, 0.1, 0]}>
+        <torusGeometry args={[0.26, 0.03, 8, 32]} />
+        <meshStandardMaterial color="#ff4400" emissive="#ff3300" emissiveIntensity={0.6} />
+      </mesh>
+      {/* glass element */}
+      <mesh position={[0, 0.12, 0]}>
+        <cylinderGeometry args={[0.18, 0.18, 0.04, 32]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff3300" emissiveIntensity={0.3} metalness={0.3} roughness={0.1} transparent opacity={0.7} />
+      </mesh>
+    </group>
+  );
+}
+
+/** 5 — Paid Advertising: ad campaign panel */
+function PaidAdsMesh() {
+  return (
+    <group>
+      <mesh>
+        <boxGeometry args={[0.60, 0.44, 0.04]} />
+        <meshStandardMaterial color="#0a0a0a" metalness={0.92} roughness={0.08} />
+      </mesh>
+      {/* hero image area */}
+      <mesh position={[0, 0.08, 0.023]}>
+        <boxGeometry args={[0.52, 0.20, 0.005]} />
+        <meshStandardMaterial color="#ff2200" emissive="#ff1100" emissiveIntensity={0.5} />
+      </mesh>
+      {/* CTA button */}
+      <mesh position={[0, -0.12, 0.023]}>
+        <boxGeometry args={[0.24, 0.07, 0.005]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.7} />
+      </mesh>
+    </group>
+  );
+}
+
+/** 6 — Analytics: rising bar chart */
+function AnalyticsMesh() {
+  const bars = [
+    { h: 0.22, x: -0.24 },
+    { h: 0.36, x: -0.12 },
+    { h: 0.28, x:  0.00 },
+    { h: 0.52, x:  0.12 },
+    { h: 0.40, x:  0.24 },
+  ];
+  return (
+    <group>
+      {bars.map((b, i) => (
+        <mesh key={i} position={[b.x, b.h / 2 - 0.26, 0]}>
+          <boxGeometry args={[0.09, b.h, 0.07]} />
+          <meshStandardMaterial
+            color={i === 3 ? "#ff4400" : "#151515"}
+            emissive={i === 3 ? "#ff2200" : "#110800"}
+            emissiveIntensity={i === 3 ? 0.55 : 0.05}
+            metalness={0.85}
+            roughness={0.15}
+          />
+        </mesh>
+      ))}
+      {/* baseline */}
+      <mesh position={[0, -0.265, 0]}>
+        <boxGeometry args={[0.62, 0.012, 0.07]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.3} />
+      </mesh>
+    </group>
+  );
+}
+
+/** 7 — Email Marketing: envelope */
+function EmailMesh() {
+  return (
+    <group>
+      <mesh>
+        <boxGeometry args={[0.58, 0.40, 0.04]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.92} roughness={0.08} />
+      </mesh>
+      {/* V flap left */}
+      <mesh position={[-0.14, 0.08, 0.023]} rotation={[0, 0, -Math.PI / 5]}>
+        <boxGeometry args={[0.32, 0.018, 0.005]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.55} />
+      </mesh>
+      {/* V flap right */}
+      <mesh position={[0.14, 0.08, 0.023]} rotation={[0, 0, Math.PI / 5]}>
+        <boxGeometry args={[0.32, 0.018, 0.005]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.55} />
+      </mesh>
+    </group>
+  );
+}
+
+/** 8 — SEO: magnifying glass */
+function SEOMesh() {
+  return (
+    <group>
+      <mesh>
+        <torusGeometry args={[0.22, 0.04, 10, 36]} />
+        <meshStandardMaterial color="#0d0d0d" metalness={0.96} roughness={0.05} />
+      </mesh>
+      {/* handle */}
+      <mesh position={[0.19, -0.19, 0]} rotation={[0, 0, -Math.PI / 4]}>
+        <cylinderGeometry args={[0.03, 0.03, 0.28, 10]} />
+        <meshStandardMaterial color="#ff4400" emissive="#ff3300" emissiveIntensity={0.55} metalness={0.9} />
+      </mesh>
+      {/* glass inside */}
+      <mesh>
+        <circleGeometry args={[0.18, 32]} />
+        <meshStandardMaterial color="#ff4400" emissive="#ff2200" emissiveIntensity={0.12} transparent opacity={0.25} />
+      </mesh>
+    </group>
+  );
+}
+
+/** 9 — AI Automation: neural node cluster */
+function AIMesh() {
+  const nodePositions: [number, number, number][] = [
+    [0, 0, 0], [-0.28, 0.18, 0.05], [0.28, 0.18, -0.05],
+    [-0.22, -0.20, -0.05], [0.22, -0.20, 0.05], [0, 0.32, 0],
+  ];
+  return (
+    <group>
+      {nodePositions.map(([x, y, z], i) => (
+        <mesh key={i} position={[x, y, z]}>
+          <sphereGeometry args={[i === 0 ? 0.14 : 0.07, 12, 12]} />
+          <meshStandardMaterial
+            color={i === 0 ? "#ff3300" : "#0d0d0d"}
+            emissive="#ff4400"
+            emissiveIntensity={i === 0 ? 1.0 : 0.35}
+            metalness={0.8}
+            roughness={0.2}
+          />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+/** 10 — Strategy: concentric target rings */
+function StrategyMesh() {
+  return (
+    <group rotation={[Math.PI / 2, 0, 0]}>
+      {[0.38, 0.26, 0.14].map((r, i) => (
+        <mesh key={i}>
+          <torusGeometry args={[r, 0.025, 8, 36]} />
+          <meshStandardMaterial
+            color="#0d0d0d"
+            emissive="#ff4400"
+            emissiveIntensity={0.12 + i * 0.18}
+            metalness={0.92}
+            roughness={0.08}
+          />
+        </mesh>
+      ))}
+      {/* center dot */}
+      <mesh position={[0, 0.01, 0]}>
+        <sphereGeometry args={[0.055, 12, 12]} />
+        <meshStandardMaterial color="#ff4400" emissive="#ff2200" emissiveIntensity={1.5} />
+      </mesh>
+    </group>
+  );
+}
+
+const ELEMENT_MESHES = [
+  SocialMediaMesh, BrandingMesh, WebsiteMesh, ContentMesh, PaidAdsMesh,
+  AnalyticsMesh, EmailMesh, SEOMesh, AIMesh, StrategyMesh,
+];
+
+// ─── Single orbiting element ───────────────────────────────────────────────
+function OrbitElement({
+  def, index, scrollRef, posRef,
+}: {
+  def: typeof ELEMENTS[0];
+  index: number;
+  scrollRef: MutableRefObject<number>;
+  posRef: MutableRefObject<THREE.Vector3[]>;
+}) {
+  const groupRef  = useRef<THREE.Group>(null!);
+  const axis      = useMemo(() => new THREE.Vector3(def.axisX, 1, def.axisZ).normalize(), [def.axisX, def.axisZ]);
+  const baseVec   = useMemo(() => new THREE.Vector3(def.r, 0, 0), [def.r]);
+  const tmpVec    = useMemo(() => new THREE.Vector3(), []);
+  const MeshComp  = ELEMENT_MESHES[index];
+
+  useFrame(({ clock }, delta) => {
+    const s = scrollRef.current;
+    const t = clock.elapsedTime;
+
+    // Fade in
+    const appear = ss(clamp((s - def.appearsAt) / 0.09));
+    groupRef.current.scale.setScalar(appear);
+
+    // Orbit position
+    const angle = def.speed * t + def.phase;
+    tmpVec.copy(baseVec).applyAxisAngle(axis, angle);
+    groupRef.current.position.copy(tmpVec);
+
+    // Store for connection lines
+    posRef.current[index] = groupRef.current.position.clone();
+
+    // Gentle self-rotation for visual interest
+    groupRef.current.rotation.x += delta * 0.18;
+    groupRef.current.rotation.z += delta * 0.12;
+  });
+
+  return (
+    <group ref={groupRef} scale={0}>
+      <MeshComp />
+    </group>
+  );
+}
+
+// ─── Connection lines (Section 5+: scroll ≥ 0.58) ─────────────────────────
+function ConnectionLines({
+  scrollRef, posRef,
+}: {
+  scrollRef: MutableRefObject<number>;
+  posRef: MutableRefObject<THREE.Vector3[]>;
+}) {
+  const n = ELEMENTS.length;
+  // 10 adjacent pairs in ring + 5 skip-one connections
+  const pairs = useMemo(() => {
+    const p: [number, number][] = [];
+    for (let i = 0; i < n; i++) p.push([i, (i + 1) % n]);
+    for (let i = 0; i < 5; i++) p.push([i * 2, ((i * 2) + 3) % n]);
+    return p;
+  }, []);
+
+  const lineRefs  = useRef<THREE.Line[]>([]);
+  const geoRefs   = useRef<THREE.BufferGeometry[]>([]);
+
+  // Build geometry once
+  const lines = useMemo(() =>
+    pairs.map((_, i) => {
+      const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
+      geoRefs.current[i] = geo;
+      const mat = new THREE.LineBasicMaterial({ color: "#ff5500", transparent: true, opacity: 0 });
+      return new THREE.Line(geo, mat);
+    }),
+  [pairs]);
+
+  useFrame(() => {
+    const s = scrollRef.current;
+    const appear  = ss(clamp((s - 0.58) / 0.14));
+    const fadeOut = ss(clamp((s - 0.88) / 0.10));
+    const opacity = appear * (1 - fadeOut) * 0.45;
+
+    pairs.forEach(([a, b], i) => {
+      const pa = posRef.current[a], pb = posRef.current[b];
+      if (!pa || !pb) return;
+      const geo = geoRefs.current[i];
+      const arr = geo.attributes.position as THREE.BufferAttribute;
+      arr.setXYZ(0, pa.x, pa.y, pa.z);
+      arr.setXYZ(1, pb.x, pb.y, pb.z);
+      arr.needsUpdate = true;
+      (lineRefs.current[i]?.material as THREE.LineBasicMaterial).opacity = opacity;
+    });
+  });
+
+  return (
+    <>
+      {lines.map((line, i) => (
+        <primitive
+          key={i}
+          object={line}
+          ref={(el: THREE.Line) => { lineRefs.current[i] = el; }}
+        />
+      ))}
+    </>
+  );
+}
+
+// ─── Central Core ──────────────────────────────────────────────────────────
+function CentralCore({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
+  const outerRef  = useRef<THREE.Mesh>(null!);
+  const innerRef  = useRef<THREE.Mesh>(null!);
+  const ringRef   = useRef<THREE.Mesh>(null!);
   const lightRef  = useRef<THREE.PointLight>(null!);
 
   useFrame(({ clock }) => {
     const s = scrollRef.current;
     const t = clock.elapsedTime;
-    const asm   = ss(clamp(s / 0.16));
-    const open3 = ss(clamp((s - 0.30) / 0.13));
-    const shut3 = ss(clamp((s - 0.46) / 0.10));
-    const open7 = ss(clamp((s - 0.87) / 0.12));
-    const glow = (open3 * (1 - shut3) * 0.6 + open7 * 2.2) * asm;
+    const pulse = Math.sin(t * 2.4) * 0.06;
+    const sectionProgress = clamp(s / 0.15);       // 0→1 as section 1 plays
+    const fullBloom = ss(clamp((s - 0.72) / 0.12)); // max in section 6
 
-    const mat = sphereRef.current.material as THREE.MeshStandardMaterial;
-    mat.emissiveIntensity = glow + Math.sin(t * 2.2) * 0.08 * asm;
-    lightRef.current.intensity = glow * 12 + Math.sin(t * 1.5) * 0.6 * asm;
+    const glow = lp(0.6, 2.8, fullBloom) + pulse;
+    const iMat = innerRef.current.material as THREE.MeshStandardMaterial;
+    const oMat = outerRef.current.material as THREE.MeshStandardMaterial;
+    iMat.emissiveIntensity = glow;
+    oMat.emissiveIntensity = glow * 0.25;
+    lightRef.current.intensity = glow * 10 + pulse * 4;
+
+    // Outer shell breathes
+    const sc = 1 + Math.sin(t * 1.8) * 0.04;
+    outerRef.current.scale.setScalar(sc);
+
+    // Equatorial ring rotates
+    ringRef.current.rotation.y = t * 0.5;
+    ringRef.current.rotation.x = t * 0.3;
+
+    // Core sphere visible only once scroll begins (starts on load)
+    innerRef.current.visible = true;
   });
 
   return (
     <>
-      <pointLight ref={lightRef} color="#ff5500" intensity={0} distance={7} />
-      <mesh ref={sphereRef}>
-        <sphereGeometry args={[0.38, 24, 24]} />
-        <meshStandardMaterial color="#ff4400" emissive="#ff3300" emissiveIntensity={0} metalness={0.1} roughness={0.5} />
+      <pointLight ref={lightRef} color="#ff5500" intensity={6} distance={10} />
+
+      {/* Outer glass shell */}
+      <mesh ref={outerRef}>
+        <sphereGeometry args={[0.55, 32, 32]} />
+        <meshStandardMaterial
+          color="#0a0a0a"
+          emissive="#ff3300"
+          emissiveIntensity={0.15}
+          metalness={0.1}
+          roughness={0.0}
+          transparent
+          opacity={0.18}
+        />
+      </mesh>
+
+      {/* Inner core */}
+      <mesh ref={innerRef}>
+        <sphereGeometry args={[0.32, 32, 32]} />
+        <meshStandardMaterial
+          color="#ff4400"
+          emissive="#ff2200"
+          emissiveIntensity={0.8}
+          metalness={0.2}
+          roughness={0.4}
+        />
+      </mesh>
+
+      {/* Equatorial ring */}
+      <mesh ref={ringRef}>
+        <torusGeometry args={[0.62, 0.018, 8, 64]} />
+        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.7} />
       </mesh>
     </>
   );
 }
 
-// ─── Particle field (fades after section 1) ───────────────────────────────
+// ─── Particle field ─────────────────────────────────────────────────────────
 function Particles({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
   const pointsRef = useRef<THREE.Points>(null!);
-
   const geo = useMemo(() => {
-    const count = 180;
+    const count = 160;
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3]     = (Math.random() - 0.5) * 22;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 22;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 22;
+      pos[i * 3]     = (Math.random() - 0.5) * 20;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 20;
     }
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
@@ -160,140 +479,72 @@ function Particles({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
   useFrame(({ clock }) => {
     const s = scrollRef.current;
     const fade = 1 - ss(clamp(s / 0.22));
-    const t = clock.elapsedTime;
-    const mat = pointsRef.current.material as THREE.PointsMaterial;
-    mat.opacity = fade * 0.55;
-    // Gentle drift
-    pointsRef.current.rotation.y = t * 0.02;
-    pointsRef.current.rotation.x = t * 0.01;
+    (pointsRef.current.material as THREE.PointsMaterial).opacity = fade * 0.45;
+    pointsRef.current.rotation.y = clock.elapsedTime * 0.018;
+    pointsRef.current.rotation.x = clock.elapsedTime * 0.009;
   });
 
   return (
     <points ref={pointsRef} geometry={geo}>
-      <pointsMaterial color="#ff6622" size={0.06} transparent opacity={0.5} sizeAttenuation />
+      <pointsMaterial color="#ff6622" size={0.055} transparent opacity={0.4} sizeAttenuation />
     </points>
   );
 }
 
-// ─── Network lines (section 6: 0.73–0.87) ────────────────────────────────
-function NetworkLines({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
-  const groupRef = useRef<THREE.Group>(null!);
-
-  const lines = useMemo(() => {
-    const dirs: [number, number, number][] = [];
-    for (let i = 0; i < 24; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const phi   = Math.acos(2 * Math.random() - 1);
-      dirs.push([
-        Math.sin(phi) * Math.cos(theta),
-        Math.sin(phi) * Math.sin(theta),
-        Math.cos(phi),
-      ]);
-    }
-    return dirs;
-  }, []);
-
-  const lineRefs = useRef<THREE.Line[]>([]);
-
-  useFrame(({ clock }) => {
-    const s = scrollRef.current;
-    const appear  = ss(clamp((s - 0.73) / 0.14));
-    const fadeOut = ss(clamp((s - 0.88) / 0.10));
-    const opacity = appear * (1 - fadeOut);
-    const t = clock.elapsedTime;
-    groupRef.current.rotation.y = t * 0.06;
-
-    lineRefs.current.forEach((line) => {
-      if (!line) return;
-      (line.material as THREE.LineBasicMaterial).opacity = opacity * 0.5;
-    });
-  });
-
-  return (
-    <group ref={groupRef}>
-      {lines.map((dir, i) => {
-        const pts = [
-          new THREE.Vector3(dir[0] * 1.1, dir[1] * 1.1, dir[2] * 1.1),
-          new THREE.Vector3(dir[0] * 6,   dir[1] * 6,   dir[2] * 6),
-        ];
-        const geo = new THREE.BufferGeometry().setFromPoints(pts);
-        return (
-          <primitive
-            key={i}
-            object={new THREE.Line(geo, new THREE.LineBasicMaterial({ color: "#ff5500", transparent: true, opacity: 0 }))}
-            ref={(el: THREE.Line) => { lineRefs.current[i] = el; }}
-          />
-        );
-      })}
-    </group>
-  );
-}
-
-// ─── Cube group (wraps all panels) ────────────────────────────────────────
-function BrandCube({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
-  const groupRef = useRef<THREE.Group>(null!);
-  const target = useRef({ x: 0, y: 0, z: 0 });
+// ─── Marketing Ecosystem (root group) ─────────────────────────────────────
+function MarketingEcosystem({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
+  const groupRef  = useRef<THREE.Group>(null!);
+  const posRef    = useRef<THREE.Vector3[]>(ELEMENTS.map(() => new THREE.Vector3()));
 
   useFrame(({ clock }, delta) => {
-    const s = scrollRef.current;
     const t = clock.elapsedTime;
-
-    // Scroll drives Y rotation, idle adds gentle float on X
-    target.current.y = s * Math.PI * 3.2 + t * 0.06;
-    target.current.x = Math.sin(t * 0.4) * 0.08 + s * 0.6;
-    target.current.z = Math.sin(t * 0.3) * 0.04;
-
-    groupRef.current.rotation.x = THREE.MathUtils.lerp(groupRef.current.rotation.x, target.current.x, delta * 1.5);
-    groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, target.current.y, delta * 1.5);
-    groupRef.current.rotation.z = THREE.MathUtils.lerp(groupRef.current.rotation.z, target.current.z, delta * 1.5);
+    // Gentle idle yaw on the whole system
+    groupRef.current.rotation.y += delta * 0.04;
+    groupRef.current.rotation.x = Math.sin(t * 0.35) * 0.06;
   });
 
   return (
     <group ref={groupRef}>
-      {PANEL_DEF.map((def, i) => (
-        <group key={i}>
-          <CubePanel def={def} scrollRef={scrollRef} />
-          <EdgeGlow def={def} scrollRef={scrollRef} />
-        </group>
+      <CentralCore scrollRef={scrollRef} />
+      {ELEMENTS.map((def, i) => (
+        <OrbitElement key={def.name} def={def} index={i} scrollRef={scrollRef} posRef={posRef} />
       ))}
-      <CubeCore scrollRef={scrollRef} />
+      <ConnectionLines scrollRef={scrollRef} posRef={posRef} />
     </group>
   );
 }
 
-// ─── Scene + camera animation ─────────────────────────────────────────────
+// ─── Scene + camera animation ──────────────────────────────────────────────
 function Scene({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
   const camTarget = useRef(new THREE.Vector3(0, 1.5, 9));
-  const lookTarget = useRef(new THREE.Vector3(0, 0, 0));
 
   useFrame(({ camera }, delta) => {
     const [tx, ty, tz] = getCamPos(scrollRef.current);
     camTarget.current.set(tx, ty, tz);
     camera.position.lerp(camTarget.current, delta * 2.2);
-    camera.lookAt(lookTarget.current);
+    camera.lookAt(0, 0, 0);
   });
 
   return (
     <>
-      {/* Lighting */}
-      <ambientLight intensity={0.08} />
-      <pointLight position={[6,  5, 4]}  color="#ff6600" intensity={14} distance={22} />
-      <pointLight position={[-5,-3, 3]}  color="#ff2200" intensity={8}  distance={20} />
-      <pointLight position={[0,  0,-6]}  color="#ffffff" intensity={4}  distance={16} />
-      <pointLight position={[0,  6, 0]}  color="#ffaa44" intensity={5}  distance={18} />
+      {/* Environment lighting */}
+      <ambientLight intensity={0.07} />
+      <pointLight position={[ 6,  5, 4]} color="#ff6600" intensity={14} distance={22} />
+      <pointLight position={[-5, -3, 3]} color="#ff2200" intensity={8}  distance={20} />
+      <pointLight position={[ 0,  0,-6]} color="#ffffff" intensity={4}  distance={16} />
+      <pointLight position={[ 0,  6, 0]} color="#ffaa44" intensity={5}  distance={18} />
 
       <Particles scrollRef={scrollRef} />
-      <NetworkLines scrollRef={scrollRef} />
-      <BrandCube scrollRef={scrollRef} />
+      <MarketingEcosystem scrollRef={scrollRef} />
 
       <EffectComposer>
-        <Bloom luminanceThreshold={0.2} intensity={1.4} radius={0.75} mipmapBlur />
+        <Bloom luminanceThreshold={0.2} intensity={1.5} radius={0.78} mipmapBlur />
       </EffectComposer>
     </>
   );
 }
 
-// ─── Exported canvas wrapper ──────────────────────────────────────────────
+// ─── Exported canvas — identical interface as before ───────────────────────
 export function BrandCubeCanvas({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
   return (
     <Canvas
