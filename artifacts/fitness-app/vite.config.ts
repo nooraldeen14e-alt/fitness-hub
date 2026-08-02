@@ -42,11 +42,12 @@ export default defineConfig({
         '..',
         'attached_assets',
       ),
-      // Force single React instance — required by @react-three/fiber
+      // Force single React + Three instance — required by @react-three/fiber & postprocessing
       'react':     path.resolve(import.meta.dirname, 'node_modules/react'),
       'react-dom': path.resolve(import.meta.dirname, 'node_modules/react-dom'),
+      'three':     path.resolve(import.meta.dirname, 'node_modules/three'),
     },
-    dedupe: ['react', 'react-dom', 'three', '@react-three/fiber'],
+    dedupe: ['react', 'react-dom', 'three', '@react-three/fiber', '@react-three/drei', '@react-three/postprocessing'],
   },
   root: path.resolve(import.meta.dirname),
   build: {

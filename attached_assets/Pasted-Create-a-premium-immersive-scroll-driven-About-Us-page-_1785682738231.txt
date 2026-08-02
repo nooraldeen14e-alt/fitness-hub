@@ -1,0 +1,319 @@
+Create a premium, immersive, scroll-driven About Us page for our marketing agency based entirely around one central 3D object called **The Brand Cube**.
+
+The Brand Cube must remain the main focus of the entire page from beginning to end. It must not appear only in the hero section and then disappear. The full page should feel like one continuous cinematic journey around the cube.
+
+As the user scrolls, the camera should orbit around the cube, move closer, pull back, pass around different sides, and reveal new content at each stage. The visitor should feel like they are exploring the cube while discovering our agency.
+
+Do not copy Dogstudio’s wolf or any existing website. Use the same idea of a continuous scroll-based 3D experience, but make the concept and execution completely original.
+
+## Core concept
+
+The Brand Cube represents how we transform scattered ideas into complete, powerful brands.
+
+It should be made from floating dark metallic panels with subtle glass details, soft reflections, and glowing orange accents that match our website.
+
+The object should feel premium, futuristic, minimal, and visually memorable.
+
+## Page behavior
+
+* The cube stays visible throughout the entire page.
+* The 3D canvas should remain sticky or fixed while the content changes.
+* Scrolling controls both the camera movement and the cube animation.
+* Each section should reveal a different side, layer, or transformation of the cube.
+* Transitions must be smooth and continuous.
+* Do not use sudden cuts between sections.
+* Text should appear around the cube without covering it.
+* The page must still scroll normally.
+* The entire experience should feel like one connected story.
+
+## Scroll sequence
+
+### Section 1 — Introduction
+
+At the start, the cube is not fully assembled.
+
+Small floating panels and particles drift in space.
+
+As the user begins scrolling, the pieces slowly move toward the center.
+
+Main heading:
+
+**We turn ideas into brands people remember.**
+
+Supporting text:
+
+**Strategy, creativity, content, and performance — built into one complete brand experience.**
+
+The camera starts in front of the object and slowly moves closer.
+
+---
+
+### Section 2 — Our Services
+
+As the user scrolls further, the fragments assemble into a complete cube.
+
+The camera moves around to one side of the cube.
+
+That side should reveal our services through animated panels, icons, or abstract screens built into the cube.
+
+Show these services:
+
+* Branding
+* Social Media Management
+* Content Creation
+* Paid Advertising
+* Website Design
+* Marketing Strategy
+
+The panels can slide out slightly from the cube as each service appears.
+
+Section heading:
+
+**Everything your brand needs to move forward.**
+
+Supporting text:
+
+**We combine strategy, design, content, and performance to create marketing that works as one connected system.**
+
+Do not show all services at once. Reveal them gradually as the user scrolls.
+
+---
+
+### Section 3 — How We Work
+
+The camera continues orbiting toward another side of the cube.
+
+The cube opens slightly and reveals an illuminated internal structure.
+
+This section should explain our process.
+
+Show these stages:
+
+1. Discover
+2. Strategize
+3. Create
+4. Launch
+5. Grow
+
+Each stage should visually activate a different internal layer, ring, panel, or light inside the cube.
+
+Section heading:
+
+**From scattered ideas to a clear direction.**
+
+Supporting text:
+
+**We uncover what makes your brand different, build the strategy, create the assets, launch the campaign, and optimize what works.**
+
+The cube should feel more organized and refined as the user progresses.
+
+---
+
+### Section 4 — Our Work
+
+The camera moves to another side and slightly closer.
+
+Several cube panels open like display screens.
+
+Inside them, show abstract examples of:
+
+* social media posts
+* campaign visuals
+* logo systems
+* website layouts
+* video frames
+* analytics dashboards
+
+Use original abstract mockups only.
+
+Do not use random website screenshots.
+
+Do not use fake browser windows unless they are clean and intentionally designed.
+
+Section heading:
+
+**Ideas brought to life.**
+
+Supporting text:
+
+**Every campaign, identity, and digital experience is built to attract attention and create measurable growth.**
+
+The content should feel integrated into the cube instead of floating randomly around the page.
+
+---
+
+### Section 5 — About Us
+
+The camera moves behind or underneath the cube to reveal a new perspective.
+
+The exterior panels become more transparent, showing the glowing core inside.
+
+This section explains who we are.
+
+Section heading:
+
+**Built for brands that want to stand out.**
+
+Supporting text:
+
+**We are a creative marketing agency focused on strategy, visual storytelling, digital experiences, and real business growth.**
+
+Include short supporting points:
+
+* Creative thinking
+* Strategic execution
+* Fast communication
+* Long-term partnerships
+
+These points should appear one by one as the user scrolls.
+
+---
+
+### Section 6 — Results and Growth
+
+The cube becomes brighter and more complete.
+
+Glowing lines begin extending outward from it into a network.
+
+Small particles or nodes connect around the object.
+
+This should represent audience reach, engagement, leads, and growth.
+
+Section heading:
+
+**Marketing that creates momentum.**
+
+Supporting text:
+
+**We build systems that help brands grow, connect with the right audience, and stay memorable.**
+
+Optionally show animated numbers or metrics, but only if they can be easily edited later.
+
+Do not invent real performance claims.
+
+Use placeholders such as:
+
+* Campaigns launched
+* Brands supported
+* Content produced
+* Markets reached
+
+---
+
+### Section 7 — Contact
+
+At the final stage, the camera moves toward the center of the cube.
+
+The cube opens completely and reveals a bright, minimal glowing core.
+
+The surrounding panels move outward and create space for the final call to action.
+
+Final heading:
+
+**Let’s build something unforgettable.**
+
+Supporting text:
+
+**Tell us where you want your brand to go. We’ll help you create the strategy, content, and digital presence to get there.**
+
+Primary button:
+
+**Start a Project**
+
+Secondary option:
+
+**Contact Us**
+
+Include the contact form or link inside this final section.
+
+The cube should remain visible behind or beside the contact content.
+
+Do not end the 3D experience before the contact section.
+
+## Visual direction
+
+Use:
+
+* premium black or near-black background
+* dark metallic materials
+* subtle glass surfaces
+* glowing orange accents
+* soft bloom
+* cinematic lighting
+* smooth shadows
+* high-end typography
+* generous spacing
+* minimal interface
+* elegant motion
+* product-visualization quality
+
+Avoid:
+
+* cartoon styling
+* excessive neon
+* gaming aesthetics
+* cluttered interfaces
+* random floating icons
+* cheap stock imagery
+* overly fast animations
+* aggressive camera movement
+* visual effects that reduce readability
+
+## Technical implementation
+
+First inspect the existing project structure, framework, dependencies, routing, colors, typography, and components.
+
+Then implement this experience inside the current About Us page without redesigning unrelated pages.
+
+Use:
+
+* React Three Fiber
+* Drei
+* GSAP ScrollTrigger
+
+If equivalent libraries are already installed, reuse them instead of adding unnecessary dependencies.
+
+Build the page as a sequence of scroll sections connected to one shared 3D scene.
+
+Use a single synchronized scroll timeline for:
+
+* camera position
+* camera rotation
+* cube rotation
+* cube assembly
+* panel movement
+* internal glow
+* particles
+* content transitions
+* final cube opening
+
+## Performance requirements
+
+* Target smooth performance on desktop.
+* Create a simplified version for mobile.
+* Reduce particle count and visual complexity on smaller screens.
+* Lazy-load the 3D scene.
+* Show a lightweight fallback while loading.
+* Respect `prefers-reduced-motion`.
+* Avoid horizontal overflow.
+* Do not block normal scrolling.
+* Keep text readable at all times.
+* Pause or reduce animation when the tab is inactive.
+* Use optimized geometry and materials.
+* Avoid unnecessary real-time shadows if performance drops.
+* Keep the experience responsive across desktop, tablet, and mobile.
+
+## Important rules
+
+* Do not remove the current navigation.
+* Do not redesign unrelated pages.
+* Do not copy Dogstudio’s animal concept.
+* Do not use an animal.
+* Do not make the cube disappear after the hero.
+* Do not create separate disconnected animations for each section.
+* Do not use website screenshots in the cube.
+* Do not place all text directly on top of the cube.
+* Do not make the camera movement too fast or disorienting.
+* Keep the cube as the central storytelling object throughout the entire page.
+
+The final result should feel like one continuous premium 3D story where the visitor scrolls around and through The Brand Cube while discovering our services, process, work, agency, results, and contact section.
