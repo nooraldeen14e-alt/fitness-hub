@@ -26,8 +26,16 @@ class WebGLBoundary extends Component<{ children: ReactNode; fallback: ReactNode
 
 // ─── CSS fallback (no WebGL) — shows orbiting platform labels ────────────────
 const PLATFORM_LABELS = [
-  "Instagram", "Facebook", "TikTok", "YouTube",
-  "Twitter / X", "LinkedIn", "Reels", "Content", "Hashtag", "Analytics",
+  { name: "Instagram",   color: "#E1306C" },
+  { name: "Facebook",    color: "#1877F2" },
+  { name: "TikTok",      color: "#69C9D0" },
+  { name: "YouTube",     color: "#FF0000" },
+  { name: "Twitter / X", color: "#e7e9ea" },
+  { name: "LinkedIn",    color: "#0A66C2" },
+  { name: "Reels",       color: "#833AB4" },
+  { name: "Content",     color: "#FFB800" },
+  { name: "Hashtag",     color: "#9333EA" },
+  { name: "Analytics",   color: "#22C55E" },
 ];
 
 function CSSCubeFallback() {
@@ -44,13 +52,12 @@ function CSSCubeFallback() {
         <div style={{ position: "absolute", inset: "50%", width: 200, height: 200, transform: "translate(-50%,-50%)", borderRadius: "50%", border: "1px solid rgba(255,85,0,0.2)", animation: "cssRingSpin 12s linear infinite reverse" }} />
 
         {/* Orbiting platform labels */}
-        {PLATFORM_LABELS.map((label, i) => {
-          const angle = (i / PLATFORM_LABELS.length) * 360;
+        {PLATFORM_LABELS.map(({ name, color }, i) => {
           const delay = -(i / PLATFORM_LABELS.length) * 9;
           const r = i % 2 === 0 ? 175 : 155;
           return (
             <div
-              key={label}
+              key={name}
               style={{
                 position: "absolute",
                 inset: "50%",
@@ -66,12 +73,12 @@ function CSSCubeFallback() {
                 fontSize: 10,
                 fontFamily: "monospace",
                 letterSpacing: "0.1em",
-                color: "hsl(25,100%,55%)",
-                textShadow: "0 0 8px hsl(25,100%,50%)",
-                fontWeight: 600,
+                color,
+                textShadow: `0 0 10px ${color}88`,
+                fontWeight: 700,
                 textTransform: "uppercase",
               }}>
-                {label}
+                {name}
               </div>
             </div>
           );
