@@ -226,7 +226,7 @@ const AboutNavbar = () => {
     <>
       <ScheduleModal open={scheduleOpen} onClose={() => setScheduleOpen(false)} />
       <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/5">
-        <Link href="/"><img src={swissLogo} alt="Swissulife Media" className="h-9 w-auto object-contain cursor-pointer" style={{ mixBlendMode: "screen", filter: "contrast(4) brightness(1.2)" }} /></Link>
+        <Link href="/" className="font-display font-bold text-white text-lg tracking-wide hover:text-primary transition-colors">Swissulife Media</Link>
         <div className="hidden md:flex items-center gap-8">
           <Link href="/" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors">Home</Link>
           <div className="relative group">
