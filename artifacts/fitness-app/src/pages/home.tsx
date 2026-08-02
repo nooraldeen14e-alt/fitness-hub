@@ -7,43 +7,13 @@ import heroBg from "@assets/hero-bg.jpg";
 import work1 from "@assets/work-1.jpg";
 import work2 from "@assets/work-2.jpg";
 import work3 from "@assets/work-3.jpg";
-import {
-  SiApple, SiSamsung, SiToyota, SiAdidas, SiVolkswagen,
-  SiAudi, SiFerrari, SiMcdonalds, SiDhl, SiDeliveroo,
-  SiKfc, SiRedbull, SiPorsche, SiInfiniti, SiRollsroyce,
-  SiCarrefour, SiDior, SiFarfetch,
-} from "react-icons/si";
-
-/* ── Local client logo PNGs ── */
-import logoDha        from "@assets/logos/dha.png";
-import logoDhaBld     from "@assets/logos/dha-building.png";
-import logoFaridBp    from "@assets/logos/farid-bp.png";
-import logoMultiplierz from "@assets/logos/multiplierz.png";
-import logoMediaGal   from "@assets/logos/media-galleria.png";
-import logoTheGardens from "@assets/logos/the-gardens.png";
-import logoMidtown    from "@assets/logos/midtown.png";
-import logoNorthstones from "@assets/logos/northstones.png";
-import logoChooye     from "@assets/logos/chooye-khana.png";
-import logoTaus       from "@assets/logos/taus.png";
-import logoCasaRica   from "@assets/logos/casa-rica.png";
-import logoGloriaJeans from "@assets/logos/gloria-jeans.png";
-import logoSpiceFactory from "@assets/logos/spice-factory.png";
-import logoSubway     from "@assets/logos/subway.png";
-import logoEnglishTable from "@assets/logos/english-table.png";
-import logoDrNadas    from "@assets/logos/dr-nadas.png";
-import logoBeyondPhysio from "@assets/logos/beyond-physio.png";
-import logoGulAhmed   from "@assets/logos/gul-ahmed.png";
-import logoJazz       from "@assets/logos/jazz.png";
-import logoHumNetwork from "@assets/logos/hum-network.png";
-import logoSerenaHotels from "@assets/logos/serena-hotels.png";
-import logoArnNews    from "@assets/logos/arn-news.png";
-import logoLovinDubai from "@assets/logos/lovin-dubai.png";
-import logoBritishEmbassy from "@assets/logos/british-embassy.png";
-
-/* ── Client collage reference strips ── */
-import collage1 from "@assets/image_1785676703347.png";
-import collage2 from "@assets/image_1785676713071.png";
-import collage3 from "@assets/image_1785676718700.png";
+/* ── Portfolio client pages (sprites) ── */
+// img1 = UAE regional/Sharjah (562×279, dark bg)
+// img2 = International brands (567×260, light top + dark bottom)
+// img3 = UAE agency clients  (578×272, light top strip + dark lower)
+import img1 from "@assets/image_1785677351006.png";
+import img2 from "@assets/image_1785677352565.png";
+import img3 from "@assets/image_1785677353795.png";
 
 /* ── Glowing cursor ── */
 const GlowCursor = () => {
@@ -372,35 +342,36 @@ const Hero = () => {
 
 
 
-/* ── Client card: PNG image | coloured icon | text fallback ── */
-type IconComponent = React.ComponentType<{ size?: number; color?: string }>;
-
-const ClientCard = ({
-  name,
-  img,
-  Icon,
-  iconColor = "#222",
-}: {
+/* ─────────────────────────────────────────────────────────────────
+   CSS-sprite client card
+   Formula (responsive — works at any card width W):
+     imgNatW / effectiveDim * 100  → image rendered width as % of card
+     50 - cx/effectiveDim*100      → left% that centres logo horizontally
+     50 - cy/effectiveDim*100      → top%  that centres logo vertically
+   where cx/cy = logo centre in source pixels, effectiveDim = max(w,h)*pad
+───────────────────────────────────────────────────────────────── */
+type SpriteEntry = {
   name: string;
-  img?: string;
-  Icon?: IconComponent;
-  iconColor?: string;
-}) => {
+  src: string;
+  imgNatW: number;   // source image natural width
+  x: number; y: number; w: number; h: number; // logo crop in source px
+  dark?: boolean;    // true → dark card bg (#1a1a1a), false/omit → white
+};
+
+const SpriteCard = ({ s }: { s: SpriteEntry }) => {
   const [tilt, setTilt] = React.useState<React.CSSProperties>({});
-  const fontSize = name.length > 16 ? "0.58rem" : name.length > 12 ? "0.68rem" : name.length > 8 ? "0.78rem" : "0.9rem";
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - left) / width - 0.5;
-    const y = (e.clientY - top) / height - 0.5;
+    const rx = (e.clientX - left) / width - 0.5;
+    const ry = (e.clientY - top) / height - 0.5;
     setTilt({
-      transform: `perspective(500px) rotateY(${x * 20}deg) rotateX(${-y * 20}deg) scale(1.07)`,
-      boxShadow: `${-x * 12}px ${y * 12}px 24px rgba(255,100,0,0.25)`,
+      transform: `perspective(500px) rotateY(${rx * 18}deg) rotateX(${-ry * 18}deg) scale(1.07)`,
+      boxShadow: `${-rx * 12}px ${ry * 12}px 24px rgba(255,100,0,0.26)`,
       transition: "transform 0.08s ease, box-shadow 0.08s ease",
       zIndex: 10,
     });
   };
-
   const onLeave = () => setTilt({
     transform: "perspective(500px) rotateY(0deg) rotateX(0deg) scale(1)",
     boxShadow: "none",
@@ -408,61 +379,157 @@ const ClientCard = ({
     zIndex: 1,
   });
 
+  const pad = 1.35;
+  const eff = Math.max(s.w, s.h) * pad;
+  const cx  = s.x + s.w / 2;
+  const cy  = s.y + s.h / 2;
+  const wPct  = (s.imgNatW / eff) * 100;
+  const lPct  = 50 - (cx / eff) * 100;
+  const tPct  = 50 - (cy / eff) * 100;
+
   return (
     <div
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      style={{ willChange: "transform", ...tilt }}
-      className="bg-white rounded-2xl aspect-square flex items-center justify-center p-4 cursor-default overflow-hidden"
+      style={{ willChange: "transform", background: s.dark ? "#1a1a1a" : "#fff", ...tilt }}
+      className="rounded-2xl aspect-square relative overflow-hidden cursor-default"
+      title={s.name}
     >
-      {img ? (
-        <img src={img} alt={name} className="w-full h-full object-contain" />
-      ) : Icon ? (
-        <Icon size={54} color={iconColor} />
-      ) : (
-        <span
-          className="text-center font-sans font-bold leading-tight px-1"
-          style={{ fontSize, color: "#222" }}
-        >
-          {name}
-        </span>
-      )}
+      <img
+        src={s.src}
+        alt={s.name}
+        draggable={false}
+        style={{
+          position: "absolute",
+          width: `${wPct}%`,
+          height: "auto",
+          left: `${lPct}%`,
+          top: `${tPct}%`,
+          pointerEvents: "none",
+          userSelect: "none",
+        }}
+      />
     </div>
   );
 };
 
 const OurClients = () => {
-  const localClients = [
-    { name: "DHA",               img: logoDha },
-    { name: "DHA Building Dreams", img: logoDhaBld },
-    { name: "Farid Business Park", img: logoFaridBp },
-    { name: "Multiplierz Group", img: logoMultiplierz },
-    { name: "Media Galleria",    img: logoMediaGal },
-    { name: "The Gardens",       img: logoTheGardens },
-    { name: "Midtown",           img: logoMidtown },
-    { name: "Northstones",       img: logoNorthstones },
-    { name: "Chooye Khana",      img: logoChooye },
-    { name: "Tau's",             img: logoTaus },
-    { name: "Casa Rica",         img: logoCasaRica },
-    { name: "Gloria Jean's",     img: logoGloriaJeans },
-    { name: "Spice Factory",     img: logoSpiceFactory },
-    { name: "Subway",            img: logoSubway },
-    { name: "The English Table", img: logoEnglishTable },
-    { name: "Dr Nadas Clinic",   img: logoDrNadas },
-    { name: "Beyond Physio",     img: logoBeyondPhysio },
-    { name: "Gul Ahmed",         img: logoGulAhmed },
-    { name: "Jazz",              img: logoJazz },
-    { name: "HUM Network",       img: logoHumNetwork },
-    { name: "Serena Hotels",     img: logoSerenaHotels },
-    { name: "ARN News",          img: logoArnNews },
-    { name: "Lovin Dubai",       img: logoLovinDubai },
-    { name: "British Embassy",   img: logoBritishEmbassy },
-  ];
+  // ── image dimensions ──────────────────────────────────────────
+  // img3 = image_1785677353795.png  578 × 272  (UAE agency clients)
+  // img2 = image_1785677352565.png  567 × 260  (international brands)
+  // img1 = image_1785677351006.png  562 × 279  (UAE regional / Sharjah)
 
-  const collageStrips = [
-    { src: collage1, alt: "Tilda, Casa Milano, Toyota, Samana, VIP & Protocol, ELE, Farfetch, Audi, Rolls Royce, SAVVA, X-Space, Fashion Factor, Mazzika, Operation Level Up, MASH, Twisted Olive, Fouziana, LinkinCard" },
-    { src: collage2, alt: "Infiniti, VW, Apple, Noon, Adidas, CAFU, MERAA, StarzPlay, Emaar, Dior, L'Oréal, Chanel, Dubai Mall, MAC, Oreo, Costa, KFC, DHL, Red Bull, Samsung, Amazon, McDonald's, Quaker, Deliveroo, Canon, Porsche, Talabat" },
-    { src: collage3, alt: "Sharjah Paintball, Righteous Properties, fäm Properties, Escapology, Altitude, Sharqi, Glitza, Sharjah Chamber, University of Sharjah, DAMAC, Rani, Meaza, Corniche Hotel, CMC Hospital, Carrefour, Ferrari, Lexus, Geely, Spotii" },
+  const W3 = 578; // img3 natural width
+  const W2 = 567;
+  const W1 = 562;
+
+  const clients: SpriteEntry[] = [
+    // ── img3 top strip (light bg) ─ y 0-88 ──────────────────────
+    { name: "Tilda",           src: img3, imgNatW: W3, x:   0, y:  0, w:  64, h: 88 },
+    { name: "Casa Milano",     src: img3, imgNatW: W3, x:  64, y:  0, w:  66, h: 88 },
+    { name: "Toyota",          src: img3, imgNatW: W3, x: 178, y:  0, w:  42, h: 88 },
+    { name: "Samana Dev.",     src: img3, imgNatW: W3, x: 220, y:  0, w:  86, h: 88 },
+    { name: "VIP & Protocol",  src: img3, imgNatW: W3, x: 338, y:  0, w:  84, h: 88 },
+    { name: "ELE",             src: img3, imgNatW: W3, x: 422, y:  0, w:  48, h: 88 },
+    { name: "Farfetch",        src: img3, imgNatW: W3, x: 470, y:  0, w: 108, h: 88 },
+
+    // ── img3 dark row 1 (y 88-181) ──────────────────────────────
+    { name: "Audi",            src: img3, imgNatW: W3, x:   0, y: 88, w: 116, h: 93, dark: true },
+    { name: "Rashed",          src: img3, imgNatW: W3, x: 116, y: 88, w: 116, h: 93, dark: true },
+    { name: "SAVVA",           src: img3, imgNatW: W3, x: 232, y: 88, w: 116, h: 93, dark: true },
+    { name: "Rolls Royce",     src: img3, imgNatW: W3, x: 348, y: 88, w: 115, h: 93, dark: true },
+    { name: "X-Space RE",      src: img3, imgNatW: W3, x: 463, y: 88, w: 115, h: 93, dark: true },
+
+    // ── img3 dark row 2 (y 181-226) ─────────────────────────────
+    { name: "Fashion Factor",  src: img3, imgNatW: W3, x:   0, y: 181, w: 116, h: 45, dark: true },
+    { name: "Sharjah Golf",    src: img3, imgNatW: W3, x: 116, y: 181, w: 116, h: 45, dark: true },
+    { name: "Casa Di Spicca",  src: img3, imgNatW: W3, x: 348, y: 181, w: 115, h: 45, dark: true },
+    { name: "Mazzika",         src: img3, imgNatW: W3, x: 463, y: 181, w: 115, h: 45, dark: true },
+
+    // ── img3 dark row 3 (y 226-272) ─────────────────────────────
+    { name: "Op. Level Up",    src: img3, imgNatW: W3, x:   0, y: 226, w: 116, h: 46, dark: true },
+    { name: "MASH Coffee",     src: img3, imgNatW: W3, x: 116, y: 226, w: 116, h: 46, dark: true },
+    { name: "Twisted Olive",   src: img3, imgNatW: W3, x: 232, y: 226, w: 116, h: 46, dark: true },
+    { name: "Fouziana",        src: img3, imgNatW: W3, x: 348, y: 226, w: 115, h: 46, dark: true },
+    { name: "LinkinCard",      src: img3, imgNatW: W3, x: 463, y: 226, w: 115, h: 46, dark: true },
+
+    // ── img2 light row 1 (y 0-43) ───────────────────────────────
+    { name: "Infiniti",        src: img2, imgNatW: W2, x:   0, y:  0, w:  63, h: 43 },
+    { name: "Volkswagen",      src: img2, imgNatW: W2, x:  63, y:  0, w:  63, h: 43 },
+    { name: "Apple",           src: img2, imgNatW: W2, x: 126, y:  0, w:  63, h: 43 },
+    { name: "Noon",            src: img2, imgNatW: W2, x: 189, y:  0, w:  63, h: 43 },
+    { name: "O Boticário",     src: img2, imgNatW: W2, x: 252, y:  0, w:  63, h: 43 },
+    { name: "Adidas",          src: img2, imgNatW: W2, x: 315, y:  0, w:  63, h: 43 },
+    { name: "CAFU",            src: img2, imgNatW: W2, x: 378, y:  0, w:  63, h: 43 },
+    { name: "MERAA",           src: img2, imgNatW: W2, x: 441, y:  0, w:  63, h: 43 },
+    { name: "StarzPlay",       src: img2, imgNatW: W2, x: 504, y:  0, w:  63, h: 43 },
+
+    // ── img2 light row 2 (y 43-87) ──────────────────────────────
+    { name: "URBERR",          src: img2, imgNatW: W2, x: 189, y: 43, w:  63, h: 44 },
+    { name: "Emaar",           src: img2, imgNatW: W2, x: 315, y: 43, w:  80, h: 44 },
+    { name: "Dior",            src: img2, imgNatW: W2, x: 378, y: 43, w:  80, h: 44 },
+    { name: "L'Oréal",         src: img2, imgNatW: W2, x: 441, y: 43, w:  63, h: 44 },
+
+    // ── img2 light row 3 (y 87-130) ─────────────────────────────
+    { name: "Elizabeth Arden", src: img2, imgNatW: W2, x:   0, y: 87, w:  81, h: 43 },
+    { name: "The Dubai Mall",  src: img2, imgNatW: W2, x:  81, y: 87, w:  81, h: 43 },
+    { name: "Chanel",          src: img2, imgNatW: W2, x: 162, y: 87, w:  81, h: 43 },
+    { name: "MAC",             src: img2, imgNatW: W2, x: 243, y: 87, w:  81, h: 43 },
+    { name: "Oreo Sweden",     src: img2, imgNatW: W2, x: 324, y: 87, w:  81, h: 43 },
+    { name: "Power Horse",     src: img2, imgNatW: W2, x: 405, y: 87, w:  81, h: 43 },
+    { name: "Babyshop",        src: img2, imgNatW: W2, x: 486, y: 87, w:  81, h: 43 },
+
+    // ── img2 dark row 4 (y 130-195) ─────────────────────────────
+    { name: "Costa Coffee",    src: img2, imgNatW: W2, x:   0, y: 130, w:  95, h: 65, dark: true },
+    { name: "KFC",             src: img2, imgNatW: W2, x:  95, y: 130, w:  95, h: 65, dark: true },
+    { name: "DHL",             src: img2, imgNatW: W2, x: 190, y: 130, w:  95, h: 65, dark: true },
+    { name: "Red Bull",        src: img2, imgNatW: W2, x: 285, y: 130, w:  94, h: 65, dark: true },
+    { name: "Samsung",         src: img2, imgNatW: W2, x: 379, y: 130, w:  94, h: 65, dark: true },
+    { name: "Amazon",          src: img2, imgNatW: W2, x: 473, y: 130, w:  94, h: 65, dark: true },
+
+    // ── img2 dark row 5 (y 195-260) ─────────────────────────────
+    { name: "Al Ain Farms",    src: img2, imgNatW: W2, x:   0, y: 195, w:  71, h: 65, dark: true },
+    { name: "McDonald's",      src: img2, imgNatW: W2, x:  71, y: 195, w:  71, h: 65, dark: true },
+    { name: "Quaker",          src: img2, imgNatW: W2, x: 142, y: 195, w:  71, h: 65, dark: true },
+    { name: "Deliveroo",       src: img2, imgNatW: W2, x: 213, y: 195, w:  71, h: 65, dark: true },
+    { name: "Canon",           src: img2, imgNatW: W2, x: 284, y: 195, w:  71, h: 65, dark: true },
+    { name: "Liv",             src: img2, imgNatW: W2, x: 355, y: 195, w:  71, h: 65, dark: true },
+    { name: "Porsche",         src: img2, imgNatW: W2, x: 426, y: 195, w:  71, h: 65, dark: true },
+    { name: "Talabat",         src: img2, imgNatW: W2, x: 497, y: 195, w:  70, h: 65, dark: true },
+
+    // ── img1 row 1 (y 0-50) ─────────────────────────────────────
+    { name: "Sharjah Paintball", src: img1, imgNatW: W1, x:   0, y:  0, w: 94, h: 50, dark: true },
+    { name: "Righteous Prop.",   src: img1, imgNatW: W1, x:  94, y:  0, w: 94, h: 50, dark: true },
+    { name: "Village Arabia",    src: img1, imgNatW: W1, x: 188, y:  0, w: 94, h: 50, dark: true },
+    { name: "fäm Properties",    src: img1, imgNatW: W1, x: 282, y:  0, w: 94, h: 50, dark: true },
+    { name: "Escapology",        src: img1, imgNatW: W1, x: 376, y:  0, w: 94, h: 50, dark: true },
+    { name: "Altitude Gym",      src: img1, imgNatW: W1, x: 470, y:  0, w: 92, h: 50, dark: true },
+
+    // ── img1 row 2 (y 50-103) ───────────────────────────────────
+    { name: "Seventy Fitness",   src: img1, imgNatW: W1, x:   0, y: 50, w: 94, h: 53, dark: true },
+    { name: "Sharqi Salon",      src: img1, imgNatW: W1, x:  94, y: 50, w: 94, h: 53, dark: true },
+    { name: "Glitza By Ghalia",  src: img1, imgNatW: W1, x: 188, y: 50, w: 94, h: 53, dark: true },
+    { name: "Sharjah Chamber",   src: img1, imgNatW: W1, x: 282, y: 50, w: 94, h: 53, dark: true },
+    { name: "Altitude Spa",      src: img1, imgNatW: W1, x: 376, y: 50, w: 94, h: 53, dark: true },
+    { name: "Univ. of Sharjah",  src: img1, imgNatW: W1, x: 470, y: 50, w: 92, h: 53, dark: true },
+
+    // ── img1 row 3 (y 103-156) ──────────────────────────────────
+    { name: "DAMAC",             src: img1, imgNatW: W1, x:  94, y: 103, w: 94, h: 53, dark: true },
+    { name: "Rani",              src: img1, imgNatW: W1, x: 188, y: 103, w: 94, h: 53, dark: true },
+    { name: "Carrefour",         src: img1, imgNatW: W1, x: 376, y: 103, w: 94, h: 53, dark: true },
+    { name: "Urban Craft",       src: img1, imgNatW: W1, x: 470, y: 103, w: 92, h: 53, dark: true },
+
+    // ── img1 row 4 (y 156-210) ──────────────────────────────────
+    { name: "Meaza",             src: img1, imgNatW: W1, x:   0, y: 156, w: 94, h: 54, dark: true },
+    { name: "Corniche Hotel",    src: img1, imgNatW: W1, x:  94, y: 156, w: 94, h: 54, dark: true },
+    { name: "Charms",            src: img1, imgNatW: W1, x: 188, y: 156, w: 94, h: 54, dark: true },
+    { name: "CMC Hospital",      src: img1, imgNatW: W1, x: 282, y: 156, w: 94, h: 54, dark: true },
+
+    // ── img1 row 5 (y 210-279) — larger logos ───────────────────
+    { name: "Ferrari",           src: img1, imgNatW: W1, x:   0, y: 210, w: 112, h: 69, dark: true },
+    { name: "Lexus",             src: img1, imgNatW: W1, x: 112, y: 210, w: 112, h: 69, dark: true },
+    { name: "GEELY",             src: img1, imgNatW: W1, x: 336, y: 210, w: 112, h: 69, dark: true },
+    { name: "Spotii",            src: img1, imgNatW: W1, x: 448, y: 210, w: 114, h: 69, dark: true },
   ];
 
   return (
@@ -473,34 +540,14 @@ const OurClients = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Title */}
         <div className="text-center mb-16">
           <p className="font-mono text-primary uppercase tracking-[0.35em] text-xs mb-3">Some of our</p>
           <h2 className="font-display font-bold text-6xl md:text-8xl uppercase text-white/80">Clients</h2>
         </div>
 
-        {/* Individual logo cards — 24 local brands */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
-          {localClients.map((c) => (
-            <ClientCard key={c.name} name={c.name} img={c.img} />
-          ))}
-        </div>
-
-        {/* Full-colour collage strips for all remaining brands */}
-        <div className="flex flex-col gap-3">
-          {collageStrips.map((strip, i) => (
-            <div
-              key={i}
-              className="w-full rounded-2xl overflow-hidden"
-              style={{ background: i === 0 ? "#1a1a1a" : i === 1 ? "#fff" : "#1a1a1a" }}
-            >
-              <img
-                src={strip.src}
-                alt={strip.alt}
-                className="w-full h-auto object-cover"
-                style={{ display: "block" }}
-              />
-            </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {clients.map((c) => (
+            <SpriteCard key={c.name} s={c} />
           ))}
         </div>
       </div>
