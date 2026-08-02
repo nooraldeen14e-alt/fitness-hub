@@ -133,8 +133,8 @@
   }
 
   ::selection {
-    background: hsl(var(--primary));
-    color: hsl(var(--primary-foreground));
+    background: transparent;
+    color: inherit;
   }
 }
 
