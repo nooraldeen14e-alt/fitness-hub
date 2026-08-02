@@ -70,9 +70,9 @@ function CSSCubeFallback() {
           }}>
             <div style={{
               fontSize: 9, fontFamily: "sans-serif", letterSpacing: "0.12em",
-              color: "#e8eeff", fontWeight: 400, whiteSpace: "nowrap",
-              textShadow: "0 0 12px #e8eeffaa",
-            }}>swissulife media</div>
+              color: "#ff5500", fontWeight: 700, whiteSpace: "nowrap",
+              textShadow: "0 0 12px #ff550099",
+            }}>Swissulife Media</div>
           </div>
 
           {/* Main tower body — two side wings + central cylinder */}
