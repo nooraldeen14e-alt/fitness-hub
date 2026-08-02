@@ -54,7 +54,6 @@ const ELEMENTS = [
   { name: "YouTube",     r: 2.4, speed: 0.19, phase: Math.PI * 0.66,     axisX:  0.24, axisZ: -0.10, appearsAt: 0.30 },
   { name: "Twitter / X", r: 2.8, speed: 0.30, phase: Math.PI * 0.88,     axisX: -0.10, axisZ:  0.28, appearsAt: 0.33 },
   { name: "LinkedIn",    r: 2.2, speed: 0.25, phase: Math.PI * 1.10,     axisX:  0.18, axisZ: -0.22, appearsAt: 0.36 },
-  { name: "Reels",       r: 2.5, speed: 0.32, phase: Math.PI * 1.32,     axisX: -0.28, axisZ:  0.14, appearsAt: 0.44 },
   { name: "Snapchat",    r: 2.1, speed: 0.20, phase: Math.PI * 1.54,     axisX:  0.14, axisZ:  0.26, appearsAt: 0.47 },
 ];
 
@@ -70,7 +69,6 @@ const PLATFORM_CARDS = [
   { name: "YouTube",    color: "#FF0000", path: siYoutube.path   },
   { name: "X",          color: "#e7e9ea", path: siX.path         },
   { name: "LinkedIn",   color: "#0A66C2", path: LINKEDIN_PATH    },
-  { name: "Reels",      color: "#C13584", path: siInstagram.path },
   { name: "Snapchat",   color: "#FFFC00", path: siSnapchat.path  },
 ] as const;
 

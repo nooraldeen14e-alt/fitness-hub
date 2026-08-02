@@ -36,7 +36,6 @@ const PLATFORM_ICONS = [
   { name: "YouTube",     color: "#FF0000", icon: siYoutube   },
   { name: "Twitter / X", color: "#ffffff", icon: siX         },
   { name: "LinkedIn",    color: "#0A66C2", icon: null        },
-  { name: "Reels",       color: "#FF0069", icon: siInstagram },
   { name: "Snapchat",    color: "#FFFC00", icon: siSnapchat  },
 ];
 
