@@ -433,7 +433,7 @@ const ClientCard = ({ c }: { c: ClientEntry }) => {
       onMouseLeave={onLeave}
       title={c.name}
       style={{ willChange: "transform", background: bg, ...tilt }}
-      className="rounded-2xl aspect-square flex items-center justify-center p-[15%] cursor-default overflow-hidden"
+      className="rounded-2xl aspect-square flex items-center justify-center p-[15%] cursor-default overflow-hidden bg-foreground"
     >
       {renderContent()}
     </div>
