@@ -367,7 +367,7 @@ const TiltCard = ({ children }: { children: React.ReactNode }) => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ willChange: "transform", ...style }}
-      className="bg-white rounded-2xl aspect-square flex items-center justify-center p-5 cursor-default"
+      className="bg-[#111] border border-white/8 rounded-2xl aspect-square flex items-center justify-center p-4 cursor-default"
     >
       {children}
     </div>
@@ -375,22 +375,37 @@ const TiltCard = ({ children }: { children: React.ReactNode }) => {
 };
 
 const OurClients = () => {
-  const rows = [
-    { src: clientsRow1, alt: "Clients – Tilda, Casa Milano, Toyota, Samana Developers, VIP & Protocol, Farfetch and more" },
-    { src: clientsRow2, alt: "Clients – Infiniti, VW, Apple, Noon, Adidas, CAFU, Dior, L'Oréal, Costa, KFC, DHL, Red Bull, Samsung, Amazon and more" },
-    { src: clientsRow3, alt: "Clients – Sharjah Paintball, Damac, Rani, Ferrari, Lexus, Geely, Spotii, Carrefour and more" },
+  const clients = [
+    // Image 1
+    "Tilda", "Casa Milano", "Dream Dive", "Toyota", "Samana Developers",
+    "VIP & Protocol", "ELE", "Farfetch", "Audi", "Rashed",
+    "SAVVA", "Rolls Royce", "X-Space Real Estate", "Fashion Factor",
+    "Sharjah Golf & Shooting Club", "Casa Di Spicca", "Mazzika",
+    "Operation Level Up", "MASH Coffee", "Twisted Olive", "Fouziana", "LinkinCard",
+    // Image 2
+    "Infiniti", "Volkswagen", "Apple", "Noon", "O Boticário", "Adidas",
+    "CAFU", "MERAA", "StarzPlay", "URBERR", "Emaar", "Dior", "L'Oréal",
+    "Elizabeth Arden", "The Dubai Mall", "Chanel", "MAC", "Oreo",
+    "Power Horse", "Babyshop", "Costa Coffee", "KFC", "DHL", "Red Bull",
+    "Samsung", "Amazon", "Al Ain Farms", "McDonald's", "Quaker",
+    "Deliveroo", "Canon", "Liv", "Porsche", "Talabat",
+    // Image 3
+    "Sharjah Paintball Park", "Righteous Properties", "Village Arabia",
+    "fäm Properties", "Escapology", "Altitude Gym", "Seventy Fitness & Spa",
+    "Sharqi Gents Salon", "Glitza By Ghalia", "Sharjah Chamber of Commerce",
+    "Altitude Spa", "University of Sharjah", "DAMAC", "Rani",
+    "Meaza", "Corniche Hotel Sharjah", "Charms", "Clemenceau Medical Center",
+    "Carrefour", "Urban Craft", "Ferrari", "Lexus", "Geely", "Spotii",
   ];
 
   return (
     <section id="clients" className="relative py-24 px-6 overflow-hidden" style={{ background: "#050505" }}>
-      {/* Subtle glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[500px] h-[400px] rounded-full opacity-10"
           style={{ background: "radial-gradient(ellipse, hsl(25,100%,50%) 0%, transparent 70%)", filter: "blur(80px)" }} />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -402,23 +417,23 @@ const OurClients = () => {
           <h2 className="font-display font-bold text-6xl md:text-8xl uppercase text-white/80">Clients</h2>
         </motion.div>
 
-        {/* Client collage rows */}
-        <div className="flex flex-col gap-2">
-          {rows.map((row, i) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {clients.map((name, i) => (
             <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              key={name}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: i * 0.12 }}
-              className="w-full rounded-2xl overflow-hidden"
+              transition={{ duration: 0.35, delay: (i % 6) * 0.05 }}
             >
-              <img
-                src={row.src}
-                alt={row.alt}
-                className="w-full h-auto object-cover"
-                style={{ display: "block" }}
-              />
+              <TiltCard>
+                <span
+                  className="text-center font-sans font-semibold text-white/90 leading-tight"
+                  style={{ fontSize: name.length > 14 ? "0.65rem" : name.length > 10 ? "0.75rem" : "0.85rem" }}
+                >
+                  {name}
+                </span>
+              </TiltCard>
             </motion.div>
           ))}
         </div>
