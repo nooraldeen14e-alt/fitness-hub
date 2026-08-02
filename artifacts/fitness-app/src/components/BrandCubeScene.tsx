@@ -495,8 +495,8 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
   // ── palette ──────────────────────────────────────────────────────────────
   const NAVY   = "#1a3358";   // rich dark-navy façade (clearly blue, not black)
   const NGLASS = "#1e3d70";   // brighter navy-blue cylinder glass
-  const GOLD   = "#c8a855";   // warm gold trim
-  const AMBER  = "#d4833a";   // floor-line glow
+  const GOLD   = "#ffffff";   // white trim
+  const AMBER  = "#ffffff";   // white floor-line glow
   const WHITE  = "#e8eeff";   // illuminated signage
 
   // 15 evenly-spaced floor rings / lines
@@ -505,9 +505,9 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
   return (
     <group ref={groupRef}>
       {/* Warm interior cylinder glow */}
-      <pointLight ref={interiorRef} position={[0, 0, 0]}   color="#f5a042" intensity={2} distance={6} />
+      <pointLight ref={interiorRef} position={[0, 0, 0]}   color="#ffffff" intensity={2} distance={6} />
       {/* Warm lobby entrance glow */}
-      <pointLight ref={lobbyRef}    position={[0, -1.8, 0.6]} color="#f5a042" intensity={3} distance={4} />
+      <pointLight ref={lobbyRef}    position={[0, -1.8, 0.6]} color="#ffffff" intensity={3} distance={4} />
 
       {/* ══ LEFT WING ══ */}
       <mesh position={[-0.60, 0, 0]}>
@@ -592,7 +592,7 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
       {/* Lobby glass front — warm amber glow */}
       <mesh position={[0, -1.98, 0.484]}>
         <boxGeometry args={[1.40, 0.40, 0.006]} />
-        <meshStandardMaterial color="#f5a042" emissive="#f5a042"
+        <meshStandardMaterial color="#ffffff" emissive="#ffffff"
           emissiveIntensity={0.30} transparent opacity={0.50} />
       </mesh>
       {/* Canopy overhang */}

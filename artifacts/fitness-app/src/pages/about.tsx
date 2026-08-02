@@ -52,7 +52,7 @@ function CSSCubeFallback() {
           animation: "cssBuildingFloat 4s ease-in-out infinite",
         }}>
           {/* Antenna + red beacon */}
-          <div style={{ width: 1.5, height: 18, background: "#c8a855", marginBottom: 0 }} />
+          <div style={{ width: 1.5, height: 18, background: "#ffffff", marginBottom: 0 }} />
           <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ff0000",
             boxShadow: "0 0 8px #ff0000, 0 0 16px #ff000066", marginTop: -2,
             animation: "cssBuildingPulse 1.2s ease-in-out infinite" }} />
@@ -61,12 +61,12 @@ function CSSCubeFallback() {
           <div style={{
             width: 108, marginTop: 2,
             background: "#1a3358",
-            border: "1px solid #c8a85544",
-            borderTop: "2px solid #c8a855",
-            borderBottom: "1px solid #c8a85566",
+            border: "1px solid #ffffff44",
+            borderTop: "2px solid #ffffff",
+            borderBottom: "1px solid #ffffff66",
             padding: "5px 6px 5px",
             display: "flex", flexDirection: "column", alignItems: "center", gap: 1,
-            boxShadow: "0 0 12px #c8a85522",
+            boxShadow: "0 0 12px #ffffff22",
           }}>
             <div style={{
               fontSize: 9, fontFamily: "sans-serif", letterSpacing: "0.12em",
@@ -79,12 +79,12 @@ function CSSCubeFallback() {
           <div style={{
             width: 108, flex: 1, position: "relative",
             display: "flex", alignItems: "stretch",
-            boxShadow: "0 0 40px #f5a04222",
+            boxShadow: "0 0 40px #ffffff22",
           }}>
             {/* Left wing */}
             <div style={{
               width: 28, background: "#0d1b2e",
-              borderLeft: "2px solid #c8a855",
+              borderLeft: "2px solid #ffffff",
               position: "relative", overflow: "hidden",
             }}>
               {/* Amber floor lines */}
@@ -92,7 +92,7 @@ function CSSCubeFallback() {
                 <div key={i} style={{
                   position: "absolute", left: 2, right: 2,
                   top: `${8 + i * 8}%`, height: 1.5,
-                  background: "#d4833a", boxShadow: "0 0 4px #d4833a", opacity: 0.75,
+                  background: "#ffffff", boxShadow: "0 0 4px #ffffff", opacity: 0.75,
                 }} />
               ))}
             </div>
@@ -101,15 +101,15 @@ function CSSCubeFallback() {
             <div style={{
               flex: 1, background: "linear-gradient(135deg, #112240 0%, #1a3060 50%, #0f1e35 100%)",
               borderRadius: "40%", overflow: "hidden", position: "relative",
-              boxShadow: "inset 0 0 20px #f5a04233",
+              boxShadow: "inset 0 0 20px #ffffff33",
             }}>
               {/* Cylinder floor rings */}
               {Array.from({ length: 12 }, (_, i) => (
                 <div key={i} style={{
                   position: "absolute", left: "5%", right: "5%",
                   top: `${6 + i * 8}%`, height: 1.5,
-                  background: "#d4833a", borderRadius: "50%",
-                  boxShadow: "0 0 5px #d4833a88", opacity: 0.80,
+                  background: "#ffffff", borderRadius: "50%",
+                  boxShadow: "0 0 5px #ffffff88", opacity: 0.80,
                 }} />
               ))}
             </div>
@@ -117,14 +117,14 @@ function CSSCubeFallback() {
             {/* Right wing */}
             <div style={{
               width: 28, background: "#0d1b2e",
-              borderRight: "2px solid #c8a855",
+              borderRight: "2px solid #ffffff",
               position: "relative", overflow: "hidden",
             }}>
               {Array.from({ length: 12 }, (_, i) => (
                 <div key={i} style={{
                   position: "absolute", left: 2, right: 2,
                   top: `${8 + i * 8}%`, height: 1.5,
-                  background: "#d4833a", boxShadow: "0 0 4px #d4833a", opacity: 0.75,
+                  background: "#ffffff", boxShadow: "0 0 4px #ffffff", opacity: 0.75,
                 }} />
               ))}
             </div>
@@ -134,8 +134,8 @@ function CSSCubeFallback() {
           <div style={{
             width: 118, height: 22,
             background: "#0d1b2e",
-            borderTop: "1.5px solid #c8a855",
-            boxShadow: "0 0 14px #f5a04244",
+            borderTop: "1.5px solid #ffffff",
+            boxShadow: "0 0 14px #ffffff44",
             position: "relative", overflow: "hidden",
           }}>
             {/* Warm amber glass glow across lobby front */}
