@@ -410,177 +410,184 @@ function ConnectionLines({
   );
 }
 
-// ─── Company Building ──────────────────────────────────────────────────────
+// ─── Company Building (reference: dark-navy HQ tower) ─────────────────────
 function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
-  const groupRef   = useRef<THREE.Group>(null!);
-  const lightRef   = useRef<THREE.PointLight>(null!);
-  const spireRef   = useRef<THREE.Mesh>(null!);
-  const beaconRef  = useRef<THREE.Mesh>(null!);
+  const groupRef  = useRef<THREE.Group>(null!);
+  const interiorRef = useRef<THREE.PointLight>(null!);
+  const lobbyRef  = useRef<THREE.PointLight>(null!);
+  const beaconRef = useRef<THREE.Mesh>(null!);
 
   useFrame(({ clock }) => {
-    const t   = clock.elapsedTime;
-    const s   = scrollRef.current;
-    const pulse = Math.sin(t * 2.2) * 0.5 + 1;
-    const fullBloom = ss(clamp((s - 0.72) / 0.12));
-
-    // Interior light breathes and intensifies with scroll
-    lightRef.current.intensity = (4 + fullBloom * 8) * pulse;
-
-    // Rooftop beacon blinks
+    const t = clock.elapsedTime;
+    const s = scrollRef.current;
+    const breathe = Math.sin(t * 1.6) * 0.3 + 1;
+    const bloom   = ss(clamp((s - 0.72) / 0.12));
+    interiorRef.current.intensity = (2 + bloom * 5) * breathe;
+    lobbyRef.current.intensity    = (3 + bloom * 4) * breathe;
     const bMat = beaconRef.current.material as THREE.MeshStandardMaterial;
-    bMat.emissiveIntensity = Math.sin(t * 3.5) * 0.6 + 1.2;
-
-    // Gentle idle float
-    groupRef.current.position.y = Math.sin(t * 0.55) * 0.06;
+    bMat.emissiveIntensity = Math.sin(t * 4) * 0.8 + 1.4;
+    groupRef.current.position.y = Math.sin(t * 0.5) * 0.05;
   });
 
-  const ORANGE = "#ff5500";
-  const BODY   = "#080808";
-  const bodyMat = { metalness: 0.95, roughness: 0.07, color: BODY } as const;
+  // ── palette ──────────────────────────────────────────────────────────────
+  const NAVY   = "#0d1b2e";   // dark navy façade
+  const NGLASS = "#112240";   // slightly lighter for cylinder
+  const GOLD   = "#c8a855";   // warm gold trim
+  const AMBER  = "#d4833a";   // floor-line glow
+  const WHITE  = "#e8eeff";   // illuminated signage
 
-  // One colour per floor row — platform brand colours bottom → top
-  const WIN_COLORS = [
-    "#0A66C2", // LinkedIn blue
-    "#0866FF", // Facebook blue
-    "#69C9D0", // TikTok cyan
-    "#25D366", // WhatsApp green
-    "#FF0000", // YouTube red
-    "#FFFC00", // Snapchat yellow
-    "#FF0069", // Instagram pink
-    "#BD081C", // Pinterest red
-    "#FF5500", // Swissulife orange (top)
-  ];
+  // 15 evenly-spaced floor rings / lines
+  const FLOORS = Array.from({ length: 15 }, (_, i) => -1.70 + i * 0.245);
 
   return (
     <group ref={groupRef}>
-      {/* Interior glow light */}
-      <pointLight ref={lightRef} position={[0, 0, 0]} color="#ff6600" intensity={4} distance={8} />
+      {/* Warm interior cylinder glow */}
+      <pointLight ref={interiorRef} position={[0, 0, 0]}   color="#f5a042" intensity={2} distance={6} />
+      {/* Warm lobby entrance glow */}
+      <pointLight ref={lobbyRef}    position={[0, -1.8, 0.6]} color="#f5a042" intensity={3} distance={4} />
 
-      {/* ── Podium / Base ── */}
-      <mesh position={[0, -1.55, 0]}>
-        <boxGeometry args={[1.8, 0.38, 1.1]} />
-        <meshStandardMaterial {...bodyMat} />
-      </mesh>
-      {/* Podium orange trim */}
-      <mesh position={[0, -1.36, 0]}>
-        <boxGeometry args={[1.82, 0.03, 1.12]} />
-        <meshStandardMaterial color={ORANGE} emissive={ORANGE} emissiveIntensity={0.7} />
+      {/* ══ LEFT WING ══ */}
+      <mesh position={[-0.60, 0, 0]}>
+        <boxGeometry args={[0.38, 3.70, 0.72]} />
+        <meshStandardMaterial color={NAVY} metalness={0.88} roughness={0.16} />
       </mesh>
 
-      {/* ── Main Tower ── */}
-      <mesh position={[0, 0.1, 0]}>
-        <boxGeometry args={[1.1, 3.1, 0.72]} />
-        <meshStandardMaterial {...bodyMat} />
+      {/* ══ RIGHT WING ══ */}
+      <mesh position={[0.60, 0, 0]}>
+        <boxGeometry args={[0.38, 3.70, 0.72]} />
+        <meshStandardMaterial color={NAVY} metalness={0.88} roughness={0.16} />
       </mesh>
 
-      {/* ── Penthouse ── */}
-      <mesh position={[0, 1.9, 0]}>
-        <boxGeometry args={[0.78, 0.55, 0.52]} />
-        <meshStandardMaterial color="#0b0b0b" metalness={0.95} roughness={0.07} />
-      </mesh>
-      {/* Penthouse top trim */}
-      <mesh position={[0, 2.18, 0]}>
-        <boxGeometry args={[0.80, 0.03, 0.54]} />
-        <meshStandardMaterial color={ORANGE} emissive={ORANGE} emissiveIntensity={0.8} />
+      {/* ══ CENTRAL CYLINDER (curved glass atrium) ══ */}
+      <mesh position={[0, 0, 0]}>
+        <cylinderGeometry args={[0.32, 0.32, 3.72, 36]} />
+        <meshStandardMaterial color={NGLASS} metalness={0.55} roughness={0.04}
+          transparent opacity={0.82} />
       </mesh>
 
-      {/* ── Rooftop Spire ── */}
-      <mesh ref={spireRef} position={[0, 2.65, 0]}>
-        <cylinderGeometry args={[0.018, 0.018, 0.88, 8]} />
-        <meshStandardMaterial color={ORANGE} emissive="#ff3300" emissiveIntensity={0.5} />
-      </mesh>
-      {/* Beacon ball */}
-      <mesh ref={beaconRef} position={[0, 3.10, 0]}>
-        <sphereGeometry args={[0.046, 10, 10]} />
-        <meshStandardMaterial color={ORANGE} emissive={ORANGE} emissiveIntensity={1.5} />
-      </mesh>
-
-      {/* ── Vertical edge glow strips (corners of tower) ── */}
-      {([-0.555, 0.555] as number[]).map((x, i) => (
-        <mesh key={`col-${i}`} position={[x, 0.1, 0]}>
-          <boxGeometry args={[0.022, 3.12, 0.022]} />
-          <meshStandardMaterial color={ORANGE} emissive="#ff3300" emissiveIntensity={0.45} />
+      {/* ── Floor rings on cylinder ── */}
+      {FLOORS.map((y, i) => (
+        <mesh key={`cr-${i}`} position={[0, y, 0]}>
+          <torusGeometry args={[0.335, 0.011, 6, 36]} />
+          <meshStandardMaterial color={AMBER} emissive={AMBER} emissiveIntensity={0.65} />
         </mesh>
       ))}
 
-      {/* ── Window rows — front face — each row a platform colour ── */}
-      {WIN_COLORS.map((wc, i) => (
-        <mesh key={`win-f-${i}`} position={[0, -1.22 + i * 0.36, 0.363]}>
-          <boxGeometry args={[0.96, 0.055, 0.004]} />
-          <meshStandardMaterial color={wc} emissive={wc} emissiveIntensity={0.75} />
+      {/* ── Floor lines on left wing front face ── */}
+      {FLOORS.map((y, i) => (
+        <mesh key={`lf-${i}`} position={[-0.60, y, 0.364]}>
+          <boxGeometry args={[0.36, 0.014, 0.004]} />
+          <meshStandardMaterial color={AMBER} emissive={AMBER} emissiveIntensity={0.50} />
         </mesh>
       ))}
 
-      {/* ── Window rows — back face ── */}
-      {WIN_COLORS.map((wc, i) => (
-        <mesh key={`win-b-${i}`} position={[0, -1.22 + i * 0.36, -0.363]}>
-          <boxGeometry args={[0.96, 0.040, 0.004]} />
-          <meshStandardMaterial color={wc} emissive={wc} emissiveIntensity={0.30} />
+      {/* ── Floor lines on right wing front face ── */}
+      {FLOORS.map((y, i) => (
+        <mesh key={`rf-${i}`} position={[0.60, y, 0.364]}>
+          <boxGeometry args={[0.36, 0.014, 0.004]} />
+          <meshStandardMaterial color={AMBER} emissive={AMBER} emissiveIntensity={0.50} />
         </mesh>
       ))}
 
-      {/* ── Coloured edge strips ── */}
-      <mesh position={[-0.555, 0.1, 0]}>
-        <boxGeometry args={[0.022, 3.12, 0.022]} />
-        <meshStandardMaterial color="#0866FF" emissive="#0866FF" emissiveIntensity={0.55} />
+      {/* ── Outer corner gold trim strips ── */}
+      {([-0.795, 0.795] as number[]).map((x, i) => (
+        <mesh key={`ot-${i}`} position={[x, 0, 0]}>
+          <boxGeometry args={[0.020, 3.72, 0.020]} />
+          <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.70} />
+        </mesh>
+      ))}
+
+      {/* ── Inner gold trim (wing–cylinder junction) ── */}
+      {([-0.41, 0.41] as number[]).map((x, i) => (
+        <mesh key={`it-${i}`} position={[x, 0, 0]}>
+          <boxGeometry args={[0.014, 3.72, 0.014]} />
+          <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.45} />
+        </mesh>
+      ))}
+
+      {/* ══ CROWN / PARAPET ══ */}
+      <mesh position={[0, 2.05, 0]}>
+        <boxGeometry args={[1.62, 0.32, 0.76]} />
+        <meshStandardMaterial color={NAVY} metalness={0.88} roughness={0.14} />
       </mesh>
-      <mesh position={[0.555, 0.1, 0]}>
-        <boxGeometry args={[0.022, 3.12, 0.022]} />
-        <meshStandardMaterial color="#FF0069" emissive="#FF0069" emissiveIntensity={0.55} />
+      {/* Crown top gold edge */}
+      <mesh position={[0, 2.22, 0]}>
+        <boxGeometry args={[1.64, 0.022, 0.78]} />
+        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.65} />
+      </mesh>
+      {/* Crown bottom gold edge */}
+      <mesh position={[0, 1.89, 0]}>
+        <boxGeometry args={[1.64, 0.016, 0.78]} />
+        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.45} />
       </mesh>
 
-      {/* ── Company name — penthouse front face (top of building) ── */}
+      {/* ══ LOBBY / BASE ══ */}
+      <mesh position={[0, -2.05, 0]}>
+        <boxGeometry args={[1.85, 0.55, 0.95]} />
+        <meshStandardMaterial color={NAVY} metalness={0.88} roughness={0.18} />
+      </mesh>
+      {/* Lobby glass front — warm amber glow */}
+      <mesh position={[0, -1.98, 0.484]}>
+        <boxGeometry args={[1.40, 0.40, 0.006]} />
+        <meshStandardMaterial color="#f5a042" emissive="#f5a042"
+          emissiveIntensity={0.30} transparent opacity={0.50} />
+      </mesh>
+      {/* Canopy overhang */}
+      <mesh position={[0, -1.74, 0.54]}>
+        <boxGeometry args={[0.90, 0.022, 0.18]} />
+        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.55} />
+      </mesh>
+      {/* Lobby pillars */}
+      {([-0.46, 0.46] as number[]).map((x, i) => (
+        <mesh key={`lp-${i}`} position={[x, -1.86, 0.49]}>
+          <boxGeometry args={[0.035, 0.38, 0.035]} />
+          <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.45} />
+        </mesh>
+      ))}
+      {/* Lobby top gold strip */}
+      <mesh position={[0, -1.77, 0]}>
+        <boxGeometry args={[1.87, 0.018, 0.97]} />
+        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.50} />
+      </mesh>
+
+      {/* ══ ANTENNA SPIRE ══ */}
+      <mesh position={[0, 2.52, 0]}>
+        <cylinderGeometry args={[0.010, 0.010, 0.58, 8]} />
+        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.40} />
+      </mesh>
+      {/* Red beacon */}
+      <mesh ref={beaconRef} position={[0, 2.82, 0]}>
+        <sphereGeometry args={[0.024, 8, 8]} />
+        <meshStandardMaterial color="#ff0000" emissive="#ff0000" emissiveIntensity={2.0} />
+      </mesh>
+
+      {/* ══ SIGNAGE — crown front ══ */}
       <Text
-        position={[0, 1.94, 0.262]}
-        fontSize={0.110}
-        color="#ffffff"
+        position={[0, 2.06, 0.385]}
+        fontSize={0.118}
+        color={WHITE}
         anchorX="center"
         anchorY="middle"
-        maxWidth={0.74}
+        maxWidth={1.50}
         textAlign="center"
-        letterSpacing={0.13}
+        letterSpacing={0.06}
       >
-        SWISSULIFE
-      </Text>
-      <Text
-        position={[0, 1.75, 0.262]}
-        fontSize={0.076}
-        color={ORANGE}
-        anchorX="center"
-        anchorY="middle"
-        maxWidth={0.74}
-        textAlign="center"
-        letterSpacing={0.20}
-      >
-        MEDIA
+        swissulife media
       </Text>
 
-      {/* ── Company name — penthouse back face ── */}
+      {/* ══ SIGNAGE — crown back ══ */}
       <Text
-        position={[0, 1.94, -0.262]}
+        position={[0, 2.06, -0.385]}
         rotation={[0, Math.PI, 0]}
-        fontSize={0.110}
-        color="#ffffff"
+        fontSize={0.118}
+        color={WHITE}
         anchorX="center"
         anchorY="middle"
-        maxWidth={0.74}
+        maxWidth={1.50}
         textAlign="center"
-        letterSpacing={0.13}
+        letterSpacing={0.06}
       >
-        SWISSULIFE
-      </Text>
-      <Text
-        position={[0, 1.75, -0.262]}
-        rotation={[0, Math.PI, 0]}
-        fontSize={0.076}
-        color={ORANGE}
-        anchorX="center"
-        anchorY="middle"
-        maxWidth={0.74}
-        textAlign="center"
-        letterSpacing={0.20}
-      >
-        MEDIA
+        swissulife media
       </Text>
     </group>
   );
@@ -653,12 +660,12 @@ function Scene({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
 
   return (
     <>
-      {/* Environment lighting */}
-      <ambientLight intensity={0.07} />
-      <pointLight position={[ 6,  5, 4]} color="#ff6600" intensity={14} distance={22} />
-      <pointLight position={[-5, -3, 3]} color="#ff2200" intensity={8}  distance={20} />
-      <pointLight position={[ 0,  0,-6]} color="#ffffff" intensity={4}  distance={16} />
-      <pointLight position={[ 0,  6, 0]} color="#ffaa44" intensity={5}  distance={18} />
+      {/* Environment lighting — cool blue sky + warm ground bounce */}
+      <ambientLight intensity={0.10} color="#b0c8ff" />
+      <pointLight position={[ 6,  5, 4]} color="#c8d8ff" intensity={10} distance={22} />
+      <pointLight position={[-5, -3, 3]} color="#f5a042" intensity={6}  distance={20} />
+      <pointLight position={[ 0,  0,-6]} color="#9bb8ff" intensity={3}  distance={16} />
+      <pointLight position={[ 0,  6, 0]} color="#d0e4ff" intensity={4}  distance={18} />
 
       <Particles scrollRef={scrollRef} />
       <MarketingEcosystem scrollRef={scrollRef} />
