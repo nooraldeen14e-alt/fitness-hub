@@ -110,6 +110,37 @@ export default function About() {
         </div>
       </section>
 
+      {/* ── 3 COUNTRIES ── */}
+      <section className="py-16 px-6 border-t border-white/10">
+        <div className="max-w-7xl mx-auto">
+          <motion.p initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            className="font-mono text-white/30 uppercase text-xs tracking-widest mb-8">( Our Global Presence )</motion.p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              { flag: "🇦🇪", name: "UAE", city: "Dubai", desc: "Headquarters & Primary Operations" },
+              { flag: "🇸🇮", name: "Slovenia", city: "Ljubljana", desc: "European Creative Hub" },
+              { flag: "🇨🇭", name: "Switzerland", city: "Zürich", desc: "Strategy & Brand Consulting" },
+            ].map((c, i) => (
+              <motion.div
+                key={c.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12 }}
+                className="relative group rounded-2xl border border-white/10 p-8 overflow-hidden hover:border-primary/60 transition-colors duration-300"
+                style={{ background: "rgba(255,255,255,0.025)" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/8 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <span className="text-5xl mb-5 block">{c.flag}</span>
+                <h3 className="font-display font-black text-3xl text-white uppercase mb-1">{c.name}</h3>
+                <p className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: "hsl(25,100%,50%)" }}>{c.city}</p>
+                <p className="text-white/40 text-sm leading-relaxed">{c.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── MISSION ── */}
       <section className="py-24 px-6 border-t border-white/10">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
