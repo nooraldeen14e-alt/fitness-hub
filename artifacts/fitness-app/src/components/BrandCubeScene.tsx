@@ -356,9 +356,8 @@ function OrbitElement({
     const s = scrollRef.current;
     const t = clock.elapsedTime;
 
-    // Fade in
-    const appear = ss(clamp((s - def.appearsAt) / 0.09));
-    groupRef.current.scale.setScalar(appear);
+    // Always visible — no scroll gate on visibility
+    groupRef.current.scale.setScalar(1);
 
     // Orbit position
     const angle = def.speed * t + def.phase;
@@ -602,7 +601,7 @@ export function BrandCubeCanvas({ scrollRef }: { scrollRef: MutableRefObject<num
     <Canvas
       camera={{ position: [0, 1.5, 9], fov: 50, near: 0.1, far: 100 }}
       dpr={[1, window.devicePixelRatio > 1 ? 1.5 : 1]}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      gl={{ antialias: true, alpha: true }}
       style={{ background: "transparent" }}
     >
       <Scene scrollRef={scrollRef} />

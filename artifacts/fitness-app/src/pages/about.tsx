@@ -24,17 +24,65 @@ class WebGLBoundary extends Component<{ children: ReactNode; fallback: ReactNode
   render() { return this.state.failed ? this.props.fallback : this.props.children; }
 }
 
-// ─── CSS fallback (no WebGL) ─────────────────────────────────────────────────
+// ─── CSS fallback (no WebGL) — shows orbiting platform labels ────────────────
+const PLATFORM_LABELS = [
+  "Instagram", "Facebook", "TikTok", "YouTube",
+  "Twitter / X", "LinkedIn", "Reels", "Content", "Hashtag", "Analytics",
+];
+
 function CSSCubeFallback() {
   return (
-    <div className="absolute inset-0 flex items-center justify-end pr-24 pointer-events-none">
-      <div style={{ width: 320, height: 320, position: "relative" }}>
-        <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(ellipse, hsl(25,100%,50%) 0%, transparent 70%)", filter: "blur(60px)", opacity: 0.3, animation: "spin 10s linear infinite" }} />
-        {[0, 50, 100].map((d, i) => (
-          <div key={i} style={{ position: "absolute", inset: d, border: "1px solid rgba(255,85,0,0.35)", animation: `spin ${7 + i * 3}s linear infinite ${i % 2 ? "reverse" : ""}` }} />
-        ))}
-        <div style={{ position: "absolute", inset: "50%", width: 110, height: 110, transform: "translate(-50%,-50%) rotate(45deg)", background: "linear-gradient(135deg,#1a0800,#ff5500 50%,#1a0800)", animation: "spin 14s linear infinite" }} />
-        <style>{`@keyframes spin{to{transform:rotate(360deg)}} `}</style>
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+      <div style={{ width: 480, height: 480, position: "relative" }}>
+        {/* Core glow */}
+        <div style={{ position: "absolute", inset: "50%", width: 80, height: 80, transform: "translate(-50%,-50%)", borderRadius: "50%", background: "radial-gradient(circle, #ff5500 0%, #ff2200 40%, transparent 80%)", filter: "blur(8px)", animation: "cssCorePulse 2.5s ease-in-out infinite" }} />
+        {/* Core sphere */}
+        <div style={{ position: "absolute", inset: "50%", width: 48, height: 48, transform: "translate(-50%,-50%)", borderRadius: "50%", background: "radial-gradient(circle at 35% 35%, #ff6600, #cc2200)", boxShadow: "0 0 24px #ff4400, 0 0 48px #ff220066" }} />
+        {/* Equatorial ring */}
+        <div style={{ position: "absolute", inset: "50%", width: 120, height: 120, transform: "translate(-50%,-50%)", borderRadius: "50%", border: "1.5px solid rgba(255,85,0,0.6)", animation: "cssRingSpin 4s linear infinite" }} />
+        {/* Outer ring */}
+        <div style={{ position: "absolute", inset: "50%", width: 200, height: 200, transform: "translate(-50%,-50%)", borderRadius: "50%", border: "1px solid rgba(255,85,0,0.2)", animation: "cssRingSpin 12s linear infinite reverse" }} />
+
+        {/* Orbiting platform labels */}
+        {PLATFORM_LABELS.map((label, i) => {
+          const angle = (i / PLATFORM_LABELS.length) * 360;
+          const delay = -(i / PLATFORM_LABELS.length) * 9;
+          const r = i % 2 === 0 ? 175 : 155;
+          return (
+            <div
+              key={label}
+              style={{
+                position: "absolute",
+                inset: "50%",
+                width: 0,
+                height: 0,
+                animation: `cssOrbit${i % 2 === 0 ? "A" : "B"} ${i % 2 === 0 ? 9 : 11}s linear ${delay}s infinite`,
+              }}
+            >
+              <div style={{
+                position: "absolute",
+                transform: `translate(-50%, -50%) translateX(${r}px)`,
+                whiteSpace: "nowrap",
+                fontSize: 10,
+                fontFamily: "monospace",
+                letterSpacing: "0.1em",
+                color: "hsl(25,100%,55%)",
+                textShadow: "0 0 8px hsl(25,100%,50%)",
+                fontWeight: 600,
+                textTransform: "uppercase",
+              }}>
+                {label}
+              </div>
+            </div>
+          );
+        })}
+
+        <style>{`
+          @keyframes cssCorePulse { 0%,100%{opacity:0.7;transform:translate(-50%,-50%) scale(1)} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.3)} }
+          @keyframes cssRingSpin  { to{transform:translate(-50%,-50%) rotate(360deg)} }
+          @keyframes cssOrbitA    { from{transform:translate(-50%,-50%) rotate(0deg)}   to{transform:translate(-50%,-50%) rotate(360deg)} }
+          @keyframes cssOrbitB    { from{transform:translate(-50%,-50%) rotate(0deg)}   to{transform:translate(-50%,-50%) rotate(-360deg)} }
+        `}</style>
       </div>
     </div>
   );
