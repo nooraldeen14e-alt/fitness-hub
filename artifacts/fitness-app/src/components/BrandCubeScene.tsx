@@ -14,16 +14,21 @@ const ss  = (t: number) => { const c = Math.max(0, Math.min(1, t)); return c * c
 const lp  = (a: number, b: number, t: number) => a + (b - a) * t;
 const clamp = (v: number, lo = 0, hi = 1) => Math.max(lo, Math.min(hi, v));
 
-// ─── Camera keyframes — identical to previous version ─────────────────────
+// ─── Camera keyframes — orbit around building through the icon cloud ───────
+// Camera sweeps a full 360° around the building at roughly the same radius as
+// the orbiting social icons (r ≈ 3.5–5.5), so scrolling feels like flying
+// through the constellation of platforms.
 const CAM_KF = [
-  [0.00,  0,   1.5,   9.0],
-  [0.15,  0,   0.3,   6.0],
-  [0.28,  5.5, 1.0,   4.5],
-  [0.42,  4.0, 2.5,  -3.5],
-  [0.57, -5.5, 0.5,   3.0],
-  [0.71,  1.0,-3.5,   5.0],
-  [0.85,  0,   2.0,  10.0],
-  [1.00,  0,   0,     3.2],
+  [0.00,   0,   2.0,  8.5],   // opening wide shot — building in frame
+  [0.10,   0,   1.5,  5.5],   // glide in toward icon orbit
+  [0.20,  -3.5, 0.8,  3.5],   // sweep left — first icons close by
+  [0.32,  -5.2, 0.3,  0.0],   // left side of building
+  [0.44,  -3.5,-0.5, -3.5],   // back-left — passing behind
+  [0.55,   0,   0.5, -5.5],   // directly behind — building dead ahead
+  [0.66,   4.0, 1.0, -3.5],   // back-right
+  [0.76,   5.5, 1.5,  0.0],   // right side
+  [0.86,   3.5, 2.0,  4.0],   // front-right — returning
+  [1.00,   0,   1.5,  5.5],   // front settled — full orbit complete
 ];
 
 function getCamPos(s: number): [number, number, number] {
@@ -344,7 +349,7 @@ function OrbitElement({
   });
 
   return (
-    <group ref={groupRef} scale={0}>
+    <group ref={groupRef} scale={1}>
       <MeshComp />
     </group>
   );
