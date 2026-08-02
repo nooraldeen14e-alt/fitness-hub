@@ -499,8 +499,6 @@ const OurClients = () => {
     { name: "Liv Bank",       logoUrl: local("liv.svg") },
     { name: "StarzPlay",      logoUrl: local("starzplay.png") },
     { name: "Tilda",          logoUrl: local("tilda.svg") },
-    { name: "Rani",           logoUrl: local("rani.png") },
-    { name: "Corniche Hotel", logoUrl: local("corniche.png") },
   ];
 
   return (
