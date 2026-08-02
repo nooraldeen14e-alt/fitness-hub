@@ -46,14 +46,51 @@ function CSSCubeFallback() {
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
       <div style={{ width: 480, height: 480, position: "relative" }}>
-        {/* Core glow */}
-        <div style={{ position: "absolute", inset: "50%", width: 80, height: 80, transform: "translate(-50%,-50%)", borderRadius: "50%", background: "radial-gradient(circle, #ff5500 0%, #ff2200 40%, transparent 80%)", filter: "blur(8px)", animation: "cssCorePulse 2.5s ease-in-out infinite" }} />
-        {/* Core sphere */}
-        <div style={{ position: "absolute", inset: "50%", width: 48, height: 48, transform: "translate(-50%,-50%)", borderRadius: "50%", background: "radial-gradient(circle at 35% 35%, #ff6600, #cc2200)", boxShadow: "0 0 24px #ff4400, 0 0 48px #ff220066" }} />
-        {/* Equatorial ring */}
-        <div style={{ position: "absolute", inset: "50%", width: 120, height: 120, transform: "translate(-50%,-50%)", borderRadius: "50%", border: "1.5px solid rgba(255,85,0,0.6)", animation: "cssRingSpin 4s linear infinite" }} />
-        {/* Outer ring */}
-        <div style={{ position: "absolute", inset: "50%", width: 200, height: 200, transform: "translate(-50%,-50%)", borderRadius: "50%", border: "1px solid rgba(255,85,0,0.2)", animation: "cssRingSpin 12s linear infinite reverse" }} />
+        {/* ── CSS Building ── */}
+        <div style={{
+          position: "absolute", inset: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 88, height: 190,
+          display: "flex", flexDirection: "column", alignItems: "center",
+          animation: "cssBuildingFloat 4s ease-in-out infinite",
+        }}>
+          {/* Beacon */}
+          <div style={{ width: 2, height: 22, background: "#ff5500", boxShadow: "0 0 6px #ff4400", marginBottom: 0, animation: "cssBuildingPulse 1.4s ease-in-out infinite" }} />
+          <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#ff5500", boxShadow: "0 0 10px #ff4400, 0 0 20px #ff220066", marginTop: -3, animation: "cssBuildingPulse 1.4s ease-in-out infinite" }} />
+
+          {/* Penthouse */}
+          <div style={{ width: 54, background: "#111", border: "1px solid #ff550033", marginTop: 2, padding: "4px 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+            <div style={{ width: 44, height: 2, background: "#ff5500", opacity: 0.9, boxShadow: "0 0 6px #ff4400" }} />
+            <div style={{ width: 44, height: 2, background: "#ff5500", opacity: 0.5 }} />
+          </div>
+
+          {/* Main tower */}
+          <div style={{
+            width: 80, flex: 1, background: "linear-gradient(180deg, #111 0%, #0a0a0a 100%)",
+            border: "1px solid #1a1a1a", borderTop: "none",
+            display: "flex", flexDirection: "column", alignItems: "center",
+            overflow: "hidden", position: "relative", gap: 0,
+            boxShadow: "0 0 30px #ff440022, inset 0 0 20px #ff330011",
+          }}>
+            {/* Orange vertical edge lines */}
+            <div style={{ position: "absolute", left: 0,  top: 0, bottom: 0, width: 1.5, background: "linear-gradient(180deg,#ff5500,#ff220055)", opacity: 0.6 }} />
+            <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 1.5, background: "linear-gradient(180deg,#ff5500,#ff220055)", opacity: 0.6 }} />
+
+            {/* Company name */}
+            <div style={{ marginTop: 8, marginBottom: 4, textAlign: "center", lineHeight: 1.1 }}>
+              <div style={{ fontSize: 8.5, fontFamily: "monospace", letterSpacing: "0.18em", color: "#ff5500", textShadow: "0 0 8px #ff4400", fontWeight: 700 }}>SWISSULIFE</div>
+              <div style={{ fontSize: 6.5, fontFamily: "monospace", letterSpacing: "0.22em", color: "#cc4400", marginTop: 2 }}>MEDIA</div>
+            </div>
+
+            {/* Window rows */}
+            {Array.from({ length: 7 }, (_, i) => (
+              <div key={i} style={{ width: 68, height: 2, background: "#ff5500", opacity: i >= 5 ? 0.75 : 0.22, boxShadow: i >= 5 ? "0 0 4px #ff4400" : "none", marginBottom: 8 }} />
+            ))}
+          </div>
+
+          {/* Podium base */}
+          <div style={{ width: 88, height: 14, background: "#111", borderTop: "2px solid #ff5500", boxShadow: "0 0 8px #ff440044" }} />
+        </div>
 
         {/* Orbiting platform labels */}
         {PLATFORM_ICONS.map(({ name, color, icon }, i) => {
@@ -116,10 +153,10 @@ function CSSCubeFallback() {
         })}
 
         <style>{`
-          @keyframes cssCorePulse { 0%,100%{opacity:0.7;transform:translate(-50%,-50%) scale(1)} 50%{opacity:1;transform:translate(-50%,-50%) scale(1.3)} }
-          @keyframes cssRingSpin  { to{transform:translate(-50%,-50%) rotate(360deg)} }
-          @keyframes cssOrbitA    { from{transform:translate(-50%,-50%) rotate(0deg)}   to{transform:translate(-50%,-50%) rotate(360deg)} }
-          @keyframes cssOrbitB    { from{transform:translate(-50%,-50%) rotate(0deg)}   to{transform:translate(-50%,-50%) rotate(-360deg)} }
+          @keyframes cssBuildingFloat { 0%,100%{transform:translate(-50%,-50%) translateY(0px)} 50%{transform:translate(-50%,-50%) translateY(-6px)} }
+          @keyframes cssBuildingPulse { 0%,100%{opacity:0.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.25)} }
+          @keyframes cssOrbitA        { from{transform:translate(-50%,-50%) rotate(0deg)}   to{transform:translate(-50%,-50%) rotate(360deg)} }
+          @keyframes cssOrbitB        { from{transform:translate(-50%,-50%) rotate(0deg)}   to{transform:translate(-50%,-50%) rotate(-360deg)} }
         `}</style>
       </div>
     </div>

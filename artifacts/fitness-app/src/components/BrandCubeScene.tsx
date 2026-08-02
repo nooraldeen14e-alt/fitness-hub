@@ -5,6 +5,7 @@
  */
 import { useRef, useMemo, type MutableRefObject } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+import { Text } from "@react-three/drei";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 
@@ -409,75 +410,164 @@ function ConnectionLines({
   );
 }
 
-// ─── Central Core ──────────────────────────────────────────────────────────
-function CentralCore({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
-  const outerRef  = useRef<THREE.Mesh>(null!);
-  const innerRef  = useRef<THREE.Mesh>(null!);
-  const ringRef   = useRef<THREE.Mesh>(null!);
-  const lightRef  = useRef<THREE.PointLight>(null!);
+// ─── Company Building ──────────────────────────────────────────────────────
+function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
+  const groupRef   = useRef<THREE.Group>(null!);
+  const lightRef   = useRef<THREE.PointLight>(null!);
+  const spireRef   = useRef<THREE.Mesh>(null!);
+  const beaconRef  = useRef<THREE.Mesh>(null!);
 
   useFrame(({ clock }) => {
-    const s = scrollRef.current;
-    const t = clock.elapsedTime;
-    const pulse = Math.sin(t * 2.4) * 0.06;
-    const sectionProgress = clamp(s / 0.15);       // 0→1 as section 1 plays
-    const fullBloom = ss(clamp((s - 0.72) / 0.12)); // max in section 6
+    const t   = clock.elapsedTime;
+    const s   = scrollRef.current;
+    const pulse = Math.sin(t * 2.2) * 0.5 + 1;
+    const fullBloom = ss(clamp((s - 0.72) / 0.12));
 
-    const glow = lp(0.6, 2.8, fullBloom) + pulse;
-    const iMat = innerRef.current.material as THREE.MeshStandardMaterial;
-    const oMat = outerRef.current.material as THREE.MeshStandardMaterial;
-    iMat.emissiveIntensity = glow;
-    oMat.emissiveIntensity = glow * 0.25;
-    lightRef.current.intensity = glow * 10 + pulse * 4;
+    // Interior light breathes and intensifies with scroll
+    lightRef.current.intensity = (4 + fullBloom * 8) * pulse;
 
-    // Outer shell breathes
-    const sc = 1 + Math.sin(t * 1.8) * 0.04;
-    outerRef.current.scale.setScalar(sc);
+    // Rooftop beacon blinks
+    const bMat = beaconRef.current.material as THREE.MeshStandardMaterial;
+    bMat.emissiveIntensity = Math.sin(t * 3.5) * 0.6 + 1.2;
 
-    // Equatorial ring rotates
-    ringRef.current.rotation.y = t * 0.5;
-    ringRef.current.rotation.x = t * 0.3;
-
-    // Core sphere visible only once scroll begins (starts on load)
-    innerRef.current.visible = true;
+    // Gentle idle float
+    groupRef.current.position.y = Math.sin(t * 0.55) * 0.06;
   });
 
+  const ORANGE = "#ff5500";
+  const BODY   = "#080808";
+  const bodyMat = { metalness: 0.95, roughness: 0.07, color: BODY } as const;
+
+  // Window rows on front face (z = +0.36 face of main tower)
+  const WINDOW_ROWS = 9;
+
   return (
-    <>
-      <pointLight ref={lightRef} color="#ff5500" intensity={6} distance={10} />
+    <group ref={groupRef}>
+      {/* Interior glow light */}
+      <pointLight ref={lightRef} position={[0, 0, 0]} color="#ff6600" intensity={4} distance={8} />
 
-      {/* Outer glass shell */}
-      <mesh ref={outerRef}>
-        <sphereGeometry args={[0.55, 32, 32]} />
-        <meshStandardMaterial
-          color="#0a0a0a"
-          emissive="#ff3300"
-          emissiveIntensity={0.15}
-          metalness={0.1}
-          roughness={0.0}
-          transparent
-          opacity={0.18}
-        />
+      {/* ── Podium / Base ── */}
+      <mesh position={[0, -1.55, 0]}>
+        <boxGeometry args={[1.8, 0.38, 1.1]} />
+        <meshStandardMaterial {...bodyMat} />
+      </mesh>
+      {/* Podium orange trim */}
+      <mesh position={[0, -1.36, 0]}>
+        <boxGeometry args={[1.82, 0.03, 1.12]} />
+        <meshStandardMaterial color={ORANGE} emissive={ORANGE} emissiveIntensity={0.7} />
       </mesh>
 
-      {/* Inner core */}
-      <mesh ref={innerRef}>
-        <sphereGeometry args={[0.32, 32, 32]} />
-        <meshStandardMaterial
-          color="#ff4400"
-          emissive="#ff2200"
-          emissiveIntensity={0.8}
-          metalness={0.2}
-          roughness={0.4}
-        />
+      {/* ── Main Tower ── */}
+      <mesh position={[0, 0.1, 0]}>
+        <boxGeometry args={[1.1, 3.1, 0.72]} />
+        <meshStandardMaterial {...bodyMat} />
       </mesh>
 
-      {/* Equatorial ring */}
-      <mesh ref={ringRef}>
-        <torusGeometry args={[0.62, 0.018, 8, 64]} />
-        <meshStandardMaterial color="#ff5500" emissive="#ff4400" emissiveIntensity={0.7} />
+      {/* ── Penthouse ── */}
+      <mesh position={[0, 1.9, 0]}>
+        <boxGeometry args={[0.78, 0.55, 0.52]} />
+        <meshStandardMaterial color="#0b0b0b" metalness={0.95} roughness={0.07} />
       </mesh>
-    </>
+      {/* Penthouse top trim */}
+      <mesh position={[0, 2.18, 0]}>
+        <boxGeometry args={[0.80, 0.03, 0.54]} />
+        <meshStandardMaterial color={ORANGE} emissive={ORANGE} emissiveIntensity={0.8} />
+      </mesh>
+
+      {/* ── Rooftop Spire ── */}
+      <mesh ref={spireRef} position={[0, 2.65, 0]}>
+        <cylinderGeometry args={[0.018, 0.018, 0.88, 8]} />
+        <meshStandardMaterial color={ORANGE} emissive="#ff3300" emissiveIntensity={0.5} />
+      </mesh>
+      {/* Beacon ball */}
+      <mesh ref={beaconRef} position={[0, 3.10, 0]}>
+        <sphereGeometry args={[0.046, 10, 10]} />
+        <meshStandardMaterial color={ORANGE} emissive={ORANGE} emissiveIntensity={1.5} />
+      </mesh>
+
+      {/* ── Vertical edge glow strips (corners of tower) ── */}
+      {([-0.555, 0.555] as number[]).map((x, i) => (
+        <mesh key={`col-${i}`} position={[x, 0.1, 0]}>
+          <boxGeometry args={[0.022, 3.12, 0.022]} />
+          <meshStandardMaterial color={ORANGE} emissive="#ff3300" emissiveIntensity={0.45} />
+        </mesh>
+      ))}
+
+      {/* ── Window rows — front face (z+) ── */}
+      {Array.from({ length: WINDOW_ROWS }, (_, i) => {
+        const y    = -1.22 + i * 0.36;
+        const top  = i >= WINDOW_ROWS - 2;               // top floors brighter
+        const glow = top ? 0.95 : 0.30;
+        return (
+          <mesh key={`win-f-${i}`} position={[0, y, 0.363]}>
+            <boxGeometry args={[0.96, 0.055, 0.004]} />
+            <meshStandardMaterial color={ORANGE} emissive={ORANGE} emissiveIntensity={glow} />
+          </mesh>
+        );
+      })}
+
+      {/* ── Window rows — back face (z-) ── */}
+      {Array.from({ length: WINDOW_ROWS }, (_, i) => (
+        <mesh key={`win-b-${i}`} position={[0, -1.22 + i * 0.36, -0.363]}>
+          <boxGeometry args={[0.96, 0.040, 0.004]} />
+          <meshStandardMaterial color={ORANGE} emissive={ORANGE} emissiveIntensity={0.18} />
+        </mesh>
+      ))}
+
+      {/* ── Company name on front face ── */}
+      <Text
+        position={[0, 0.62, 0.370]}
+        fontSize={0.115}
+        color={ORANGE}
+        anchorX="center"
+        anchorY="middle"
+        maxWidth={0.92}
+        textAlign="center"
+        letterSpacing={0.12}
+      >
+        SWISSULIFE
+      </Text>
+      <Text
+        position={[0, 0.36, 0.370]}
+        fontSize={0.082}
+        color="#cc4400"
+        anchorX="center"
+        anchorY="middle"
+        maxWidth={0.92}
+        textAlign="center"
+        letterSpacing={0.18}
+      >
+        MEDIA
+      </Text>
+
+      {/* ── Company name on back face ── */}
+      <Text
+        position={[0, 0.62, -0.370]}
+        rotation={[0, Math.PI, 0]}
+        fontSize={0.115}
+        color={ORANGE}
+        anchorX="center"
+        anchorY="middle"
+        maxWidth={0.92}
+        textAlign="center"
+        letterSpacing={0.12}
+      >
+        SWISSULIFE
+      </Text>
+      <Text
+        position={[0, 0.36, -0.370]}
+        rotation={[0, Math.PI, 0]}
+        fontSize={0.082}
+        color="#cc4400"
+        anchorX="center"
+        anchorY="middle"
+        maxWidth={0.92}
+        textAlign="center"
+        letterSpacing={0.18}
+      >
+        MEDIA
+      </Text>
+    </group>
   );
 }
 
@@ -526,7 +616,7 @@ function MarketingEcosystem({ scrollRef }: { scrollRef: MutableRefObject<number>
 
   return (
     <group ref={groupRef}>
-      <CentralCore scrollRef={scrollRef} />
+      <CompanyBuilding scrollRef={scrollRef} />
       {ELEMENTS.map((def, i) => (
         <OrbitElement key={def.name} def={def} index={i} scrollRef={scrollRef} posRef={posRef} />
       ))}
