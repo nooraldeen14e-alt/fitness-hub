@@ -14,6 +14,32 @@ import {
   SiCarrefour, SiDior, SiFarfetch,
 } from "react-icons/si";
 
+/* ── Local client logo PNGs ── */
+import logoDha        from "@assets/logos/dha.png";
+import logoDhaBld     from "@assets/logos/dha-building.png";
+import logoFaridBp    from "@assets/logos/farid-bp.png";
+import logoMultiplierz from "@assets/logos/multiplierz.png";
+import logoMediaGal   from "@assets/logos/media-galleria.png";
+import logoTheGardens from "@assets/logos/the-gardens.png";
+import logoMidtown    from "@assets/logos/midtown.png";
+import logoNorthstones from "@assets/logos/northstones.png";
+import logoChooye     from "@assets/logos/chooye-khana.png";
+import logoTaus       from "@assets/logos/taus.png";
+import logoCasaRica   from "@assets/logos/casa-rica.png";
+import logoGloriaJeans from "@assets/logos/gloria-jeans.png";
+import logoSpiceFactory from "@assets/logos/spice-factory.png";
+import logoSubway     from "@assets/logos/subway.png";
+import logoEnglishTable from "@assets/logos/english-table.png";
+import logoDrNadas    from "@assets/logos/dr-nadas.png";
+import logoBeyondPhysio from "@assets/logos/beyond-physio.png";
+import logoGulAhmed   from "@assets/logos/gul-ahmed.png";
+import logoJazz       from "@assets/logos/jazz.png";
+import logoHumNetwork from "@assets/logos/hum-network.png";
+import logoSerenaHotels from "@assets/logos/serena-hotels.png";
+import logoArnNews    from "@assets/logos/arn-news.png";
+import logoLovinDubai from "@assets/logos/lovin-dubai.png";
+import logoBritishEmbassy from "@assets/logos/british-embassy.png";
+
 /* ── Glowing cursor ── */
 const GlowCursor = () => {
   const [pos, setPos] = React.useState({ x: -200, y: -200 });
@@ -341,20 +367,30 @@ const Hero = () => {
 
 
 
-/* ── Client card: icon or text fallback ── */
+/* ── Client card: PNG image | coloured icon | text fallback ── */
 type IconComponent = React.ComponentType<{ size?: number; color?: string }>;
 
-const ClientCard = ({ name, Icon }: { name: string; Icon?: IconComponent }) => {
+const ClientCard = ({
+  name,
+  img,
+  Icon,
+  iconColor = "#222",
+}: {
+  name: string;
+  img?: string;
+  Icon?: IconComponent;
+  iconColor?: string;
+}) => {
   const [tilt, setTilt] = React.useState<React.CSSProperties>({});
-  const fontSize = name.length > 16 ? "0.6rem" : name.length > 12 ? "0.7rem" : name.length > 8 ? "0.8rem" : "0.9rem";
+  const fontSize = name.length > 16 ? "0.58rem" : name.length > 12 ? "0.68rem" : name.length > 8 ? "0.78rem" : "0.9rem";
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
     const x = (e.clientX - left) / width - 0.5;
     const y = (e.clientY - top) / height - 0.5;
     setTilt({
-      transform: `perspective(500px) rotateY(${x * 22}deg) rotateX(${-y * 22}deg) scale(1.08)`,
-      boxShadow: `${-x * 14}px ${y * 14}px 28px rgba(255,100,0,0.3)`,
+      transform: `perspective(500px) rotateY(${x * 20}deg) rotateX(${-y * 20}deg) scale(1.07)`,
+      boxShadow: `${-x * 12}px ${y * 12}px 24px rgba(255,100,0,0.25)`,
       transition: "transform 0.08s ease, box-shadow 0.08s ease",
       zIndex: 10,
     });
@@ -372,14 +408,16 @@ const ClientCard = ({ name, Icon }: { name: string; Icon?: IconComponent }) => {
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       style={{ willChange: "transform", ...tilt }}
-      className="bg-[#111] border border-white/8 rounded-2xl aspect-square flex items-center justify-center p-4 cursor-default overflow-hidden"
+      className="bg-white rounded-2xl aspect-square flex items-center justify-center p-4 cursor-default overflow-hidden"
     >
-      {Icon ? (
-        <Icon size={52} color="rgba(255,255,255,0.85)" />
+      {img ? (
+        <img src={img} alt={name} className="w-full h-full object-contain" />
+      ) : Icon ? (
+        <Icon size={54} color={iconColor} />
       ) : (
         <span
-          className="text-center font-sans font-semibold text-white/85 leading-tight px-1"
-          style={{ fontSize }}
+          className="text-center font-sans font-bold leading-tight px-1"
+          style={{ fontSize, color: "#222" }}
         >
           {name}
         </span>
@@ -389,90 +427,78 @@ const ClientCard = ({ name, Icon }: { name: string; Icon?: IconComponent }) => {
 };
 
 const OurClients = () => {
-  const clients: { name: string; Icon?: IconComponent }[] = [
-    // ── Image 1 ──
+  type Client = { name: string; img?: string; Icon?: IconComponent; iconColor?: string };
+  const clients: Client[] = [
+    // ── Uploaded PNG logos ──
+    { name: "DHA",               img: logoDha },
+    { name: "DHA Building Dreams", img: logoDhaBld },
+    { name: "Farid Business Park", img: logoFaridBp },
+    { name: "Multiplierz Group", img: logoMultiplierz },
+    { name: "Media Galleria",    img: logoMediaGal },
+    { name: "The Gardens",       img: logoTheGardens },
+    { name: "Midtown",           img: logoMidtown },
+    { name: "Northstones",       img: logoNorthstones },
+    { name: "Chooye Khana",      img: logoChooye },
+    { name: "Tau's",             img: logoTaus },
+    { name: "Casa Rica",         img: logoCasaRica },
+    { name: "Gloria Jean's",     img: logoGloriaJeans },
+    { name: "Spice Factory",     img: logoSpiceFactory },
+    { name: "Subway",            img: logoSubway },
+    { name: "The English Table", img: logoEnglishTable },
+    { name: "Dr Nadas Clinic",   img: logoDrNadas },
+    { name: "Beyond Physio",     img: logoBeyondPhysio },
+    { name: "Gul Ahmed",         img: logoGulAhmed },
+    { name: "Jazz",              img: logoJazz },
+    { name: "HUM Network",       img: logoHumNetwork },
+    { name: "Serena Hotels",     img: logoSerenaHotels },
+    { name: "ARN News",          img: logoArnNews },
+    { name: "Lovin Dubai",       img: logoLovinDubai },
+    { name: "British Embassy",   img: logoBritishEmbassy },
+    // ── International brands via react-icons (brand colours) ──
+    { name: "Toyota",      Icon: SiToyota,      iconColor: "#EB0A1E" },
+    { name: "Audi",        Icon: SiAudi,        iconColor: "#BB0A14" },
+    { name: "Volkswagen",  Icon: SiVolkswagen,  iconColor: "#001E50" },
+    { name: "Rolls Royce", Icon: SiRollsroyce,  iconColor: "#2A2A2A" },
+    { name: "Ferrari",     Icon: SiFerrari,     iconColor: "#D40000" },
+    { name: "Porsche",     Icon: SiPorsche,     iconColor: "#1D1D1B" },
+    { name: "Infiniti",    Icon: SiInfiniti,    iconColor: "#1A1A1A" },
+    { name: "Apple",       Icon: SiApple,       iconColor: "#555555" },
+    { name: "Samsung",     Icon: SiSamsung,     iconColor: "#1428A0" },
+    { name: "Adidas",      Icon: SiAdidas,      iconColor: "#000000" },
+    { name: "Dior",        Icon: SiDior,        iconColor: "#111111" },
+    { name: "Farfetch",    Icon: SiFarfetch,    iconColor: "#272727" },
+    { name: "KFC",         Icon: SiKfc,         iconColor: "#F40027" },
+    { name: "McDonald's",  Icon: SiMcdonalds,   iconColor: "#FFC72C" },
+    { name: "DHL",         Icon: SiDhl,         iconColor: "#FFCC00" },
+    { name: "Red Bull",    Icon: SiRedbull,     iconColor: "#CC1B28" },
+    { name: "Deliveroo",   Icon: SiDeliveroo,   iconColor: "#00CCBC" },
+    { name: "Carrefour",   Icon: SiCarrefour,   iconColor: "#003399" },
+    // ── Remaining text-only ──
     { name: "Tilda" },
     { name: "Casa Milano" },
-    { name: "Dream Dive" },
-    { name: "Toyota",              Icon: SiToyota },
-    { name: "Samana Developers" },
+    { name: "Samana Dev." },
     { name: "VIP & Protocol" },
-    { name: "ELE" },
-    { name: "Farfetch",            Icon: SiFarfetch },
-    { name: "Audi",                Icon: SiAudi },
-    { name: "Rashed" },
     { name: "SAVVA" },
-    { name: "Rolls Royce",         Icon: SiRollsroyce },
-    { name: "X-Space Real Estate" },
+    { name: "X-Space RE" },
     { name: "Fashion Factor" },
-    { name: "Sharjah Golf & Shooting" },
-    { name: "Casa Di Spicca" },
     { name: "Mazzika" },
-    { name: "Operation Level Up" },
     { name: "MASH Coffee" },
     { name: "Twisted Olive" },
-    { name: "Fouziana" },
     { name: "LinkinCard" },
-    // ── Image 2 ──
-    { name: "Infiniti",            Icon: SiInfiniti },
-    { name: "Volkswagen",          Icon: SiVolkswagen },
-    { name: "Apple",               Icon: SiApple },
     { name: "Noon" },
-    { name: "O Boticário" },
-    { name: "Adidas",              Icon: SiAdidas },
-    { name: "CAFU" },
-    { name: "MERAA" },
-    { name: "StarzPlay" },
-    { name: "URBERR" },
     { name: "Emaar" },
-    { name: "Dior",                Icon: SiDior },
     { name: "L'Oréal" },
-    { name: "Elizabeth Arden" },
-    { name: "The Dubai Mall" },
     { name: "Chanel" },
-    { name: "MAC" },
-    { name: "Oreo" },
-    { name: "Power Horse" },
-    { name: "Babyshop" },
-    { name: "Costa Coffee" },
-    { name: "KFC",                 Icon: SiKfc },
-    { name: "DHL",                 Icon: SiDhl },
-    { name: "Red Bull",            Icon: SiRedbull },
-    { name: "Samsung",             Icon: SiSamsung },
-    { name: "Amazon" },
-    { name: "Al Ain Farms" },
-    { name: "McDonald's",          Icon: SiMcdonalds },
-    { name: "Quaker" },
-    { name: "Deliveroo",           Icon: SiDeliveroo },
-    { name: "Canon" },
-    { name: "Liv" },
-    { name: "Porsche",             Icon: SiPorsche },
-    { name: "Talabat" },
-    // ── Image 3 ──
-    { name: "Sharjah Paintball" },
-    { name: "Righteous Properties" },
-    { name: "Village Arabia" },
-    { name: "fäm Properties" },
-    { name: "Escapology" },
-    { name: "Altitude Gym" },
-    { name: "Seventy Fitness & Spa" },
-    { name: "Sharqi Gents Salon" },
-    { name: "Glitza By Ghalia" },
-    { name: "Sharjah Chamber" },
-    { name: "Altitude Spa" },
-    { name: "Univ. of Sharjah" },
+    { name: "The Dubai Mall" },
     { name: "DAMAC" },
-    { name: "Rani" },
-    { name: "Meaza" },
-    { name: "Corniche Hotel" },
-    { name: "Charms" },
-    { name: "Clemenceau Medical" },
-    { name: "Carrefour",           Icon: SiCarrefour },
-    { name: "Urban Craft" },
-    { name: "Ferrari",             Icon: SiFerrari },
+    { name: "Costa Coffee" },
+    { name: "Talabat" },
     { name: "Lexus" },
-    { name: "Geely" },
     { name: "Spotii" },
+    { name: "Geely" },
+    { name: "Escapology" },
+    { name: "Corniche Hotel" },
+    { name: "Univ. of Sharjah" },
   ];
 
   return (
