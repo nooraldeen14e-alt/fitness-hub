@@ -58,29 +58,27 @@ function CSSCubeFallback() {
           <div style={{ width: 2, height: 22, background: "#ff5500", boxShadow: "0 0 6px #ff4400", marginBottom: 0, animation: "cssBuildingPulse 1.4s ease-in-out infinite" }} />
           <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#ff5500", boxShadow: "0 0 10px #ff4400, 0 0 20px #ff220066", marginTop: -3, animation: "cssBuildingPulse 1.4s ease-in-out infinite" }} />
 
-          {/* Penthouse */}
-          <div style={{ width: 54, background: "#111", border: "1px solid #ff550033", marginTop: 2, padding: "4px 0", display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
-            <div style={{ width: 44, height: 2, background: "#ff5500", opacity: 0.9, boxShadow: "0 0 6px #ff4400" }} />
-            <div style={{ width: 44, height: 2, background: "#ff5500", opacity: 0.5 }} />
+          {/* Penthouse — carries the company name */}
+          <div style={{
+            width: 58, background: "#111", border: "1px solid #ff550033", marginTop: 2,
+            padding: "6px 4px 5px", display: "flex", flexDirection: "column", alignItems: "center", gap: 3,
+          }}>
+            <div style={{ fontSize: 8.5, fontFamily: "monospace", letterSpacing: "0.18em", color: "#ffffff", textShadow: "0 0 10px #ffffff88", fontWeight: 700, whiteSpace: "nowrap" }}>SWISSULIFE</div>
+            <div style={{ fontSize: 6.5, fontFamily: "monospace", letterSpacing: "0.22em", color: "#ff5500", textShadow: "0 0 8px #ff440088" }}>MEDIA</div>
+            <div style={{ width: 50, height: 1.5, background: "#ff5500", opacity: 0.7, boxShadow: "0 0 5px #ff4400" }} />
           </div>
 
-          {/* Main tower */}
+          {/* Main tower — only coloured window rows */}
           <div style={{
             width: 80, flex: 1, background: "linear-gradient(180deg, #111 0%, #0a0a0a 100%)",
             border: "1px solid #1a1a1a", borderTop: "none",
-            display: "flex", flexDirection: "column", alignItems: "center",
-            overflow: "hidden", position: "relative", gap: 0,
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            overflow: "hidden", position: "relative",
             boxShadow: "0 0 30px #ff440022, inset 0 0 20px #ff330011",
           }}>
-            {/* Orange vertical edge lines */}
-            <div style={{ position: "absolute", left: 0,  top: 0, bottom: 0, width: 1.5, background: "linear-gradient(180deg,#ff5500,#ff220055)", opacity: 0.6 }} />
-            <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 1.5, background: "linear-gradient(180deg,#ff5500,#ff220055)", opacity: 0.6 }} />
-
-            {/* Company name — TOP of tower */}
-            <div style={{ marginTop: 6, marginBottom: 6, textAlign: "center", lineHeight: 1.2 }}>
-              <div style={{ fontSize: 8.5, fontFamily: "monospace", letterSpacing: "0.18em", color: "#ffffff", textShadow: "0 0 10px #ffffff88", fontWeight: 700 }}>SWISSULIFE</div>
-              <div style={{ fontSize: 6.5, fontFamily: "monospace", letterSpacing: "0.22em", color: "#ff5500", textShadow: "0 0 8px #ff440088", marginTop: 2 }}>MEDIA</div>
-            </div>
+            {/* Coloured vertical edge lines */}
+            <div style={{ position: "absolute", left: 0,  top: 0, bottom: 0, width: 1.5, background: "#0866FF", opacity: 0.6 }} />
+            <div style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 1.5, background: "#FF0069", opacity: 0.6 }} />
 
             {/* Colourful window rows — platform brand colours */}
             {[

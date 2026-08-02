@@ -529,54 +529,54 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
         <meshStandardMaterial color="#FF0069" emissive="#FF0069" emissiveIntensity={0.55} />
       </mesh>
 
-      {/* ── Company name — top of front face ── */}
+      {/* ── Company name — penthouse front face (top of building) ── */}
       <Text
-        position={[0, 1.36, 0.370]}
-        fontSize={0.112}
+        position={[0, 1.94, 0.262]}
+        fontSize={0.110}
         color="#ffffff"
         anchorX="center"
         anchorY="middle"
-        maxWidth={0.92}
+        maxWidth={0.74}
         textAlign="center"
         letterSpacing={0.13}
       >
         SWISSULIFE
       </Text>
       <Text
-        position={[0, 1.16, 0.370]}
-        fontSize={0.078}
+        position={[0, 1.75, 0.262]}
+        fontSize={0.076}
         color={ORANGE}
         anchorX="center"
         anchorY="middle"
-        maxWidth={0.92}
+        maxWidth={0.74}
         textAlign="center"
         letterSpacing={0.20}
       >
         MEDIA
       </Text>
 
-      {/* ── Company name — top of back face ── */}
+      {/* ── Company name — penthouse back face ── */}
       <Text
-        position={[0, 1.36, -0.370]}
+        position={[0, 1.94, -0.262]}
         rotation={[0, Math.PI, 0]}
-        fontSize={0.112}
+        fontSize={0.110}
         color="#ffffff"
         anchorX="center"
         anchorY="middle"
-        maxWidth={0.92}
+        maxWidth={0.74}
         textAlign="center"
         letterSpacing={0.13}
       >
         SWISSULIFE
       </Text>
       <Text
-        position={[0, 1.16, -0.370]}
+        position={[0, 1.75, -0.262]}
         rotation={[0, Math.PI, 0]}
-        fontSize={0.078}
+        fontSize={0.076}
         color={ORANGE}
         anchorX="center"
         anchorY="middle"
-        maxWidth={0.92}
+        maxWidth={0.74}
         textAlign="center"
         letterSpacing={0.20}
       >
