@@ -97,19 +97,21 @@ function CSSCubeFallback() {
               ))}
             </div>
 
-            {/* Central cylinder (rounded) */}
+            {/* Central section — window grid */}
             <div style={{
-              flex: 1, background: "linear-gradient(135deg, #112240 0%, #1a3060 50%, #0f1e35 100%)",
-              borderRadius: "40%", overflow: "hidden", position: "relative",
-              boxShadow: "inset 0 0 20px #ffffff33",
+              flex: 1, background: "#1a3358",
+              position: "relative", overflow: "hidden",
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gridTemplateRows: "repeat(12, 1fr)",
+              gap: 2, padding: 3,
             }}>
-              {/* Cylinder floor rings */}
-              {Array.from({ length: 12 }, (_, i) => (
+              {Array.from({ length: 48 }, (_, i) => (
                 <div key={i} style={{
-                  position: "absolute", left: "5%", right: "5%",
-                  top: `${6 + i * 8}%`, height: 1.5,
-                  background: "#ffffff", borderRadius: "50%",
-                  boxShadow: "0 0 5px #ffffff88", opacity: 0.80,
+                  background: "#a8c4ff22",
+                  border: "1px solid #a8c4ff55",
+                  borderRadius: 1,
+                  boxShadow: "0 0 3px #a8c4ff44",
                 }} />
               ))}
             </div>

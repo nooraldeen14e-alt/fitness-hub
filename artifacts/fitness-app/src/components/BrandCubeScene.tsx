@@ -521,20 +521,24 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
         <meshStandardMaterial color={NAVY} metalness={0.88} roughness={0.16} />
       </mesh>
 
-      {/* ══ CENTRAL CYLINDER (curved glass atrium) ══ */}
+      {/* ══ CENTRAL SECTION — flat facade with window grid ══ */}
       <mesh position={[0, 0, 0]}>
-        <cylinderGeometry args={[0.32, 0.32, 3.72, 36]} />
-        <meshStandardMaterial color={NGLASS} metalness={0.55} roughness={0.04}
-          transparent opacity={0.82} />
+        <boxGeometry args={[0.62, 3.72, 0.72]} />
+        <meshStandardMaterial color={NAVY} metalness={0.88} roughness={0.16} />
       </mesh>
 
-      {/* ── Floor rings on cylinder ── */}
-      {FLOORS.map((y, i) => (
-        <mesh key={`cr-${i}`} position={[0, y, 0]}>
-          <torusGeometry args={[0.335, 0.011, 6, 36]} />
-          <meshStandardMaterial color={AMBER} emissive={AMBER} emissiveIntensity={0.14} />
-        </mesh>
-      ))}
+      {/* ── Window grid on front face (4 cols × 15 rows) ── */}
+      {FLOORS.map((y, ri) =>
+        ([-0.21, -0.07, 0.07, 0.21] as number[]).map((x, ci) => (
+          <mesh key={`w-${ri}-${ci}`} position={[x, y, 0.365]}>
+            <boxGeometry args={[0.094, 0.082, 0.003]} />
+            <meshStandardMaterial
+              color="#a8c4ff" emissive="#a8c4ff"
+              emissiveIntensity={0.28} transparent opacity={0.88}
+            />
+          </mesh>
+        ))
+      )}
 
       {/* ── Floor lines on left wing front face ── */}
       {FLOORS.map((y, i) => (
