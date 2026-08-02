@@ -69,7 +69,7 @@ const PLATFORM_CARDS = [
   { name: "YouTube",    color: "#FF0000", path: siYoutube.path   },
   { name: "X",          color: "#e7e9ea", path: siX.path         },
   { name: "LinkedIn",   color: "#0A66C2", path: LINKEDIN_PATH    },
-  { name: "Snapchat",   color: "#FFFC00", path: siSnapchat.path  },
+  { name: "Snapchat",   color: "#a89e00", path: siSnapchat.path  },
 ] as const;
 
 const CARD_W = 200;
@@ -734,7 +734,7 @@ function Scene({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
       <MarketingEcosystem scrollRef={scrollRef} />
 
       <EffectComposer>
-        <Bloom luminanceThreshold={0.2} intensity={1.5} radius={0.78} mipmapBlur />
+        <Bloom luminanceThreshold={0.65} intensity={0.9} radius={0.60} mipmapBlur />
       </EffectComposer>
     </>
   );
