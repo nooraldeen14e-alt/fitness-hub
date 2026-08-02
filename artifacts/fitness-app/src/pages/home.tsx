@@ -525,6 +525,193 @@ const OurClients = () => {
 
 
 
+const AboutUs = () => {
+  const countries = [
+    { flag: "🇦🇪", name: "UAE", city: "Dubai", desc: "Headquarters & Primary Operations" },
+    { flag: "🇸🇮", name: "Slovenia", city: "Ljubljana", desc: "European Creative Hub" },
+    { flag: "🇨🇭", name: "Switzerland", city: "Zürich", desc: "Strategy & Brand Consulting" },
+  ];
+
+  const steps = [
+    {
+      num: "01", title: "Discovery",
+      desc: "We get to know your business, industry, and audience — conducting deep research and development to understand what makes your brand unique.",
+    },
+    {
+      num: "02", title: "Strategy",
+      desc: "We develop your brand strategy: promise, concept direction, and a tailored communication plan precisely aligned with your goals.",
+    },
+    {
+      num: "03", title: "Identity",
+      desc: "Our creatives define your unique visual language — logo, colour palette, typography, and branded templates for online and offline use.",
+    },
+  ];
+
+  const services = [
+    { icon: "◈", label: "Marketing Strategy" },
+    { icon: "◎", label: "Professional Photography" },
+    { icon: "▶", label: "Audio & Visual Production" },
+    { icon: "⬡", label: "Website Design" },
+    { icon: "◉", label: "Google Ads" },
+    { icon: "◐", label: "PR Management" },
+    { icon: "◍", label: "Podcasts" },
+    { icon: "◇", label: "Influencer Marketing" },
+    { icon: "◆", label: "Event Management" },
+  ];
+
+  return (
+    <section id="agency" className="bg-black py-32 px-6 border-t border-white/10">
+      <div className="max-w-7xl mx-auto">
+
+        {/* ── Header ── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-24 items-end">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-5">About Us</p>
+            <h2 className="font-display font-black text-5xl md:text-6xl uppercase text-white leading-[0.95]">
+              We Don't Just<br />Market Brands.<br />
+              <span className="text-primary">We Build<br />Legacies.</span>
+            </h2>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ delay: 0.15 }}
+            className="flex flex-col gap-6"
+          >
+            <p className="text-white/60 text-lg leading-relaxed">
+              SwissULife Media delivers personalized, high-quality digital marketing with a tailored approach. Our expert team crafts cutting-edge strategies across social media, production, PR, and beyond — ensuring every campaign is a perfect fit for your brand's unique DNA.
+            </p>
+            <div className="flex items-center gap-4">
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="font-mono text-xs text-white/30 uppercase tracking-widest whitespace-nowrap">Headquarters · Dubai, UAE</span>
+            </div>
+            <div className="grid grid-cols-3 gap-4 mt-2">
+              {[
+                { value: "19M+", label: "Total Influencer Reach" },
+                { value: "3M+", label: "Monthly Reach" },
+                { value: "9",   label: "Core Services" },
+              ].map((s) => (
+                <div key={s.label} className="flex flex-col">
+                  <span className="font-display font-black text-3xl text-primary">{s.value}</span>
+                  <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest leading-tight mt-1">{s.label}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* ── 3 Countries ── */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-24">
+          {countries.map((c, i) => (
+            <motion.div
+              key={c.name}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.12 }}
+              className="relative group rounded-2xl border border-white/10 p-8 overflow-hidden hover:border-primary/60 transition-colors duration-300"
+              style={{ background: "rgba(255,255,255,0.025)" }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/8 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <span className="text-5xl mb-5 block">{c.flag}</span>
+              <h3 className="font-display font-black text-3xl text-white uppercase mb-1">{c.name}</h3>
+              <p className="font-mono text-xs text-primary uppercase tracking-widest mb-3">{c.city}</p>
+              <p className="text-white/40 text-sm leading-relaxed">{c.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ── Mission & Vision ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-24">
+          {[
+            {
+              label: "Mission", symbol: "◎",
+              text: "To deliver innovative and impactful marketing solutions that empower our clients to achieve their business goals and inspire their audiences.",
+              accent: true,
+            },
+            {
+              label: "Vision", symbol: "◈",
+              text: "Strive for continuous excellence. Deliver high-quality outcomes. Embrace innovation and change. Create an inspiring environment where talented individuals thrive.",
+              accent: false,
+            },
+          ].map((item, i) => (
+            <motion.div
+              key={item.label}
+              initial={{ opacity: 0, x: i === 0 ? -20 : 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="rounded-2xl p-10 border border-white/10 flex flex-col gap-6"
+              style={{ background: item.accent ? "rgba(255,90,0,0.06)" : "rgba(255,255,255,0.03)" }}
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-primary font-mono text-2xl leading-none">{item.symbol}</span>
+                <span className="font-mono text-xs uppercase tracking-[0.3em] text-white/40">{item.label}</span>
+              </div>
+              <p className="text-white text-xl leading-relaxed font-light">
+                "{item.text}"
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* ── 3-Step Approach ── */}
+        <div className="mb-24">
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-3">Our Approach</p>
+            <h3 className="font-display font-black text-4xl md:text-5xl uppercase text-white mb-14">How We Work</h3>
+          </motion.div>
+
+          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Connecting line on desktop */}
+            <div className="hidden md:block absolute top-10 left-[calc(16.67%+2.5rem)] right-[calc(16.67%+2.5rem)] h-px"
+              style={{ background: "linear-gradient(to right, hsl(25,100%,50%), hsl(25,100%,50%,0.3))" }} />
+            {steps.map((s, i) => (
+              <motion.div
+                key={s.num}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+                className="relative z-10 flex flex-col"
+              >
+                <div className="flex items-center gap-5 mb-6">
+                  <div className="w-20 h-20 rounded-full border-2 border-primary flex items-center justify-center shrink-0 bg-black">
+                    <span className="font-mono text-primary font-bold text-lg">{s.num}</span>
+                  </div>
+                  <h4 className="font-display font-black text-2xl text-white uppercase">{s.title}</h4>
+                </div>
+                <p className="text-white/45 text-sm leading-relaxed pl-0 md:pl-1">{s.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── Services Grid ── */}
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-primary mb-3">What We Do</p>
+          <h3 className="font-display font-black text-4xl md:text-5xl uppercase text-white mb-10">Our Services</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {services.map((s, i) => (
+              <motion.div
+                key={s.label}
+                initial={{ opacity: 0, scale: 0.92 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="group rounded-xl border border-white/10 p-5 hover:border-primary/50 hover:bg-white/5 transition-all duration-300 cursor-default"
+              >
+                <span className="text-primary text-2xl font-mono mb-3 block leading-none">{s.icon}</span>
+                <p className="font-sans text-xs text-white/50 group-hover:text-white/80 transition-colors leading-snug">{s.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+      </div>
+    </section>
+  );
+};
+
 const Stats = () => {
   const data = [
     { name: "Q1", value: 100 },
@@ -859,6 +1046,7 @@ export default function Home() {
       <main>
         <Hero />
         <ServicesTicker />
+        <AboutUs />
         <OurClients />
         <Clients />
         <Stats />
