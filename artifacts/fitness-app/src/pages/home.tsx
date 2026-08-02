@@ -40,6 +40,11 @@ import logoArnNews    from "@assets/logos/arn-news.png";
 import logoLovinDubai from "@assets/logos/lovin-dubai.png";
 import logoBritishEmbassy from "@assets/logos/british-embassy.png";
 
+/* ── Client collage reference strips ── */
+import collage1 from "@assets/image_1785676703347.png";
+import collage2 from "@assets/image_1785676713071.png";
+import collage3 from "@assets/image_1785676718700.png";
+
 /* ── Glowing cursor ── */
 const GlowCursor = () => {
   const [pos, setPos] = React.useState({ x: -200, y: -200 });
@@ -427,9 +432,7 @@ const ClientCard = ({
 };
 
 const OurClients = () => {
-  type Client = { name: string; img?: string; Icon?: IconComponent; iconColor?: string };
-  const clients: Client[] = [
-    // ── Uploaded PNG logos ──
+  const localClients = [
     { name: "DHA",               img: logoDha },
     { name: "DHA Building Dreams", img: logoDhaBld },
     { name: "Farid Business Park", img: logoFaridBp },
@@ -454,51 +457,12 @@ const OurClients = () => {
     { name: "ARN News",          img: logoArnNews },
     { name: "Lovin Dubai",       img: logoLovinDubai },
     { name: "British Embassy",   img: logoBritishEmbassy },
-    // ── International brands via react-icons (brand colours) ──
-    { name: "Toyota",      Icon: SiToyota,      iconColor: "#EB0A1E" },
-    { name: "Audi",        Icon: SiAudi,        iconColor: "#BB0A14" },
-    { name: "Volkswagen",  Icon: SiVolkswagen,  iconColor: "#001E50" },
-    { name: "Rolls Royce", Icon: SiRollsroyce,  iconColor: "#2A2A2A" },
-    { name: "Ferrari",     Icon: SiFerrari,     iconColor: "#D40000" },
-    { name: "Porsche",     Icon: SiPorsche,     iconColor: "#1D1D1B" },
-    { name: "Infiniti",    Icon: SiInfiniti,    iconColor: "#1A1A1A" },
-    { name: "Apple",       Icon: SiApple,       iconColor: "#555555" },
-    { name: "Samsung",     Icon: SiSamsung,     iconColor: "#1428A0" },
-    { name: "Adidas",      Icon: SiAdidas,      iconColor: "#000000" },
-    { name: "Dior",        Icon: SiDior,        iconColor: "#111111" },
-    { name: "Farfetch",    Icon: SiFarfetch,    iconColor: "#272727" },
-    { name: "KFC",         Icon: SiKfc,         iconColor: "#F40027" },
-    { name: "McDonald's",  Icon: SiMcdonalds,   iconColor: "#FFC72C" },
-    { name: "DHL",         Icon: SiDhl,         iconColor: "#FFCC00" },
-    { name: "Red Bull",    Icon: SiRedbull,     iconColor: "#CC1B28" },
-    { name: "Deliveroo",   Icon: SiDeliveroo,   iconColor: "#00CCBC" },
-    { name: "Carrefour",   Icon: SiCarrefour,   iconColor: "#003399" },
-    // ── Remaining text-only ──
-    { name: "Tilda" },
-    { name: "Casa Milano" },
-    { name: "Samana Dev." },
-    { name: "VIP & Protocol" },
-    { name: "SAVVA" },
-    { name: "X-Space RE" },
-    { name: "Fashion Factor" },
-    { name: "Mazzika" },
-    { name: "MASH Coffee" },
-    { name: "Twisted Olive" },
-    { name: "LinkinCard" },
-    { name: "Noon" },
-    { name: "Emaar" },
-    { name: "L'Oréal" },
-    { name: "Chanel" },
-    { name: "The Dubai Mall" },
-    { name: "DAMAC" },
-    { name: "Costa Coffee" },
-    { name: "Talabat" },
-    { name: "Lexus" },
-    { name: "Spotii" },
-    { name: "Geely" },
-    { name: "Escapology" },
-    { name: "Corniche Hotel" },
-    { name: "Univ. of Sharjah" },
+  ];
+
+  const collageStrips = [
+    { src: collage1, alt: "Tilda, Casa Milano, Toyota, Samana, VIP & Protocol, ELE, Farfetch, Audi, Rolls Royce, SAVVA, X-Space, Fashion Factor, Mazzika, Operation Level Up, MASH, Twisted Olive, Fouziana, LinkinCard" },
+    { src: collage2, alt: "Infiniti, VW, Apple, Noon, Adidas, CAFU, MERAA, StarzPlay, Emaar, Dior, L'Oréal, Chanel, Dubai Mall, MAC, Oreo, Costa, KFC, DHL, Red Bull, Samsung, Amazon, McDonald's, Quaker, Deliveroo, Canon, Porsche, Talabat" },
+    { src: collage3, alt: "Sharjah Paintball, Righteous Properties, fäm Properties, Escapology, Altitude, Sharqi, Glitza, Sharjah Chamber, University of Sharjah, DAMAC, Rani, Meaza, Corniche Hotel, CMC Hospital, Carrefour, Ferrari, Lexus, Geely, Spotii" },
   ];
 
   return (
@@ -509,20 +473,34 @@ const OurClients = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        {/* Title */}
+        <div className="text-center mb-16">
           <p className="font-mono text-primary uppercase tracking-[0.35em] text-xs mb-3">Some of our</p>
           <h2 className="font-display font-bold text-6xl md:text-8xl uppercase text-white/80">Clients</h2>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {clients.map((client) => (
-            <ClientCard key={client.name} name={client.name} Icon={client.Icon} />
+        {/* Individual logo cards — 24 local brands */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mb-6">
+          {localClients.map((c) => (
+            <ClientCard key={c.name} name={c.name} img={c.img} />
+          ))}
+        </div>
+
+        {/* Full-colour collage strips for all remaining brands */}
+        <div className="flex flex-col gap-3">
+          {collageStrips.map((strip, i) => (
+            <div
+              key={i}
+              className="w-full rounded-2xl overflow-hidden"
+              style={{ background: i === 0 ? "#1a1a1a" : i === 1 ? "#fff" : "#1a1a1a" }}
+            >
+              <img
+                src={strip.src}
+                alt={strip.alt}
+                className="w-full h-auto object-cover"
+                style={{ display: "block" }}
+              />
+            </div>
           ))}
         </div>
       </div>
