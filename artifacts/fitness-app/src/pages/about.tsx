@@ -71,8 +71,8 @@ function CSSCubeFallback() {
           }}>
             <div style={{
               fontSize: 9, fontFamily: "sans-serif", letterSpacing: "0.12em",
-              color: "#ff5500", fontWeight: 700, whiteSpace: "nowrap",
-              textShadow: "0 0 12px #ff550099",
+              color: "#ffaa66", fontWeight: 700, whiteSpace: "nowrap",
+              textShadow: "0 0 6px #ff5500bb, 0 0 14px #ff550055",
             }}>Swissulife Media</div>
           </div>
 

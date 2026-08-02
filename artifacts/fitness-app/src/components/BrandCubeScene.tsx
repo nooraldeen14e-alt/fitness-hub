@@ -378,12 +378,16 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
       <Text
         position={[0, 2.06, 0.385]}
         fontSize={0.118}
-        color="#ff5500"
+        color="#ff6a1a"
         anchorX="center"
         anchorY="middle"
         maxWidth={1.50}
         textAlign="center"
         letterSpacing={0.06}
+        outlineColor="#ff5500"
+        outlineWidth={0.006}
+        outlineBlur={0.03}
+        outlineOpacity={0.6}
       >
         Swissulife Media
       </Text>
@@ -393,12 +397,16 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
         position={[0, 2.06, -0.385]}
         rotation={[0, Math.PI, 0]}
         fontSize={0.118}
-        color="#ff5500"
+        color="#ff6a1a"
         anchorX="center"
         anchorY="middle"
         maxWidth={1.50}
         textAlign="center"
         letterSpacing={0.06}
+        outlineColor="#ff5500"
+        outlineWidth={0.006}
+        outlineBlur={0.03}
+        outlineOpacity={0.6}
       >
         Swissulife Media
       </Text>
