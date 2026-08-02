@@ -378,9 +378,9 @@ const ClientCard = ({ c }: { c: ClientEntry }) => {
     zIndex: 1,
   });
 
-  const bg = c.dark ? "#111" : "#fff";
-  const borderColor = c.dark ? "rgba(255,255,255,0.13)" : "rgba(0,0,0,0.11)";
-  const textColor   = c.dark ? "rgba(255,255,255,0.32)" : "rgba(0,0,0,0.28)";
+  const bg = "#fff";
+  const borderColor = "rgba(0,0,0,0.11)";
+  const textColor   = "rgba(0,0,0,0.28)";
 
   const renderContent = () => {
     /* 1 — simple-icons: inline SVG with official brand colour */
