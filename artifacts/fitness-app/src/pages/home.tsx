@@ -94,10 +94,9 @@ const Navbar = () => {
 
   React.useEffect(() => {
     const sections: { id: string; el: HTMLElement | null }[] = [
-      { id: "home",    el: document.getElementById("hero") },
-      { id: "offer",   el: document.getElementById("services") },
-      { id: "about",   el: document.getElementById("agency") },
-      { id: "contact", el: document.getElementById("contact") },
+      { id: "home",  el: document.getElementById("hero") },
+      { id: "offer", el: document.getElementById("services") },
+      { id: "about", el: document.getElementById("agency") },
     ];
 
     const observer = new IntersectionObserver(
