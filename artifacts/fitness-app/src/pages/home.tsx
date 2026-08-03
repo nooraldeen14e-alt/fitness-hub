@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { Link } from "wouter";
 import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
 import { ArrowRight } from "lucide-react";
@@ -174,8 +175,8 @@ const Navbar = () => {
             </div>
           </div>
 
-          <a href="/about"   className={linkClass("about")}>About Us</a>
-          <a href="/contact" className={linkClass("contact")}>Contact Us</a>
+          <Link href="/about"   className={linkClass("about")}>About Us</Link>
+          <Link href="/contact" className={linkClass("contact")}>Contact Us</Link>
         </div>
 
         {/* CTA + mobile hamburger */}

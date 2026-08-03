@@ -397,12 +397,12 @@ function SectionText({ sec }: { sec: typeof SECTIONS[0] }) {
 
         {"cta" in sec && sec.cta && (
           <div className="flex flex-col gap-3 mt-6" style={{ pointerEvents: "auto" }}>
-            <Link href="/#contact"
+            <Link href="/contact"
               className="inline-flex items-center justify-center px-8 py-3.5 rounded-full text-white font-semibold text-sm hover:opacity-90 transition-opacity"
               style={{ background: "hsl(25,100%,50%)" }}>
               Start a Project
             </Link>
-            <Link href="/#contact" className="text-sm text-white/40 hover:text-white transition-colors text-center font-mono uppercase tracking-widest text-[10px]">
+            <Link href="/contact" className="text-sm text-white/40 hover:text-white transition-colors text-center font-mono uppercase tracking-widest text-[10px]">
               Contact Us
             </Link>
           </div>
