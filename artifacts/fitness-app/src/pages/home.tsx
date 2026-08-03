@@ -224,187 +224,160 @@ const CyclingText = ({ words }: { words: string[] }) => {
   );
 };
 
-const HeroSlideshow = () => {
+const Hero = () => {
   const [index, setIndex] = React.useState(0);
   const [prev,  setPrev]  = React.useState<number | null>(null);
 
   React.useEffect(() => {
     const id = setInterval(() => {
-      setIndex(i => {
-        setPrev(i);
-        return (i + 1) % HERO_SLIDES.length;
-      });
+      setIndex(i => { setPrev(i); return (i + 1) % HERO_SLIDES.length; });
     }, 5000);
     return () => clearInterval(id);
   }, []);
 
+  const goTo = (i: number) => { setPrev(index); setIndex(i); };
+
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      className="relative w-full md:flex-1 overflow-hidden"
-      style={{ minHeight: "50vh" }}
-    >
-      {/* Outgoing slide fades out */}
+    <section id="hero" className="relative w-full bg-black overflow-hidden" style={{ height: "100vh" }}>
+
+      {/* ── Full-screen slideshow ── */}
       <AnimatePresence initial={false}>
         {prev !== null && (
-          <motion.img
-            key={`prev-${prev}`}
-            src={HERO_SLIDES[prev]}
-            alt=""
+          <motion.img key={`prev-${prev}`} src={HERO_SLIDES[prev]} alt=""
             className="absolute inset-0 w-full h-full object-cover"
-            initial={{ opacity: 0.85 }}
-            animate={{ opacity: 0.85 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
+            initial={{ opacity: 0.9 }} animate={{ opacity: 0.9 }} exit={{ opacity: 0 }}
+            transition={{ duration: 1.4, ease: "easeInOut" }}
+            style={{ zIndex: 1 }}
           />
         )}
       </AnimatePresence>
-
-      {/* Active slide fades in */}
       <AnimatePresence initial={false}>
-        <motion.img
-          key={`slide-${index}`}
-          src={HERO_SLIDES[index]}
-          alt={`Our work ${index + 1}`}
+        <motion.img key={`slide-${index}`} src={HERO_SLIDES[index]} alt={`Our work ${index + 1}`}
           className="absolute inset-0 w-full h-full object-cover"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.85 }}
+          initial={{ opacity: 0, scale: 1.04 }}
+          animate={{ opacity: 0.9, scale: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
+          transition={{ duration: 1.4, ease: "easeInOut" }}
+          style={{ zIndex: 2 }}
         />
       </AnimatePresence>
 
-      {/* Left gradient fade into black */}
-      <div className="absolute inset-y-0 left-0 w-32 md:w-48 z-10"
-        style={{ background: "linear-gradient(90deg, #000 0%, transparent 100%)" }} />
-      {/* Overlay tint */}
-      <div className="absolute inset-0 z-10"
-        style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.55) 100%)" }} />
+      {/* ── Gradient overlays for text legibility ── */}
+      {/* Heavy dark vignette at bottom */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        zIndex: 3,
+        background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.35) 100%)",
+      }} />
+      {/* Left edge fade */}
+      <div className="absolute inset-y-0 left-0 w-[30%] pointer-events-none" style={{
+        zIndex: 3,
+        background: "linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 100%)",
+      }} />
 
-      {/* Stat badge */}
+      {/* ── Slide counter — top right ── */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.7 }}
-        className="absolute bottom-10 right-10 text-right z-20"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 0.6 }}
+        className="absolute top-28 right-10 text-right pointer-events-none"
+        style={{ zIndex: 10 }}
       >
-        <p className="font-display font-black text-5xl text-white leading-none">3M+</p>
-        <p className="font-mono text-xs uppercase tracking-widest text-white/50 mt-1">Monthly Reach</p>
+        <span className="font-mono text-white/30 text-xs tracking-widest uppercase">
+          {String(index + 1).padStart(2, "0")} / {String(HERO_SLIDES.length).padStart(2, "0")}
+        </span>
       </motion.div>
 
-      {/* Slide indicators */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-20">
-        {HERO_SLIDES.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => { setPrev(index); setIndex(i); }}
-            className="transition-all duration-300"
-            style={{
-              width: i === index ? 24 : 8,
-              height: 3,
-              borderRadius: 2,
-              background: i === index ? "hsl(25,100%,50%)" : "rgba(255,255,255,0.35)",
-              border: "none",
-              cursor: "pointer",
-            }}
-          />
-        ))}
-      </div>
-    </motion.div>
-  );
-};
+      {/* ── Main text — bottom left ── */}
+      <div className="absolute bottom-0 left-0 right-0 px-8 md:px-16 pb-16 md:pb-14" style={{ zIndex: 10 }}>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
 
-const Hero = () => {
-  return (
-    <section id="hero" className="relative w-full bg-black overflow-hidden" style={{ minHeight: "100vh" }}>
-      <div className="flex flex-col md:flex-row h-full" style={{ minHeight: "100vh" }}>
-
-        {/* ── LEFT: text panel ── */}
-        <div className="relative z-10 flex flex-col justify-center px-10 md:px-16 pt-32 pb-16 md:py-0 w-full md:w-[42%] shrink-0">
-
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-display font-bold uppercase text-white mb-1"
-            style={{ fontSize: "1rem", letterSpacing: "0.1em" }}
-          >
-            Dare to be different?
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.18 }}
-            className="font-display font-bold uppercase mb-1"
-            style={{
-              fontSize: "1rem",
-              letterSpacing: "0.1em",
-              background: "linear-gradient(90deg, hsl(25,100%,50%), #ffffff)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              filter: "drop-shadow(0 0 8px hsl(25 100% 50% / 0.5))",
-            }}
-          >
-            Meet
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display font-black uppercase leading-[0.88] mb-8"
-            style={{ fontSize: "clamp(3.5rem, 7vw, 6.5rem)" }}
-          >
-            <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 80px hsl(25 100% 50% / 0.4)" }}>Swiss</span>
-            <span className="text-white">u</span>
-            <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 80px hsl(25 100% 50% / 0.4)" }}>life</span>
-          </motion.h1>
-
-          {/* Orange accent bar */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            style={{ originX: 0, height: 3, background: "linear-gradient(90deg, hsl(25,100%,50%), transparent)", borderRadius: 2 }}
-            className="w-48 mb-8"
-          />
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.55 }}
-          >
-            <h2 className="font-display font-bold text-white leading-tight mb-4"
-              style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}>
-              A 360° Result-Oriented<br />
-              <CyclingText words={["Digital Marketing Agency", "Social Media Agency", "Brand Strategy Agency", "Influencer Marketing", "Google Ads Agency", "PR & Events Agency"]} />
-            </h2>
-            <p className="text-white/40 text-sm leading-relaxed mb-10 max-w-sm">
-              At Swissulife Media, we promise results. Tested strategies, diverse niches, zero compromises.
-            </p>
-
-            <a
-              href="#agency"
-              className="group inline-flex items-center gap-0 px-8 py-3 rounded-full border border-white/30 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
+          {/* Left: brand + headline */}
+          <div className="max-w-2xl">
+            <motion.p
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="font-mono uppercase text-white/50 tracking-widest mb-3"
+              style={{ fontSize: "0.72rem" }}
             >
-              More About Us
-              <span className="overflow-hidden w-0 group-hover:w-5 transition-all duration-300 ease-out flex items-center">
-                <ArrowRight size={15} className="ml-1 shrink-0" />
-              </span>
-            </a>
+              Dare to be different? — Meet
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display font-black uppercase leading-[0.85] mb-5"
+              style={{ fontSize: "clamp(3.8rem, 8vw, 7.5rem)" }}
+            >
+              <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 60px hsl(25 100% 50% / 0.5)" }}>Swiss</span>
+              <span className="text-white">u</span>
+              <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 60px hsl(25 100% 50% / 0.5)" }}>life</span>
+            </motion.h1>
+
+            {/* Orange accent bar */}
+            <motion.div
+              initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+              transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              style={{ originX: 0, height: 2, background: "linear-gradient(90deg, hsl(25,100%,50%), transparent)", borderRadius: 2 }}
+              className="w-40 mb-5"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.55 }}
+              className="flex flex-col sm:flex-row sm:items-center gap-5"
+            >
+              <div>
+                <p className="font-display font-bold text-white leading-tight"
+                  style={{ fontSize: "clamp(1rem, 1.8vw, 1.35rem)" }}>
+                  A 360° Result-Oriented{" "}
+                  <span style={{ color: "hsl(25,100%,50%)" }}>
+                    <CyclingText words={["Digital Marketing Agency", "Social Media Agency", "Brand Strategy Agency", "Influencer Marketing", "Google Ads Agency", "PR & Events Agency"]} />
+                  </span>
+                </p>
+                <p className="text-white/40 text-sm leading-relaxed mt-2 max-w-md">
+                  Tested strategies, diverse niches, zero compromises.
+                </p>
+              </div>
+
+              <a
+                href="#agency"
+                className="shrink-0 group inline-flex items-center gap-0 px-7 py-3 rounded-full border border-white/30 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
+              >
+                More About Us
+                <span className="overflow-hidden w-0 group-hover:w-5 transition-all duration-300 ease-out flex items-center">
+                  <ArrowRight size={15} className="ml-1 shrink-0" />
+                </span>
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Right: stat + indicators */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.7 }}
+            className="flex flex-row md:flex-col items-center md:items-end gap-6 md:gap-4 shrink-0"
+          >
+            <div className="text-right">
+              <p className="font-display font-black text-white leading-none" style={{ fontSize: "clamp(2.5rem,5vw,4rem)" }}>3M+</p>
+              <p className="font-mono text-xs uppercase tracking-widest text-white/40 mt-1">Monthly Reach</p>
+            </div>
+
+            {/* Slide indicators */}
+            <div className="flex gap-2">
+              {HERO_SLIDES.map((_, i) => (
+                <button key={i} onClick={() => goTo(i)}
+                  className="transition-all duration-300"
+                  style={{
+                    width: i === index ? 28 : 8, height: 3, borderRadius: 2,
+                    background: i === index ? "hsl(25,100%,50%)" : "rgba(255,255,255,0.3)",
+                    border: "none", cursor: "pointer",
+                  }}
+                />
+              ))}
+            </div>
           </motion.div>
 
-          {/* scroll indicator */}
         </div>
-
-        {/* ── RIGHT: auto-cycling work slideshow ── */}
-        <HeroSlideshow />
-
       </div>
+
     </section>
   );
 };
