@@ -233,8 +233,8 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
     const bloom   = ss(clamp((s - 0.72) / 0.12));
     interiorRef.current.intensity = (0.8 + bloom * 2) * breathe;
     lobbyRef.current.intensity    = (1.2 + bloom * 1.5) * breathe;
-    const bMat = beaconRef.current.material as THREE.MeshStandardMaterial;
-    bMat.emissiveIntensity = Math.sin(t * 4) * 0.8 + 1.4;
+    const bMat = beaconRef.current.material as THREE.MeshBasicMaterial;
+    bMat.opacity = Math.sin(t * 4) * 0.4 + 0.6;
     groupRef.current.position.y = Math.sin(t * 0.5) * 0.05;
   });
 
@@ -278,10 +278,7 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
         ([-0.21, -0.07, 0.07, 0.21] as number[]).map((x, ci) => (
           <mesh key={`w-${ri}-${ci}`} position={[x, y, 0.365]}>
             <boxGeometry args={[0.094, 0.082, 0.003]} />
-            <meshStandardMaterial
-              color="#a8c4ff" emissive="#a8c4ff"
-              emissiveIntensity={0.28} transparent opacity={0.88}
-            />
+            <meshBasicMaterial color="#a8c4ff" transparent opacity={0.88} />
           </mesh>
         ))
       )}
@@ -290,7 +287,7 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
       {FLOORS.map((y, i) => (
         <mesh key={`lf-${i}`} position={[-0.60, y, 0.364]}>
           <boxGeometry args={[0.36, 0.014, 0.004]} />
-          <meshStandardMaterial color={AMBER} emissive={AMBER} emissiveIntensity={0.22} />
+          <meshBasicMaterial color={AMBER} />
         </mesh>
       ))}
 
@@ -298,7 +295,7 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
       {FLOORS.map((y, i) => (
         <mesh key={`rf-${i}`} position={[0.60, y, 0.364]}>
           <boxGeometry args={[0.36, 0.014, 0.004]} />
-          <meshStandardMaterial color={AMBER} emissive={AMBER} emissiveIntensity={0.22} />
+          <meshBasicMaterial color={AMBER} />
         </mesh>
       ))}
 
@@ -306,7 +303,7 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
       {([-0.795, 0.795] as number[]).map((x, i) => (
         <mesh key={`ot-${i}`} position={[x, 0, 0]}>
           <boxGeometry args={[0.020, 3.72, 0.020]} />
-          <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.32} />
+          <meshBasicMaterial color={GOLD} />
         </mesh>
       ))}
 
@@ -314,7 +311,7 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
       {([-0.41, 0.41] as number[]).map((x, i) => (
         <mesh key={`it-${i}`} position={[x, 0, 0]}>
           <boxGeometry args={[0.014, 3.72, 0.014]} />
-          <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.20} />
+          <meshBasicMaterial color={GOLD} />
         </mesh>
       ))}
 
@@ -326,12 +323,12 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
       {/* Crown top gold edge */}
       <mesh position={[0, 2.22, 0]}>
         <boxGeometry args={[1.64, 0.022, 0.78]} />
-        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.14} />
+        <meshBasicMaterial color={GOLD} />
       </mesh>
       {/* Crown bottom gold edge */}
       <mesh position={[0, 1.89, 0]}>
         <boxGeometry args={[1.64, 0.016, 0.78]} />
-        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.20} />
+        <meshBasicMaterial color={GOLD} />
       </mesh>
 
       {/* ══ LOBBY / BASE ══ */}
@@ -342,36 +339,35 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
       {/* Lobby glass front — warm amber glow */}
       <mesh position={[0, -1.98, 0.484]}>
         <boxGeometry args={[1.40, 0.40, 0.006]} />
-        <meshStandardMaterial color="#ffffff" emissive="#ffffff"
-          emissiveIntensity={0.14} transparent opacity={0.50} />
+        <meshBasicMaterial color="#ffffff" transparent opacity={0.50} />
       </mesh>
       {/* Canopy overhang */}
       <mesh position={[0, -1.74, 0.54]}>
         <boxGeometry args={[0.90, 0.022, 0.18]} />
-        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.25} />
+        <meshBasicMaterial color={GOLD} />
       </mesh>
       {/* Lobby pillars */}
       {([-0.46, 0.46] as number[]).map((x, i) => (
         <mesh key={`lp-${i}`} position={[x, -1.86, 0.49]}>
           <boxGeometry args={[0.035, 0.38, 0.035]} />
-          <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.20} />
+          <meshBasicMaterial color={GOLD} />
         </mesh>
       ))}
       {/* Lobby top gold strip */}
       <mesh position={[0, -1.77, 0]}>
         <boxGeometry args={[1.87, 0.018, 0.97]} />
-        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.22} />
+        <meshBasicMaterial color={GOLD} />
       </mesh>
 
       {/* ══ ANTENNA SPIRE ══ */}
       <mesh position={[0, 2.52, 0]}>
-        <cylinderGeometry args={[0.010, 0.010, 0.58, 8]} />
-        <meshStandardMaterial color={GOLD} emissive={GOLD} emissiveIntensity={0.18} />
+        <cylinderGeometry args={[0.010, 0.010, 0.58, 6]} />
+        <meshBasicMaterial color={GOLD} />
       </mesh>
       {/* Red beacon */}
       <mesh ref={beaconRef} position={[0, 2.82, 0]}>
-        <sphereGeometry args={[0.024, 8, 8]} />
-        <meshStandardMaterial color="#ff0000" emissive="#ff0000" emissiveIntensity={2.0} />
+        <sphereGeometry args={[0.024, 6, 6]} />
+        <meshBasicMaterial color="#ff0000" transparent opacity={1} />
       </mesh>
 
       {/* ══ SIGNAGE — crown front ══ */}
@@ -481,18 +477,16 @@ function Scene({ scrollRef }: { scrollRef: MutableRefObject<number> }) {
 
   return (
     <>
-      {/* Environment lighting — cool blue sky + warm ground bounce */}
-      <ambientLight intensity={0.10} color="#b0c8ff" />
-      <pointLight position={[ 6,  5, 4]} color="#c8d8ff" intensity={10} distance={22} />
-      <pointLight position={[-5, -3, 3]} color="#f5a042" intensity={6}  distance={20} />
-      <pointLight position={[ 0,  0,-6]} color="#9bb8ff" intensity={3}  distance={16} />
-      <pointLight position={[ 0,  6, 0]} color="#d0e4ff" intensity={4}  distance={18} />
+      {/* Environment lighting — reduced to 2 point lights for performance */}
+      <ambientLight intensity={0.18} color="#b0c8ff" />
+      <pointLight position={[ 6,  5, 4]} color="#c8d8ff" intensity={12} distance={24} />
+      <pointLight position={[-5, -3, 3]} color="#f5a042" intensity={7}  distance={22} />
 
       <Particles scrollRef={scrollRef} />
       <MarketingEcosystem scrollRef={scrollRef} />
 
-      <EffectComposer>
-        <Bloom luminanceThreshold={0.65} intensity={0.9} radius={0.60} mipmapBlur />
+      <EffectComposer multisampling={0}>
+        <Bloom luminanceThreshold={0.65} intensity={0.7} radius={0.4} />
       </EffectComposer>
     </>
   );
@@ -503,8 +497,8 @@ export function BrandCubeCanvas({ scrollRef }: { scrollRef: MutableRefObject<num
   return (
     <Canvas
       camera={{ position: [0, 1.5, 9], fov: 50, near: 0.1, far: 100 }}
-      dpr={[1, window.devicePixelRatio > 1 ? 1.5 : 1]}
-      gl={{ antialias: true, alpha: true }}
+      dpr={1}
+      gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
       style={{ background: "transparent" }}
     >
       <Scene scrollRef={scrollRef} />
