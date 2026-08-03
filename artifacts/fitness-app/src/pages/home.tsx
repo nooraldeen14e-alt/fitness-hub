@@ -5,11 +5,14 @@ import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
 import { ArrowRight } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
-import heroBg from "@assets/hero-bg.jpg";
-import work1 from "@assets/work-1.jpg";
-import work2 from "@assets/work-2.jpg";
-import work3 from "@assets/work-3.jpg";
-/* portfolio reference images are no longer needed */
+// ─── HERO SLIDESHOW IMAGES ───────────────────────────────────────────────────
+// Replace these imports with your own work images.
+// Drop your files into attached_assets/ and update the paths below.
+import slide1 from "@assets/work-1.jpg";
+import slide2 from "@assets/work-2.jpg";
+import slide3 from "@assets/work-3.jpg";
+
+const HERO_SLIDES = [slide1, slide2, slide3];
 // simple-icons — locally bundled official SVG logos with brand colours
 import {
   siToyota, siAudi, siVolkswagen, siFerrari, siPorsche, siInfiniti, siRollsroyce,
@@ -221,6 +224,98 @@ const CyclingText = ({ words }: { words: string[] }) => {
   );
 };
 
+const HeroSlideshow = () => {
+  const [index, setIndex] = React.useState(0);
+  const [prev,  setPrev]  = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    const id = setInterval(() => {
+      setIndex(i => {
+        setPrev(i);
+        return (i + 1) % HERO_SLIDES.length;
+      });
+    }, 5000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 40 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      className="relative w-full md:flex-1 overflow-hidden"
+      style={{ minHeight: "50vh" }}
+    >
+      {/* Outgoing slide fades out */}
+      <AnimatePresence initial={false}>
+        {prev !== null && (
+          <motion.img
+            key={`prev-${prev}`}
+            src={HERO_SLIDES[prev]}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            initial={{ opacity: 0.85 }}
+            animate={{ opacity: 0.85 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Active slide fades in */}
+      <AnimatePresence initial={false}>
+        <motion.img
+          key={`slide-${index}`}
+          src={HERO_SLIDES[index]}
+          alt={`Our work ${index + 1}`}
+          className="absolute inset-0 w-full h-full object-cover"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.85 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+        />
+      </AnimatePresence>
+
+      {/* Left gradient fade into black */}
+      <div className="absolute inset-y-0 left-0 w-32 md:w-48 z-10"
+        style={{ background: "linear-gradient(90deg, #000 0%, transparent 100%)" }} />
+      {/* Overlay tint */}
+      <div className="absolute inset-0 z-10"
+        style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.05) 50%, rgba(0,0,0,0.55) 100%)" }} />
+
+      {/* Stat badge */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 0.7 }}
+        className="absolute bottom-10 right-10 text-right z-20"
+      >
+        <p className="font-display font-black text-5xl text-white leading-none">3M+</p>
+        <p className="font-mono text-xs uppercase tracking-widest text-white/50 mt-1">Monthly Reach</p>
+      </motion.div>
+
+      {/* Slide indicators */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+        {HERO_SLIDES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { setPrev(index); setIndex(i); }}
+            className="transition-all duration-300"
+            style={{
+              width: i === index ? 24 : 8,
+              height: 3,
+              borderRadius: 2,
+              background: i === index ? "hsl(25,100%,50%)" : "rgba(255,255,255,0.35)",
+              border: "none",
+              cursor: "pointer",
+            }}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+};
+
 const Hero = () => {
   return (
     <section id="hero" className="relative w-full bg-black overflow-hidden" style={{ minHeight: "100vh" }}>
@@ -306,38 +401,8 @@ const Hero = () => {
           {/* scroll indicator */}
         </div>
 
-        {/* ── RIGHT: full-bleed image ── */}
-        <motion.div
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full md:flex-1 overflow-hidden"
-          style={{ minHeight: "50vh" }}
-        >
-          <img
-            src={heroBg}
-            alt="Campaign"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ opacity: 0.85 }}
-          />
-          {/* Left gradient fade into black */}
-          <div className="absolute inset-y-0 left-0 w-32 md:w-48"
-            style={{ background: "linear-gradient(90deg, #000 0%, transparent 100%)" }} />
-          {/* overlay tint */}
-          <div className="absolute inset-0"
-            style={{ background: "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.5) 100%)" }} />
-
-          {/* floating stat badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.7 }}
-            className="absolute bottom-10 right-10 text-right"
-          >
-            <p className="font-display font-black text-5xl text-white leading-none">3M+</p>
-            <p className="font-mono text-xs uppercase tracking-widest text-white/50 mt-1">Monthly Reach</p>
-          </motion.div>
-        </motion.div>
+        {/* ── RIGHT: auto-cycling work slideshow ── */}
+        <HeroSlideshow />
 
       </div>
     </section>
