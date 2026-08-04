@@ -656,13 +656,20 @@ export default function ServicePage() {
             <motion.p
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.45 }}
-              className="text-white/50 font-sans text-lg max-w-md mb-8"
-            >{service.tagline}</motion.p>
+              className="font-mono text-primary uppercase tracking-widest text-xs mb-3"
+            >About this service</motion.p>
+
+            <motion.p
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="text-white/60 font-sans text-sm leading-relaxed max-w-md mb-8"
+              style={{ whiteSpace: "pre-line" }}
+            >{service.description}</motion.p>
 
             {/* Stats row */}
             <motion.div
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
+              transition={{ duration: 0.6, delay: 0.65 }}
               className="flex gap-6 flex-wrap"
             >
               {service.stats.map((s, i) => (
@@ -684,29 +691,19 @@ export default function ServicePage() {
         </div>
       </section>
 
-      {/* ── Description + Points ── */}
+      {/* ── What's Included ── */}
       <section className="py-24 px-8 md:px-16">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+        <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.7 }}
           >
-            <p className="font-mono text-primary uppercase tracking-widest text-xs mb-5">About this service</p>
-            <p className="text-white/70 leading-relaxed text-base font-sans" style={{ whiteSpace: "pre-line" }}>
-              {service.description}
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.15 }}
-          >
-            <p className="font-mono text-primary uppercase tracking-widest text-xs mb-5">What's included</p>
-            <ul className="space-y-4">
+            <p className="font-mono text-primary uppercase tracking-widest text-xs mb-8">What's included</p>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {service.points.map((point, i) => (
                 <motion.li key={i}
                   initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.08 }}
+                  viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.07 }}
                   className="flex items-start gap-3"
                 >
                   <span className="mt-2 shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: "hsl(25,100%,50%)" }} />
