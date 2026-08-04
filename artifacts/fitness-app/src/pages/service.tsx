@@ -311,8 +311,8 @@ const InfluencerVisual = () => {
         </div>
         {/* info */}
         <div className="flex-1 min-w-0">
-          <p className="font-mono font-bold text-[11px] text-white truncate">{post.handle}</p>
-          <p className="font-mono text-[9px] text-white/35 truncate">{post.label}</p>
+          <p className="font-sans font-bold text-[13px] text-white tracking-tight truncate">{post.handle}</p>
+          <p className="font-sans text-[10px] text-white/40 truncate">{post.label}</p>
         </div>
         {/* metrics */}
         <div className="flex items-center gap-3 shrink-0">
