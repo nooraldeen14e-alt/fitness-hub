@@ -4,8 +4,14 @@ import { motion } from "framer-motion";
 import MobileNav from "@/components/MobileNav";
 
 const SERVICES = [
-  "Brand Identity", "Social Media Management", "Content Creation",
-  "Paid Advertising", "Website Design", "Marketing Strategy",
+  { label: "Marketing Strategy",      slug: "marketing-strategy" },
+  { label: "Social Media Management", slug: "social-media-management" },
+  { label: "Google Ads",              slug: "google-ads" },
+  { label: "Podcast Production",      slug: "podcast-production" },
+  { label: "Website Design",          slug: "website-design" },
+  { label: "Event Management",        slug: "event-management" },
+  { label: "Influencer Marketing",    slug: "influencer-marketing" },
+  { label: "PR Management",           slug: "pr-management" },
 ];
 
 export default function Contact() {
@@ -176,10 +182,11 @@ export default function Contact() {
             <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/30 mb-4">What We Offer</p>
             <div className="flex flex-wrap gap-2">
               {SERVICES.map(s => (
-                <span key={s} className="px-3 py-1.5 rounded-full border text-xs font-mono"
+                <Link key={s.slug} href={`/services/${s.slug}`}
+                  className="px-3 py-1.5 rounded-full border text-xs font-mono transition-all duration-200 hover:bg-primary hover:border-primary hover:text-black"
                   style={{ borderColor: "hsl(25,100%,50%,0.35)", color: "hsl(25,100%,50%)", background: "hsl(25,100%,50%,0.06)" }}>
-                  {s}
-                </span>
+                  {s.label}
+                </Link>
               ))}
             </div>
           </div>
