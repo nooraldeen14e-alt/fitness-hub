@@ -162,8 +162,8 @@ export default function Contact() {
             <div className="flex flex-col gap-3">
               {[
                 { flag: "🇦🇪", city: "Trade Center Second, Dubai", sub: "MENA Operations" },
-                { flag: "🇨🇭", city: "Switzerland",        sub: "European HQ" },
-                { flag: "🇸🇮", city: "Slovenia",           sub: "Creative Studio" },
+                { flag: "🇨🇭", city: "Geneva, Switzerland",  sub: "European HQ" },
+                { flag: "🇸🇮", city: "Ljubljana, Slovenia", sub: "Creative Studio" },
               ].map(l => (
                 <div key={l.city} className="flex items-center gap-3">
                   <span className="text-2xl">{l.flag}</span>
