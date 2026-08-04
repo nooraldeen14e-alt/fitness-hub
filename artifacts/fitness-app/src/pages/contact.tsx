@@ -68,6 +68,34 @@ export default function Contact() {
         </Link>
         <div className="hidden md:flex items-center gap-8">
           <Link href="/" className="font-sans text-sm font-medium text-white/60 hover:text-white transition-colors">Home</Link>
+
+          {/* We Offer dropdown */}
+          <div className="relative group">
+            <button className="font-sans text-sm font-medium text-white/60 hover:text-white transition-colors flex items-center gap-1">
+              We Offer
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-200 group-hover:rotate-180"><path d="M2 4l4 4 4-4"/></svg>
+            </button>
+            <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-64 py-2">
+                {[
+                  { label: "Marketing Strategy",      slug: "marketing-strategy" },
+                  { label: "Social Media Management", slug: "social-media-management" },
+                  { label: "Google Ads",              slug: "google-ads" },
+                  { label: "Podcast Production",      slug: "podcast-production" },
+                  { label: "Website Design",          slug: "website-design" },
+                  { label: "Event Management",        slug: "event-management" },
+                  { label: "Influencer Marketing",    slug: "influencer-marketing" },
+                  { label: "PR Management",           slug: "pr-management" },
+                ].map(s => (
+                  <Link key={s.slug} href={`/services/${s.slug}`}
+                    className="block px-5 py-2.5 text-sm font-sans text-white/70 hover:text-white hover:bg-white/5 transition-colors">
+                    {s.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <Link href="/about" className="font-sans text-sm font-medium text-white/60 hover:text-white transition-colors">About Us</Link>
           <Link href="/contact" className="font-sans text-sm font-medium text-primary transition-colors">Contact Us</Link>
         </div>
