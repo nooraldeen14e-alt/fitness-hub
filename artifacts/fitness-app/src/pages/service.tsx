@@ -339,36 +339,97 @@ const InfluencerVisual = () => {
 
   return (
     <div className="w-full max-w-sm mx-auto select-none relative">
-      {/* floating notification bubbles */}
-      {bubbles.map((b, i) => (
-        <motion.div key={i}
-          className="absolute flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-mono font-bold z-10 pointer-events-none"
-          style={{
-            top: b.top, left: b.left,
-            background: "rgba(255,255,255,0.07)",
-            border: "1px solid rgba(255,255,255,0.12)",
-            color: "hsl(25,100%,55%)",
-          }}
-          initial={{ opacity: 0, y: 8, scale: 0.8 }}
-          animate={{ opacity: [0, 1, 1, 0], y: [8, 0, -8, -16], scale: [0.8, 1, 1, 0.9] }}
-          transition={{ delay: b.delay, duration: 2.4, repeat: Infinity, repeatDelay: 2, ease: "easeOut" }}
-        >
-          <span>{b.icon}</span><span>{b.label}</span>
-        </motion.div>
-      ))}
 
-      {/* feed cards */}
-      <div className="flex flex-col gap-2 pr-16">
+      {/* ── Influencer post (the cause) ── */}
+      <motion.div
+        className="relative rounded-xl p-3 mb-1"
+        style={{
+          background: "rgba(255,122,0,0.08)",
+          border: "1px solid hsl(25,100%,50%,0.45)",
+          boxShadow: "0 0 20px hsl(25,100%,50%,0.12)",
+        }}
+        initial={{ opacity: 0, y: -14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {/* "campaign post" badge */}
+        <div className="absolute -top-2.5 left-3 px-2 py-0.5 rounded-full font-mono text-[9px] uppercase tracking-widest text-black font-bold"
+          style={{ background: "hsl(25,100%,50%)" }}>
+          Campaign Post
+        </div>
+
+        <div className="flex items-center gap-3 mt-1">
+          {/* influencer avatar */}
+          <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0 font-bold text-black text-sm"
+            style={{ background: "hsl(25,100%,50%)", boxShadow: "0 0 12px hsl(25,100%,50%,0.5)" }}>
+            ★
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-mono font-bold text-[12px] text-white">@swissulife.creator</p>
+            <p className="font-mono text-[9px] text-white/40">Sponsored · just now</p>
+          </div>
+          {/* live total reach ticking */}
+          <div className="text-right shrink-0">
+            <p className="font-mono font-bold text-[13px]" style={{ color: "hsl(25,100%,50%)" }}>
+              {fmt(useTick(98400, 400))}
+            </p>
+            <p className="font-mono text-[8px] text-white/30">reach</p>
+          </div>
+        </div>
+
+        {/* post caption snippet */}
+        <p className="font-sans text-[10px] text-white/50 mt-2 leading-relaxed pl-[52px]">
+          "This product changed my routine — honestly can't stop talking about it 🔥"
+        </p>
+      </motion.div>
+
+      {/* flow arrow */}
+      <motion.div className="flex flex-col items-center my-1"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55 }}>
+        <motion.div
+          style={{ width: 1, originY: 0, background: "linear-gradient(to bottom, hsl(25,100%,50%,0.7), hsl(25,100%,50%,0.2))" }}
+          className="h-4"
+          initial={{ scaleY: 0 }} animate={{ scaleY: 1 }}
+          transition={{ delay: 0.6, duration: 0.35 }}
+        />
+        <span className="font-mono text-[8px] text-primary/60 uppercase tracking-widest">audience reacts</span>
+        <motion.div
+          style={{ width: 1, originY: 0, background: "linear-gradient(to bottom, hsl(25,100%,50%,0.2), transparent)" }}
+          className="h-3"
+          initial={{ scaleY: 0 }} animate={{ scaleY: 1 }}
+          transition={{ delay: 0.65, duration: 0.3 }}
+        />
+      </motion.div>
+
+      {/* ── Audience engagement cards ── */}
+      <div className="flex flex-col gap-1.5 pr-14">
         {posts.map((post, i) => (
           <PostCard key={post.handle} post={post} index={i} />
         ))}
       </div>
 
-      {/* bottom label */}
-      <motion.div className="flex items-center gap-2 mt-4"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }}>
+      {/* floating reaction bubbles */}
+      {bubbles.map((b, i) => (
+        <motion.div key={i}
+          className="absolute flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold z-10 pointer-events-none"
+          style={{
+            top: b.top, left: b.left,
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            color: "hsl(25,100%,55%)",
+          }}
+          initial={{ opacity: 0, y: 6, scale: 0.8 }}
+          animate={{ opacity: [0, 1, 1, 0], y: [6, 0, -10, -18], scale: [0.8, 1, 1, 0.85] }}
+          transition={{ delay: b.delay, duration: 2.2, repeat: Infinity, repeatDelay: 2.5, ease: "easeOut" }}
+        >
+          <span>{b.icon}</span><span>{b.label}</span>
+        </motion.div>
+      ))}
+
+      <motion.div className="flex items-center gap-2 mt-3"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 2 }}>
         <div className="h-[1px] w-5 bg-primary/40" />
-        <span className="font-mono text-[9px] text-white/30 uppercase tracking-widest">500+ active creators</span>
+        <span className="font-mono text-[9px] text-white/25 uppercase tracking-widest">500+ active creators</span>
       </motion.div>
     </div>
   );
