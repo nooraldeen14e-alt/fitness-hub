@@ -155,23 +155,22 @@ const Navbar = () => {
             <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-64 py-2">
                 {[
-                  "Marketing Strategy",
-                  "Social Media Management",
-                  "Google Ads",
-
-                  "Podcast Production",
-                  "Website Design",
-                  "Event Management",
-                  "Influencer Marketing",
-                  "PR Management",
+                  { label: "Marketing Strategy",      slug: "marketing-strategy" },
+                  { label: "Social Media Management", slug: "social-media-management" },
+                  { label: "Google Ads",              slug: "google-ads" },
+                  { label: "Podcast Production",      slug: "podcast-production" },
+                  { label: "Website Design",          slug: "website-design" },
+                  { label: "Event Management",        slug: "event-management" },
+                  { label: "Influencer Marketing",    slug: "influencer-marketing" },
+                  { label: "PR Management",           slug: "pr-management" },
                 ].map((s) => (
-                  <a
-                    key={s}
-                    href="#services"
+                  <Link
+                    key={s.slug}
+                    href={`/services/${s.slug}`}
                     className="block px-5 py-2.5 text-sm font-sans text-white/70 hover:text-white hover:bg-white/5 transition-colors"
                   >
-                    {s}
-                  </a>
+                    {s.label}
+                  </Link>
                 ))}
               </div>
             </div>

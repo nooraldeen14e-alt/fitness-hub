@@ -240,8 +240,17 @@ const AboutNavbar = () => {
             </button>
             <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
               <div className="bg-[#0d0d0d] border border-white/10 rounded-2xl shadow-2xl w-64 py-2">
-                {["Marketing Strategy","Social Media Management","Google Ads","Podcast Production","Website Design","Event Management","Influencer Marketing","PR Management"].map(s => (
-                  <Link key={s} href="/#services" className="block px-5 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">{s}</Link>
+                {[
+                  { label: "Marketing Strategy",      slug: "marketing-strategy" },
+                  { label: "Social Media Management", slug: "social-media-management" },
+                  { label: "Google Ads",              slug: "google-ads" },
+                  { label: "Podcast Production",      slug: "podcast-production" },
+                  { label: "Website Design",          slug: "website-design" },
+                  { label: "Event Management",        slug: "event-management" },
+                  { label: "Influencer Marketing",    slug: "influencer-marketing" },
+                  { label: "PR Management",           slug: "pr-management" },
+                ].map(s => (
+                  <Link key={s.slug} href={`/services/${s.slug}`} className="block px-5 py-2.5 text-sm text-white/70 hover:text-white hover:bg-white/5 transition-colors">{s.label}</Link>
                 ))}
               </div>
             </div>
