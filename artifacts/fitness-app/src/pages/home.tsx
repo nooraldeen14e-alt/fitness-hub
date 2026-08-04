@@ -54,9 +54,30 @@ const GlowCursor = () => {
   );
 };
 
-/* ── Services ticker removed ── */
+/* ── Services ticker ── */
 const ServicesTicker = () => {
-  return null;
+  const items = [
+    "Marketing Strategy", "Social Media Management", "Google Ads",
+    "Podcast Production", "Website Design", "Event Management",
+    "Influencer Marketing", "PR Management",
+  ];
+  const doubled = [...items, ...items];
+
+  return (
+    <div className="w-full overflow-hidden border-y py-5" style={{ borderColor: "hsl(25,100%,50%,0.25)", background: "#050505" }}>
+      <div className="flex animate-ticker" style={{ width: "max-content" }}>
+        {doubled.map((item, i) => (
+          <div key={i} className="flex items-center gap-6 px-6 whitespace-nowrap">
+            <span className="font-display font-bold text-lg uppercase tracking-widest"
+              style={{ color: i % 2 === 0 ? "hsl(25,100%,50%)" : "rgba(255,255,255,0.25)" }}>
+              {item}
+            </span>
+            <span style={{ color: "hsl(25,100%,50%)", opacity: 0.4 }}>✦</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 const NoiseOverlay = () => (
@@ -601,46 +622,6 @@ const Stats = () => {
   );
 };
 
-const Clients = () => {
-  return (
-    <section className="py-24 bg-black overflow-hidden border-b border-white/10">
-      <div className="max-w-7xl mx-auto px-6 mb-12">
-      </div>
-      <div className="relative flex overflow-x-hidden group w-full">
-        <div className="animate-marquee whitespace-nowrap flex items-center gap-24 py-4">
-          {[...Array(2)].map((_, i) => (
-            <React.Fragment key={i}>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Fashion & Retail</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Food & Beverages</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Jewelry</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Healthcare</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Sports</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">E-Commerce</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Entertainment</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Beauty & Cosmetics</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Events</span>
-            </React.Fragment>
-          ))}
-        </div>
-        <div className="absolute top-0 animate-marquee2 whitespace-nowrap flex items-center gap-24 py-4">
-          {[...Array(2)].map((_, i) => (
-            <React.Fragment key={i}>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Fashion & Retail</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Food & Beverages</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Jewelry</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Healthcare</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Sports</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">E-Commerce</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Entertainment</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Beauty & Cosmetics</span>
-              <span className="font-display text-4xl md:text-5xl font-bold text-white/30 uppercase">Events</span>
-            </React.Fragment>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 
 const Contact = () => {
@@ -881,7 +862,6 @@ export default function Home() {
         <Hero />
         <ServicesTicker />
         <OurClients />
-        <Clients />
         <Stats />
       </main>
 
