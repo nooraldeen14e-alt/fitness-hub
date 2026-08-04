@@ -126,8 +126,8 @@ const TopBar = () => {
               alt={loc.city}
               style={{ width: 18, height: 13, borderRadius: 2, objectFit: "cover", marginRight: 8 }}
             />
-            <span className="font-mono font-bold text-white/60 text-[11px] tracking-widest uppercase">{loc.label}</span>
-            <span className="font-mono font-bold text-white/25 text-[11px] ml-2">/ {loc.city}</span>
+            <span className="font-mono font-bold text-[11px] tracking-widest uppercase" style={{ color: "hsl(25,100%,50%)" }}>{loc.label}</span>
+            <span className="font-mono font-bold text-white/35 text-[11px] ml-2">{loc.city}</span>
             <span style={{ marginLeft: 28, color: "hsl(25,100%,50%)", opacity: 0.3, fontSize: 8 }}>✦</span>
           </div>
         ))}
