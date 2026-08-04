@@ -54,30 +54,9 @@ const GlowCursor = () => {
   );
 };
 
-/* ── Services ticker ── */
+/* ── Services ticker removed ── */
 const ServicesTicker = () => {
-  const items = [
-    "Marketing Strategy", "Social Media Management", "Google Ads",
-    "Podcast Production", "Website Design", "Event Management",
-    "Influencer Marketing", "PR Management",
-  ];
-  const doubled = [...items, ...items];
-
-  return (
-    <div className="w-full overflow-hidden border-y py-5" style={{ borderColor: "hsl(25,100%,50%,0.25)", background: "#050505" }}>
-      <div className="flex animate-ticker" style={{ width: "max-content" }}>
-        {doubled.map((item, i) => (
-          <div key={i} className="flex items-center gap-6 px-6 whitespace-nowrap">
-            <span className="font-display font-bold text-lg uppercase tracking-widest"
-              style={{ color: i % 2 === 0 ? "hsl(25,100%,50%)" : "rgba(255,255,255,0.25)" }}>
-              {item}
-            </span>
-            <span style={{ color: "hsl(25,100%,50%)", opacity: 0.4 }}>✦</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  return null;
 };
 
 const NoiseOverlay = () => (
