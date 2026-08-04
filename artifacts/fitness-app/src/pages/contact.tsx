@@ -161,15 +161,15 @@ export default function Contact() {
             <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/30 mb-4">Our Locations</p>
             <div className="flex flex-col gap-3">
               {[
-                { flag: "🇦🇪", city: "Trade Center Second, Dubai", sub: "MENA Operations" },
-                { flag: "🇨🇭", city: "Geneva, Switzerland",  sub: "European HQ" },
-                { flag: "🇸🇮", city: "Ljubljana, Slovenia", sub: "Creative Studio" },
+                { flag: "🇦🇪", country: "UAE",         place: "Trade Center Second, Dubai" },
+                { flag: "🇨🇭", country: "Switzerland",  place: "Geneva" },
+                { flag: "🇸🇮", country: "Slovenia",     place: "Ljubljana" },
               ].map(l => (
-                <div key={l.city} className="flex items-center gap-3">
+                <div key={l.country} className="flex items-center gap-3">
                   <span className="text-2xl">{l.flag}</span>
                   <div>
-                    <p className="text-white text-sm font-medium">{l.city}</p>
-                    <p className="text-white/30 text-xs font-mono">{l.sub}</p>
+                    <p className="text-white text-sm font-semibold">{l.country}</p>
+                    <p className="text-white/40 text-xs font-mono">{l.place}</p>
                   </div>
                 </div>
               ))}
