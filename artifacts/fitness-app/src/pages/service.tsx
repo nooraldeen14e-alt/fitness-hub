@@ -350,9 +350,9 @@ const InfluencerVisual = () => {
         transition={{ delay: 0.6, duration: 0.4 }}
       />
 
-      {/* ── 3-D crowd ── */}
+      {/* ── 3-D crowd of mini people ── */}
       <motion.div
-        className="grid gap-x-[12px] gap-y-[10px] px-4 py-4 rounded-xl mt-0"
+        className="grid gap-x-[14px] gap-y-[6px] px-5 py-4 rounded-xl mt-0"
         style={{
           gridTemplateColumns: `repeat(${COLS}, 1fr)`,
           rotateX: 40,
@@ -369,18 +369,43 @@ const InfluencerVisual = () => {
           const row = Math.floor(i / COLS);
           const center = (COLS - 1) / 2;
           const dist = Math.abs(col - center) / center;
-          const lit = (row + col) % 3 !== 0;
+          const appearDelay = 0.85 + row * 0.18 + dist * 0.1;
+          const armDelay = appearDelay + 0.35;
+          const shade = 52 - row * 6;
+          const color = `hsl(25,100%,${shade}%)`;
           return (
-            <motion.div key={i}
-              style={{
-                width: 11, height: 11, borderRadius: "50%",
-                background: lit ? `hsl(25,100%,${50 - row * 5}%)` : "rgba(255,255,255,0.09)",
-                boxShadow: lit ? "0 0 6px hsl(25,100%,50%,0.45)" : "none",
-              }}
+            <motion.svg key={i}
+              width="16" height="26" viewBox="0 0 16 26"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.85 + row * 0.14 + dist * 0.08, duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-            />
+              transition={{ delay: appearDelay, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              style={{ overflow: "visible" }}
+            >
+              {/* head */}
+              <circle cx="8" cy="4.5" r="3.2" fill={color} />
+              {/* body */}
+              <line x1="8" y1="7.7" x2="8" y2="18" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+              {/* left arm — raises from down to up */}
+              <motion.line
+                x1="8" y1="11"
+                stroke={color} strokeWidth="2" strokeLinecap="round"
+                initial={{ x2: 2, y2: 15 }}
+                animate={{ x2: [2, 1, 2], y2: [15, 7, 15] }}
+                transition={{ delay: armDelay, duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+              />
+              {/* right arm — raises opposite phase */}
+              <motion.line
+                x1="8" y1="11"
+                stroke={color} strokeWidth="2" strokeLinecap="round"
+                initial={{ x2: 14, y2: 15 }}
+                animate={{ x2: [14, 15, 14], y2: [15, 7, 15] }}
+                transition={{ delay: armDelay + 0.15, duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
+              />
+              {/* left leg */}
+              <line x1="8" y1="18" x2="4" y2="25" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+              {/* right leg */}
+              <line x1="8" y1="18" x2="12" y2="25" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+            </motion.svg>
           );
         })}
       </motion.div>
