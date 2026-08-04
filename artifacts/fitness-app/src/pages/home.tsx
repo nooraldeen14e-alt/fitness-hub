@@ -92,23 +92,40 @@ const NoiseOverlay = () => (
 );
 
 const TopBar = () => (
-  <div className="fixed left-0 right-0 z-39 flex items-center justify-center gap-6 px-6 border-b border-white/5"
-    style={{ top: 64, height: 34, background: "#0a0a0a" }}>
+  <motion.div
+    className="fixed left-0 right-0 flex items-center justify-center gap-6 px-6 border-b border-white/5"
+    style={{ top: 64, height: 34, background: "#0a0a0a", zIndex: 39 }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.2, duration: 0.4 }}
+  >
     {[
       { code: "ae", city: "Dubai" },
       { code: "ch", city: "Geneva" },
       { code: "si", city: "Ljubljana" },
     ].map((loc, i) => (
       <React.Fragment key={loc.code}>
-        {i > 0 && <span className="text-white/15 text-xs">·</span>}
-        <div className="flex items-center gap-1.5">
+        {i > 0 && (
+          <motion.span
+            className="text-white/15 text-xs"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 + i * 0.18, duration: 0.4 }}
+          >·</motion.span>
+        )}
+        <motion.div
+          className="flex items-center gap-1.5"
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 + i * 0.18, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        >
           <img src={`https://flagcdn.com/w40/${loc.code}.png`} alt={loc.city}
             style={{ width: 18, height: 13, borderRadius: 2, objectFit: "cover" }} />
           <span className="font-mono text-white/50 text-[11px] tracking-wider">{loc.city}</span>
-        </div>
+        </motion.div>
       </React.Fragment>
     ))}
-  </div>
+  </motion.div>
 );
 
 const Navbar = () => {
