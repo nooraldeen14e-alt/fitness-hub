@@ -987,6 +987,89 @@ const Contact = () => {
   );
 };
 
+const LocationsSection = () => (
+  <section className="py-24 px-6 bg-black border-t border-white/5">
+    <div className="max-w-7xl mx-auto">
+      {/* Heading */}
+      <div className="mb-12">
+        <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-primary mb-3">Where We Are</p>
+        <h2 className="font-display font-bold text-5xl md:text-7xl uppercase text-white leading-none">
+          Our <span style={{ color: "hsl(25,100%,50%)" }}>Offices</span>
+        </h2>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        {/* Left: 3 office cards */}
+        <div className="flex flex-col gap-4">
+          {[
+            { code: "ae", country: "UAE",         place: "Trade Center Second, Dubai",  email: "sales@swissulife.com" },
+            { code: "ch", country: "Switzerland",  place: "Geneva",                      email: "sales@swissulife.com" },
+            { code: "si", country: "Slovenia",     place: "Ljubljana",                   email: "sales@swissulife.com" },
+          ].map((loc, i) => (
+            <motion.div
+              key={loc.country}
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="flex items-center gap-5 p-5 rounded-2xl border border-white/8 bg-white/[0.03] hover:border-primary/40 transition-colors group"
+            >
+              <img
+                src={`https://flagcdn.com/w80/${loc.code}.png`}
+                alt={loc.country}
+                style={{ width: 52, height: 36, borderRadius: 6, objectFit: "cover", flexShrink: 0 }}
+              />
+              <div className="flex-1 min-w-0">
+                <p className="font-display font-bold text-white text-lg leading-none mb-1">{loc.country}</p>
+                <p className="font-mono text-white/40 text-xs tracking-wider">{loc.place}</p>
+              </div>
+              <div
+                className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                style={{ background: "hsl(25,100%,50%)" }}
+              >
+                <ArrowRight size={14} color="black" />
+              </div>
+            </motion.div>
+          ))}
+
+          {/* CTA */}
+          <Link href="/contact">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="mt-2 w-full py-4 rounded-2xl font-mono text-sm uppercase tracking-widest font-bold text-black transition-opacity hover:opacity-90"
+              style={{ background: "hsl(25,100%,50%)" }}
+            >
+              Get in Touch →
+            </motion.button>
+          </Link>
+        </div>
+
+        {/* Right: map */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="rounded-2xl overflow-hidden border border-white/10"
+          style={{ height: 380 }}
+        >
+          <iframe
+            title="Swissulife Offices"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3609.9!2d55.2892!3d25.2048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5965f4e68b01%3A0x54e7e70e9b3f3e8a!2sTrade%20Centre%202%2C%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
+            width="100%"
+            height="100%"
+            style={{ border: 0, filter: "invert(90%) hue-rotate(180deg)" }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </motion.div>
+      </div>
+    </div>
+  </section>
+);
+
 const Footer = () => {
   return (
     <footer id="footer" className="bg-black pt-32 pb-12 px-6">
@@ -1047,6 +1130,7 @@ export default function Home() {
         <ServicesTicker />
         <ProofOfWork />
         <OurClients />
+        <LocationsSection />
       </main>
 
       <Footer />
