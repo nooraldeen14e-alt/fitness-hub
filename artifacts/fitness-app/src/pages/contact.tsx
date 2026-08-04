@@ -161,12 +161,19 @@ export default function Contact() {
             <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/30 mb-4">Our Locations</p>
             <div className="flex flex-col gap-3">
               {[
-                { flag: "🇦🇪", country: "UAE",         place: "Trade Center Second, Dubai" },
-                { flag: "🇨🇭", country: "Switzerland",  place: "Geneva" },
-                { flag: "🇸🇮", country: "Slovenia",     place: "Ljubljana" },
+                { code: "ae", country: "UAE",         place: "Trade Center Second, Dubai" },
+                { code: "ch", country: "Switzerland",  place: "Geneva" },
+                { code: "si", country: "Slovenia",     place: "Ljubljana" },
               ].map(l => (
                 <div key={l.country} className="flex items-center gap-3">
-                  <span className="text-2xl">{l.flag}</span>
+                  <img
+                    src={`https://flagcdn.com/w40/${l.code}.png`}
+                    alt={l.country}
+                    width={28}
+                    height={20}
+                    className="rounded-sm object-cover shrink-0"
+                    style={{ height: 20, width: 28 }}
+                  />
                   <div>
                     <p className="text-white text-sm font-semibold">{l.country}</p>
                     <p className="text-white/40 text-xs font-mono">{l.place}</p>
