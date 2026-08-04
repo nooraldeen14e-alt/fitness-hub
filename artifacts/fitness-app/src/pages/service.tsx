@@ -264,54 +264,90 @@ const EventVisual = () => {
 };
 
 const InfluencerVisual = () => {
-  const nodes = [
-    { x: 50, y: 50, size: 44, label: "Your Brand", main: true },
-    { x: 20, y: 15, size: 28, label: "Mega" },
-    { x: 80, y: 18, size: 24, label: "Macro" },
-    { x: 10, y: 65, size: 20, label: "Micro" },
-    { x: 88, y: 60, size: 20, label: "Micro" },
-    { x: 45, y: 88, size: 16, label: "Nano" },
-    { x: 70, y: 82, size: 16, label: "Nano" },
-  ];
+  const COLS = 7, ROWS = 4;
+  const followers = Array.from({ length: COLS * ROWS }, (_, i) => i);
+
+  // pulse rings repeat
+  const rings = [0, 1, 2];
+
   return (
-    <div className="w-full max-w-xs mx-auto">
-      <div className="relative" style={{ height: 200 }}>
-        {/* Connection lines */}
-        <svg className="absolute inset-0 w-full h-full">
-          {nodes.slice(1).map((n, i) => (
-            <motion.line key={i}
-              x1={`${nodes[0].x}%`} y1={`${nodes[0].y}%`}
-              x2={`${n.x}%`} y2={`${n.y}%`}
-              stroke="hsl(25,100%,50%)" strokeWidth="1" strokeOpacity="0.3"
-              strokeDasharray="4 3"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ delay: 0.5 + i * 0.12, duration: 0.6 }}
-            />
-          ))}
-        </svg>
-        {/* Nodes */}
-        {nodes.map((n, i) => (
-          <motion.div key={i}
-            initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 + i * 0.1, duration: 0.5, ease: [0.16,1,0.3,1] }}
-            className="absolute flex flex-col items-center gap-1"
-            style={{ left: `${n.x}%`, top: `${n.y}%`, transform: "translate(-50%,-50%)" }}
-          >
-            <div className="rounded-full flex items-center justify-center font-bold text-black text-[10px]"
-              style={{
-                width: n.size, height: n.size,
-                background: n.main ? "hsl(25,100%,50%)" : "rgba(255,255,255,0.12)",
-                border: n.main ? "none" : "1px solid rgba(255,255,255,0.2)",
-                color: n.main ? "black" : "white",
-                fontSize: n.main ? 9 : 7,
-              }}>
-              {n.main ? "Brand" : ""}
-            </div>
-            {!n.main && <span className="font-mono text-[8px] text-white/30">{n.label}</span>}
-          </motion.div>
+    <div className="w-full max-w-sm mx-auto select-none flex flex-col items-center gap-0" style={{ perspective: "480px" }}>
+
+      {/* ── Influencer node ── */}
+      <div className="relative flex flex-col items-center mb-1 z-10">
+        {/* outer pulse rings */}
+        {rings.map(r => (
+          <motion.div key={r}
+            className="absolute rounded-full border border-primary/40"
+            style={{ width: 56, height: 56, top: "50%", left: "50%", x: "-50%", y: "-50%" }}
+            animate={{ scale: [1, 2.6], opacity: [0.6, 0] }}
+            transition={{ duration: 2, delay: r * 0.65, repeat: Infinity, ease: "easeOut" }}
+          />
         ))}
+        {/* avatar */}
+        <motion.div
+          className="relative w-14 h-14 rounded-full flex items-center justify-center font-mono font-bold text-black text-xs z-10"
+          style={{ background: "hsl(25,100%,50%)", boxShadow: "0 0 28px hsl(25,100%,50%,0.55)" }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          ★
+        </motion.div>
+        <motion.span
+          className="font-mono text-[9px] text-primary uppercase tracking-widest mt-1"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+        >Influencer</motion.span>
       </div>
+
+      {/* signal beam */}
+      <motion.div
+        className="w-[2px] mx-auto"
+        style={{ background: "linear-gradient(to bottom, hsl(25,100%,50%,0.6), transparent)", height: 28 }}
+        initial={{ scaleY: 0, opacity: 0 }} animate={{ scaleY: 1, opacity: 1 }}
+        style={{ originY: 0, background: "linear-gradient(to bottom, hsl(25,100%,50%,0.6), transparent)", height: 28 }}
+        transition={{ delay: 0.55, duration: 0.4 }}
+      />
+
+      {/* ── Crowd on a 3D tilted plane ── */}
+      <motion.div
+        className="grid gap-x-[10px] gap-y-[8px] px-2 py-3 rounded-xl"
+        style={{
+          gridTemplateColumns: `repeat(${COLS}, 1fr)`,
+          rotateX: 42,
+          transformStyle: "preserve-3d",
+          background: "rgba(255,255,255,0.03)",
+          border: "1px solid rgba(255,255,255,0.06)",
+        }}
+        initial={{ opacity: 0, rotateX: 70 }}
+        animate={{ opacity: 1, rotateX: 42 }}
+        transition={{ delay: 0.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {followers.map(i => {
+          const col = i % COLS;
+          const row = Math.floor(i / COLS);
+          const distFromCenter = Math.abs(col - (COLS - 1) / 2) / ((COLS - 1) / 2);
+          const lit = (row * COLS + col) % 3 !== 2; // ~2/3 lit
+          return (
+            <motion.div key={i}
+              className="rounded-full"
+              style={{
+                width: 10, height: 10,
+                background: lit ? `hsl(25,100%,${52 - row * 5}%)` : "rgba(255,255,255,0.08)",
+                boxShadow: lit ? `0 0 6px hsl(25,100%,50%,0.4)` : "none",
+              }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.75 + row * 0.12 + distFromCenter * 0.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            />
+          );
+        })}
+      </motion.div>
+
+      <motion.span
+        className="font-mono text-[9px] text-white/25 uppercase tracking-widest mt-3"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }}
+      >500+ creators in network</motion.span>
     </div>
   );
 };
