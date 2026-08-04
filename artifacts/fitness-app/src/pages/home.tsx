@@ -11,6 +11,9 @@ import { LineChart, Line, ResponsiveContainer } from "recharts";
 import slide1 from "@assets/work-1.jpg";
 import slide2 from "@assets/work-2.jpg";
 import slide3 from "@assets/work-3.jpg";
+import work1b from "@assets/work-1_2.jpg";
+import work2b from "@assets/work-2_2.jpg";
+import work3b from "@assets/work-3_2.jpg";
 
 const HERO_SLIDES = [slide1, slide2, slide3];
 // simple-icons — locally bundled official SVG logos with brand colours
@@ -522,6 +525,84 @@ const ClientCard = ({ c }: { c: ClientEntry }) => {
   );
 };
 
+const WORK_ITEMS = [
+  { img: slide1,  category: "Social Media",     client: "Fashion Brand",      size: "large" },
+  { img: work1b,  category: "Brand Identity",   client: "Luxury Retail",      size: "small" },
+  { img: slide2,  category: "Paid Advertising", client: "Lifestyle Label",    size: "small" },
+  { img: work2b,  category: "Content Creation", client: "Premium F&B",        size: "large" },
+  { img: slide3,  category: "Website Design",   client: "Tech Startup",       size: "small" },
+  { img: work3b,  category: "PR Management",    client: "Events Company",     size: "small" },
+];
+
+const ProofOfWork = () => (
+  <section className="py-24 px-6 bg-black">
+    <div className="max-w-7xl mx-auto">
+      {/* Heading */}
+      <div className="flex items-end justify-between mb-12">
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-primary mb-3">Selected Projects</p>
+          <h2 className="font-display font-bold text-5xl md:text-7xl uppercase text-white leading-none">
+            Proof of<br /><span style={{ color: "hsl(25,100%,50%)" }}>Work</span>
+          </h2>
+        </div>
+        <Link href="/contact">
+          <motion.button
+            whileHover={{ x: 4 }}
+            className="hidden md:flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-white/40 hover:text-primary transition-colors"
+          >
+            Start a project <ArrowRight size={14} />
+          </motion.button>
+        </Link>
+      </div>
+
+      {/* Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+        {WORK_ITEMS.map((item, i) => {
+          const isLarge = item.size === "large";
+          const colSpan = isLarge ? "md:col-span-7" : "md:col-span-5";
+          return (
+            <motion.div
+              key={i}
+              className={`relative overflow-hidden rounded-2xl group cursor-pointer ${colSpan}`}
+              style={{ aspectRatio: isLarge ? "16/10" : "4/3" }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.6, delay: (i % 2) * 0.1 }}
+            >
+              {/* Image */}
+              <img
+                src={item.img}
+                alt={item.client}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+
+              {/* Dark gradient always visible at bottom */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+
+              {/* Category tag — top left */}
+              <div className="absolute top-4 left-4">
+                <span className="font-mono text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border border-white/20 text-white/60 bg-black/40 backdrop-blur-sm">
+                  {item.category}
+                </span>
+              </div>
+
+              {/* Client name — bottom left */}
+              <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <p className="font-display font-bold text-white text-xl">{item.client}</p>
+                <div className="flex items-center gap-1.5 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="w-4 h-[2px] rounded" style={{ background: "hsl(25,100%,50%)" }} />
+                  <span className="font-mono text-[10px] uppercase tracking-widest text-primary">View project</span>
+                </div>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+);
+
 const OurClients = () => {
   // Local logos — served from public/logos/ (work in preview & production)
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -895,6 +976,7 @@ export default function Home() {
       <main>
         <Hero />
         <ServicesTicker />
+        <ProofOfWork />
         <OurClients />
         <Stats />
       </main>
