@@ -235,7 +235,7 @@ export default function Contact() {
           {/* Direct contact */}
           <div>
             <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/30 mb-4">Direct Contact</p>
-            <a href="mailto:sales@swissulife.com"
+            <a href="mailto:anas@swissulife.com"
               className="flex items-center gap-3 group">
               <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{ background: "hsl(25,100%,50%)" }}>
@@ -245,7 +245,7 @@ export default function Contact() {
               </div>
               <div>
                 <p className="text-xs text-white/40 font-mono uppercase tracking-wider mb-0.5">Email us</p>
-                <p className="text-white font-medium group-hover:text-primary transition-colors">sales@swissulife.com</p>
+                <p className="text-white font-medium group-hover:text-primary transition-colors">anas@swissulife.com</p>
               </div>
             </a>
             <a href="tel:+971505725515" className="flex items-center gap-3 group mt-4">
@@ -273,7 +273,7 @@ export default function Contact() {
       {/* ── Footer strip ── */}
       <div className="border-t border-white/5 px-8 md:px-20 py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-white/25 text-xs font-mono">
         <span>© {new Date().getFullYear()} Swissulife Media. All rights reserved.</span>
-        <span>sales@swissulife.com</span>
+        <span>anas@swissulife.com</span>
       </div>
     </div>
   );

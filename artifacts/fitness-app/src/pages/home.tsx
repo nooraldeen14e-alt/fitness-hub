@@ -834,12 +834,12 @@ const Contact = () => {
       } else {
         // Fallback: open mailto link so the message still reaches the team
         window.location.href =
-          `mailto:sales@swissulife.com?subject=Website%20enquiry%20from%20${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom%3A%20${encodeURIComponent(form.email)}`;
+          `mailto:anas@swissulife.com?subject=Website%20enquiry%20from%20${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom%3A%20${encodeURIComponent(form.email)}`;
         setSent(true);
       }
     } catch {
       window.location.href =
-        `mailto:sales@swissulife.com?subject=Website%20enquiry%20from%20${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom%3A%20${encodeURIComponent(form.email)}`;
+        `mailto:anas@swissulife.com?subject=Website%20enquiry%20from%20${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom%3A%20${encodeURIComponent(form.email)}`;
       setSent(true);
     } finally {
       setSending(false);
@@ -883,7 +883,7 @@ const Contact = () => {
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
                   ),
                   label: "EMAIL",
-                  lines: ["sales@swissulife.com"],
+                  lines: ["anas@swissulife.com"],
                 },
                 {
                   icon: (
@@ -1002,9 +1002,9 @@ const LocationsSection = () => (
         {/* Left: 3 office cards */}
         <div className="flex flex-col gap-4">
           {[
-            { code: "ae", country: "UAE",         place: "Trade Center Second, Dubai",  email: "sales@swissulife.com" },
-            { code: "ch", country: "Switzerland",  place: "Geneva",                      email: "sales@swissulife.com" },
-            { code: "si", country: "Slovenia",     place: "Ljubljana",                   email: "sales@swissulife.com" },
+            { code: "ae", country: "UAE",         place: "Trade Center Second, Dubai",  email: "anas@swissulife.com" },
+            { code: "ch", country: "Switzerland",  place: "Geneva",                      email: "anas@swissulife.com" },
+            { code: "si", country: "Slovenia",     place: "Ljubljana",                   email: "anas@swissulife.com" },
           ].map((loc, i) => (
             <motion.div
               key={loc.country}
@@ -1091,7 +1091,7 @@ const Footer = () => {
             <h4 className="font-mono text-white text-xs uppercase tracking-widest mb-6">Contact</h4>
             <ul className="space-y-4 font-sans text-muted-foreground text-sm">
               <li><a href="tel:+971505725515" className="hover:text-primary transition-colors">+971 50 572 5515</a></li>
-              <li><a href="mailto:sales@swissulife.com" className="hover:text-primary transition-colors">sales@swissulife.com</a></li>
+              <li><a href="mailto:anas@swissulife.com" className="hover:text-primary transition-colors">anas@swissulife.com</a></li>
             </ul>
           </div>
           
