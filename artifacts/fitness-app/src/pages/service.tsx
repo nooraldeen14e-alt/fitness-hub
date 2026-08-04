@@ -365,8 +365,8 @@ const InfluencerVisual = () => {
             ★
           </div>
           <div className="flex-1 min-w-0">
-            <p className="font-mono font-bold text-[12px] text-white">@swissulife.creator</p>
-            <p className="font-mono text-[9px] text-white/40">Sponsored · just now</p>
+            <p className="font-sans font-bold text-[14px] text-white tracking-tight">@swissulife.creator</p>
+            <p className="font-sans text-[10px] text-white/40">Sponsored · just now</p>
           </div>
           {/* live total reach ticking */}
           <div className="text-right shrink-0">
