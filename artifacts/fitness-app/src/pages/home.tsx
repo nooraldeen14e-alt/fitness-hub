@@ -1047,7 +1047,6 @@ export default function Home() {
         <ServicesTicker />
         <ProofOfWork />
         <OurClients />
-        <Stats />
       </main>
 
       <Footer />
