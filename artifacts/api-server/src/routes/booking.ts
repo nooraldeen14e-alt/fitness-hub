@@ -50,7 +50,7 @@ router.post("/book-meeting", async (req, res) => {
   try {
     await transporter.sendMail({
       from: `"Swissulife Media" <${smtpUser}>`,
-      to: "sales@swissulife.com",
+      to: "anas@swissulife.com",
       replyTo: email,
       subject: `New Meeting — ${name} · ${date} at ${time}`,
       html,
@@ -105,7 +105,7 @@ router.post("/contact", async (req, res) => {
   try {
     await transporter.sendMail({
       from: `"Swissulife Media" <${smtpUser}>`,
-      to: "sales@swissulife.com",
+      to: "anas@swissulife.com",
       replyTo: email,
       subject: `New Message from ${name}${company ? ` · ${company}` : ""}`,
       html,
