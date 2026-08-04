@@ -184,7 +184,7 @@ export default function Contact() {
               {SERVICES.map(s => (
                 <Link key={s.slug} href={`/services/${s.slug}`}
                   className="px-3 py-1.5 rounded-full border text-xs font-mono transition-all duration-200 hover:bg-primary hover:border-primary hover:text-black"
-                  style={{ borderColor: "hsl(25,100%,50%,0.35)", color: "hsl(25,100%,50%)", background: "hsl(25,100%,50%,0.06)" }}>
+                  style={{ borderColor: "hsl(25,100%,50%,0.6)", color: "#ffffff", background: "transparent" }}>
                   {s.label}
                 </Link>
               ))}
