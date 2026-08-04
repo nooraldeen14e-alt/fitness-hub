@@ -749,30 +749,6 @@ export default function ServicePage() {
         </div>
       </section>
 
-      {/* ── Process ── */}
-      <section className="py-20 px-8 md:px-16 border-t border-white/8 bg-white/[0.02]">
-        <div className="max-w-6xl mx-auto">
-          <p className="font-mono text-primary uppercase tracking-widest text-xs mb-10">How it works</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {service.process.map((p, i) => (
-              <motion.div key={i}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="relative"
-              >
-                <p className="font-display font-black text-5xl mb-4 leading-none"
-                  style={{ color: "hsl(25,100%,50%,0.2)" }}>{p.step}</p>
-                <p className="font-display font-bold text-white text-lg mb-2">{p.title}</p>
-                <p className="text-white/40 text-sm font-sans leading-relaxed">{p.detail}</p>
-                {i < service.process.length - 1 && (
-                  <div className="hidden md:block absolute top-6 right-0 w-6 h-[1px] bg-white/10 translate-x-3" />
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── Other services ── */}
       <section className="py-16 px-8 md:px-16 border-t border-white/10">
         <div className="max-w-6xl mx-auto">
