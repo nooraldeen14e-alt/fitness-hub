@@ -91,6 +91,26 @@ const NoiseOverlay = () => (
   </div>
 );
 
+const TopBar = () => (
+  <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-6 px-6 border-b border-white/5"
+    style={{ height: 34, background: "#0a0a0a" }}>
+    {[
+      { code: "ae", city: "Dubai" },
+      { code: "ch", city: "Geneva" },
+      { code: "si", city: "Ljubljana" },
+    ].map((loc, i) => (
+      <React.Fragment key={loc.code}>
+        {i > 0 && <span className="text-white/15 text-xs">·</span>}
+        <div className="flex items-center gap-1.5">
+          <img src={`https://flagcdn.com/w40/${loc.code}.png`} alt={loc.city}
+            style={{ width: 18, height: 13, borderRadius: 2, objectFit: "cover" }} />
+          <span className="font-mono text-white/50 text-[11px] tracking-wider">{loc.city}</span>
+        </div>
+      </React.Fragment>
+    ))}
+  </div>
+);
+
 const Navbar = () => {
   const [scheduleOpen, setScheduleOpen] = React.useState(false);
   const [active, setActive] = React.useState("home");
@@ -132,7 +152,8 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/5"
+        className="fixed left-0 right-0 z-40 flex items-center justify-between px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/5"
+        style={{ top: 34 }}
       >
         {/* Logo */}
         <div className="flex items-center">
@@ -855,6 +876,7 @@ export default function Home() {
   return (
     <div className="bg-black min-h-screen text-foreground selection:bg-primary selection:text-white">
       <NoiseOverlay />
+      <TopBar />
       <Navbar />
       
       <main>
