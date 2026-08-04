@@ -384,15 +384,15 @@ const Hero = () => {
                 </p>
               </div>
 
-              <a
-                href="#agency"
+              <Link
+                href="/about"
                 className="shrink-0 group inline-flex items-center gap-0 px-7 py-3 rounded-full border border-white/30 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
               >
                 More About Us
                 <span className="overflow-hidden w-0 group-hover:w-5 transition-all duration-300 ease-out flex items-center">
                   <ArrowRight size={15} className="ml-1 shrink-0" />
                 </span>
-              </a>
+              </Link>
             </motion.div>
           </div>
 
