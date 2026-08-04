@@ -264,81 +264,122 @@ const EventVisual = () => {
 };
 
 const InfluencerVisual = () => {
-  const COLS = 7, ROWS = 4;
+  const COLS = 7, ROWS = 3;
   const followers = Array.from({ length: COLS * ROWS }, (_, i) => i);
-
-  // pulse rings repeat
   const rings = [0, 1, 2];
 
   return (
-    <div className="w-full max-w-sm mx-auto select-none flex flex-col items-center gap-0" style={{ perspective: "480px" }}>
+    <div className="w-full max-w-sm mx-auto select-none flex flex-col items-center" style={{ perspective: "520px" }}>
 
-      {/* ── Influencer node ── */}
-      <div className="relative flex flex-col items-center mb-1 z-10">
-        {/* outer pulse rings */}
+      {/* ── Person figure ── */}
+      <div className="relative flex flex-col items-center mb-0">
+        {/* glow rings */}
         {rings.map(r => (
           <motion.div key={r}
-            className="absolute rounded-full border border-primary/40"
-            style={{ width: 56, height: 56, top: "50%", left: "50%", x: "-50%", y: "-50%" }}
-            animate={{ scale: [1, 2.6], opacity: [0.6, 0] }}
-            transition={{ duration: 2, delay: r * 0.65, repeat: Infinity, ease: "easeOut" }}
+            className="absolute rounded-full"
+            style={{
+              width: 70, height: 70,
+              top: "50%", left: "50%",
+              x: "-50%", y: "-50%",
+              border: "1px solid hsl(25,100%,50%,0.35)",
+            }}
+            animate={{ scale: [0.9, 2.2], opacity: [0.5, 0] }}
+            transition={{ duration: 2.2, delay: r * 0.72, repeat: Infinity, ease: "easeOut" }}
           />
         ))}
-        {/* avatar */}
-        <motion.div
-          className="relative w-14 h-14 rounded-full flex items-center justify-center font-mono font-bold text-black text-xs z-10"
-          style={{ background: "hsl(25,100%,50%)", boxShadow: "0 0 28px hsl(25,100%,50%,0.55)" }}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+
+        {/* SVG person */}
+        <motion.svg
+          width="90" height="130" viewBox="0 0 90 130"
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         >
-          ★
-        </motion.div>
+          {/* spotlight glow under feet */}
+          <ellipse cx="45" cy="122" rx="22" ry="5"
+            fill="hsl(25,100%,50%)" opacity="0.25" />
+
+          {/* legs */}
+          <line x1="45" y1="88" x2="36" y2="118" stroke="hsl(25,100%,50%)" strokeWidth="3.5" strokeLinecap="round"/>
+          <line x1="45" y1="88" x2="54" y2="118" stroke="hsl(25,100%,50%)" strokeWidth="3.5" strokeLinecap="round"/>
+
+          {/* body */}
+          <line x1="45" y1="46" x2="45" y2="88" stroke="hsl(25,100%,50%)" strokeWidth="3.5" strokeLinecap="round"/>
+
+          {/* LEFT arm — animated waving */}
+          <motion.line
+            x1="45" y1="60"
+            x2="16" y2="45"
+            stroke="hsl(25,100%,50%)" strokeWidth="3.5" strokeLinecap="round"
+            animate={{ x2: [16, 12, 16], y2: [45, 38, 45] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          />
+          {/* RIGHT arm — animated waving (mirror, offset) */}
+          <motion.line
+            x1="45" y1="60"
+            x2="74" y2="45"
+            stroke="hsl(25,100%,50%)" strokeWidth="3.5" strokeLinecap="round"
+            animate={{ x2: [74, 78, 74], y2: [45, 38, 45] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
+          />
+
+          {/* head */}
+          <circle cx="45" cy="30" r="14"
+            fill="hsl(25,100%,50%)"
+            style={{ filter: "drop-shadow(0 0 8px hsl(25,100%,50%,0.7))" }}
+          />
+          {/* face — eyes */}
+          <circle cx="40" cy="28" r="2" fill="black"/>
+          <circle cx="50" cy="28" r="2" fill="black"/>
+          {/* smile */}
+          <path d="M 39 35 Q 45 40 51 35" stroke="black" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
+        </motion.svg>
+
         <motion.span
-          className="font-mono text-[9px] text-primary uppercase tracking-widest mt-1"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+          className="font-mono text-[9px] text-primary uppercase tracking-widest -mt-1"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
         >Influencer</motion.span>
       </div>
 
       {/* signal beam */}
       <motion.div
-        className="w-[2px] mx-auto"
-        style={{ background: "linear-gradient(to bottom, hsl(25,100%,50%,0.6), transparent)", height: 28 }}
-        initial={{ scaleY: 0, opacity: 0 }} animate={{ scaleY: 1, opacity: 1 }}
-        style={{ originY: 0, background: "linear-gradient(to bottom, hsl(25,100%,50%,0.6), transparent)", height: 28 }}
-        transition={{ delay: 0.55, duration: 0.4 }}
+        style={{ width: 2, height: 24, originY: 0,
+          background: "linear-gradient(to bottom, hsl(25,100%,50%,0.7), transparent)" }}
+        initial={{ scaleY: 0, opacity: 0 }}
+        animate={{ scaleY: 1, opacity: 1 }}
+        transition={{ delay: 0.6, duration: 0.4 }}
       />
 
-      {/* ── Crowd on a 3D tilted plane ── */}
+      {/* ── 3-D crowd ── */}
       <motion.div
-        className="grid gap-x-[10px] gap-y-[8px] px-2 py-3 rounded-xl"
+        className="grid gap-x-[12px] gap-y-[10px] px-4 py-4 rounded-xl mt-0"
         style={{
           gridTemplateColumns: `repeat(${COLS}, 1fr)`,
-          rotateX: 42,
+          rotateX: 40,
           transformStyle: "preserve-3d",
           background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.06)",
+          border: "1px solid rgba(255,255,255,0.07)",
         }}
-        initial={{ opacity: 0, rotateX: 70 }}
-        animate={{ opacity: 1, rotateX: 42 }}
-        transition={{ delay: 0.6, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 0, rotateX: 75 }}
+        animate={{ opacity: 1, rotateX: 40 }}
+        transition={{ delay: 0.65, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
         {followers.map(i => {
           const col = i % COLS;
           const row = Math.floor(i / COLS);
-          const distFromCenter = Math.abs(col - (COLS - 1) / 2) / ((COLS - 1) / 2);
-          const lit = (row * COLS + col) % 3 !== 2; // ~2/3 lit
+          const center = (COLS - 1) / 2;
+          const dist = Math.abs(col - center) / center;
+          const lit = (row + col) % 3 !== 0;
           return (
             <motion.div key={i}
-              className="rounded-full"
               style={{
-                width: 10, height: 10,
-                background: lit ? `hsl(25,100%,${52 - row * 5}%)` : "rgba(255,255,255,0.08)",
-                boxShadow: lit ? `0 0 6px hsl(25,100%,50%,0.4)` : "none",
+                width: 11, height: 11, borderRadius: "50%",
+                background: lit ? `hsl(25,100%,${50 - row * 5}%)` : "rgba(255,255,255,0.09)",
+                boxShadow: lit ? "0 0 6px hsl(25,100%,50%,0.45)" : "none",
               }}
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.75 + row * 0.12 + distFromCenter * 0.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ delay: 0.85 + row * 0.14 + dist * 0.08, duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
             />
           );
         })}
