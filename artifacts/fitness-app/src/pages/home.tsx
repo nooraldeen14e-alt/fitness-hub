@@ -91,42 +91,50 @@ const NoiseOverlay = () => (
   </div>
 );
 
-const TopBar = () => (
-  <motion.div
-    className="fixed left-0 right-0 flex items-center justify-center gap-6 px-6 border-b border-white/5"
-    style={{ top: 64, height: 34, background: "#0a0a0a", zIndex: 39 }}
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ delay: 0.2, duration: 0.4 }}
-  >
-    {[
-      { code: "ae", city: "Dubai" },
-      { code: "ch", city: "Geneva" },
-      { code: "si", city: "Ljubljana" },
-    ].map((loc, i) => (
-      <React.Fragment key={loc.code}>
-        {i > 0 && (
-          <motion.span
-            className="text-white/15 text-xs"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 + i * 0.18, duration: 0.4 }}
-          >·</motion.span>
-        )}
-        <motion.div
-          className="flex items-center gap-1.5"
-          initial={{ opacity: 0, y: -6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 + i * 0.18, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <img src={`https://flagcdn.com/w40/${loc.code}.png`} alt={loc.city}
-            style={{ width: 18, height: 13, borderRadius: 2, objectFit: "cover" }} />
-          <span className="font-mono text-white/50 text-[11px] tracking-wider">{loc.city}</span>
-        </motion.div>
-      </React.Fragment>
-    ))}
-  </motion.div>
-);
+const TOP_BAR_LOCS = [
+  { code: "ae", city: "Dubai",     label: "UAE" },
+  { code: "ch", city: "Geneva",    label: "Switzerland" },
+  { code: "si", city: "Ljubljana", label: "Slovenia" },
+];
+
+const TopBar = () => {
+  // Duplicate 4× so the loop is seamless at any screen width
+  const items = [...TOP_BAR_LOCS, ...TOP_BAR_LOCS, ...TOP_BAR_LOCS, ...TOP_BAR_LOCS];
+  return (
+    <div
+      className="fixed left-0 right-0 overflow-hidden border-b border-white/5"
+      style={{ top: 64, height: 34, background: "#0a0a0a", zIndex: 39 }}
+    >
+      <style>{`
+        @keyframes topbar-drift {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .topbar-track {
+          display: flex;
+          align-items: center;
+          width: max-content;
+          animation: topbar-drift 28s linear infinite;
+        }
+        .topbar-track:hover { animation-play-state: paused; }
+      `}</style>
+      <div className="topbar-track h-full">
+        {items.map((loc, i) => (
+          <div key={i} className="flex items-center" style={{ padding: "0 28px" }}>
+            <img
+              src={`https://flagcdn.com/w40/${loc.code}.png`}
+              alt={loc.city}
+              style={{ width: 18, height: 13, borderRadius: 2, objectFit: "cover", marginRight: 8 }}
+            />
+            <span className="font-mono text-white/50 text-[11px] tracking-widest uppercase">{loc.city}</span>
+            <span className="font-mono text-white/15 text-[11px] ml-2">/ {loc.label}</span>
+            <span style={{ marginLeft: 28, color: "hsl(25,100%,50%)", opacity: 0.3, fontSize: 8 }}>✦</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const Navbar = () => {
   const [scheduleOpen, setScheduleOpen] = React.useState(false);
