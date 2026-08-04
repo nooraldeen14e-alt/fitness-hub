@@ -382,7 +382,7 @@ export const SERVICES: Record<string, {
     ],
     stats: [
       { value: "3×", label: "Avg. revenue lift in 6 months" },
-      { value: "60+", label: "Brands strategised" },
+      { value: "150+", label: "Brands strategised" },
     ],
     process: [
       { step: "01", title: "Discovery Call", detail: "We learn your goals, audience, and current challenges in depth." },
