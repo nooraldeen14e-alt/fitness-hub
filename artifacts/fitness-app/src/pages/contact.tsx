@@ -161,7 +161,7 @@ export default function Contact() {
             <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-white/30 mb-4">Our Locations</p>
             <div className="flex flex-col gap-3">
               {[
-                { flag: "🇦🇪", city: "Dubai, UAE",         sub: "MENA Operations" },
+                { flag: "🇦🇪", city: "Trade Center Second, Dubai", sub: "MENA Operations" },
                 { flag: "🇨🇭", city: "Switzerland",        sub: "European HQ" },
                 { flag: "🇸🇮", city: "Slovenia",           sub: "Creative Studio" },
               ].map(l => (
@@ -180,7 +180,7 @@ export default function Contact() {
           <div className="rounded-2xl overflow-hidden border border-white/10 h-56">
             <iframe
               title="Swissulife Media Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d462562.61292108404!2d54.94793630000001!3d25.075323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496ad9c645%3A0xbf7a3b4b5909f72f!2sDubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3609.9!2d55.2892!3d25.2048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f5965f4e68b01%3A0x54e7e70e9b3f3e8a!2sTrade%20Centre%202%2C%20Dubai!5e0!3m2!1sen!2sae!4v1700000000000!5m2!1sen!2sae"
               width="100%"
               height="100%"
               style={{ border: 0, minHeight: "224px", filter: "invert(90%) hue-rotate(180deg)" }}
