@@ -643,6 +643,108 @@ const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarg
   );
 };
 
+const VideoCard = () => {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const ref = React.useRef<HTMLDivElement>(null);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+  const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
+  const [gloss, setGloss] = React.useState({ x: 50, y: 50 });
+  const [hovered, setHovered] = React.useState(false);
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = ref.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    setTilt({ x: (py - 0.5) * -10, y: (px - 0.5) * 10 });
+    setGloss({ x: px * 100, y: py * 100 });
+  };
+
+  const onLeave = () => { setTilt({ x: 0, y: 0 }); setHovered(false); };
+
+  return (
+    <motion.div
+      className="col-span-1 md:col-span-12"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      style={{ perspective: 1200 }}
+    >
+      <div
+        ref={ref}
+        onMouseMove={onMove}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={onLeave}
+        className="relative overflow-hidden rounded-2xl w-full cursor-pointer"
+        style={{
+          aspectRatio: "16/7",
+          transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.015 : 1})`,
+          transition: hovered ? "transform 0.1s ease-out" : "transform 0.6s cubic-bezier(0.16,1,0.3,1)",
+          transformStyle: "preserve-3d",
+          willChange: "transform",
+        }}
+      >
+        {/* Video */}
+        <video
+          ref={videoRef}
+          src={`${base}/portfolio.mp4`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover"
+          style={{ transform: hovered ? "scale(1.03)" : "scale(1)", transition: "transform 0.6s ease" }}
+        />
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+        {/* Orange vignette on hover */}
+        <div
+          className="absolute inset-0 transition-opacity duration-500"
+          style={{
+            background: "radial-gradient(circle at bottom left, hsl(25,100%,50%,0.22) 0%, transparent 55%)",
+            opacity: hovered ? 1 : 0,
+          }}
+        />
+
+        {/* Gloss */}
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(circle 260px at ${gloss.x}% ${gloss.y}%, rgba(255,255,255,0.09) 0%, transparent 70%)`,
+            opacity: hovered ? 1 : 0,
+          }}
+        />
+
+        {/* Tag */}
+        <div className="absolute top-4 left-4" style={{ transform: "translateZ(20px)" }}>
+          <span className="font-mono text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border border-white/20 text-white/70 bg-black/50 backdrop-blur-sm">
+            Portfolio Reel
+          </span>
+        </div>
+
+        {/* Bottom info */}
+        <div
+          className="absolute bottom-0 left-0 right-0 p-6"
+          style={{ transform: `translateZ(20px) translateY(${hovered ? 0 : 6}px)`, transition: "transform 0.4s ease" }}
+        >
+          <p className="font-display font-bold text-white text-2xl mb-1">Swissulife Media</p>
+          <div
+            className="flex items-center gap-2 overflow-hidden"
+            style={{ maxHeight: hovered ? 24 : 0, opacity: hovered ? 1 : 0, transition: "max-height 0.35s ease, opacity 0.35s ease" }}
+          >
+            <span className="w-5 h-[2px] rounded-full shrink-0" style={{ background: "hsl(25,100%,50%)" }} />
+            <span className="font-mono text-[10px] uppercase tracking-widest text-primary">Full portfolio reel</span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const ProofOfWork = () => (
   <section className="py-24 px-6 bg-black">
     <div className="max-w-7xl mx-auto">
@@ -664,6 +766,9 @@ const ProofOfWork = () => (
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+        {/* Featured video reel */}
+        <VideoCard />
+        {/* Image cards */}
         {WORK_ITEMS.map((item, i) => (
           <TiltCard key={i} item={item} isLarge={item.size === "large"} index={i} />
         ))}
