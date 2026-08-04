@@ -264,12 +264,12 @@ const EventVisual = () => {
 };
 
 const InfluencerVisual = () => {
-  const posts = [
-    { handle: "@layla.ae",    label: "Fashion & Lifestyle", avatar: "L", likes: 18400, shares: 920  },
-    { handle: "@marcotravels", label: "Travel & Adventure",  avatar: "M", likes: 31200, shares: 1540 },
-    { handle: "@chef.nour",   label: "Food & Culture",      avatar: "N", likes: 9800,  shares: 480  },
-    { handle: "@techwithali", label: "Tech & Reviews",      avatar: "A", likes: 24600, shares: 1120 },
-    { handle: "@fitwithsara", label: "Fitness & Wellness",  avatar: "S", likes: 14300, shares: 760  },
+  const reactions = [
+    { avatar: "S", handle: "@sara.dubai",    action: "❤️ liked this post",          time: "just now" },
+    { avatar: "K", handle: "@khalid_uae",    action: '💬 "I need to try this!"',    time: "2s ago"   },
+    { avatar: "R", handle: "@rana.lifestyle",action: "🔁 shared to her story",       time: "4s ago"   },
+    { avatar: "J", handle: "@jad.beirut",    action: "❤️ liked this post",          time: "6s ago"   },
+    { avatar: "M", handle: "@mia.geneva",    action: '💬 "Where can I buy this?"',  time: "9s ago"   },
   ];
 
   // live-ticking number hook
@@ -292,42 +292,6 @@ const InfluencerVisual = () => {
   };
 
   const fmt = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}K` : String(n);
-
-  const PostCard = ({ post, index }: { post: typeof posts[0]; index: number }) => {
-    const likes  = useTick(post.likes,  600 + index * 220);
-    const shares = useTick(post.shares, 900 + index * 220);
-    return (
-      <motion.div
-        className="flex items-center gap-3 px-3 py-2.5 rounded-xl"
-        style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
-        initial={{ opacity: 0, x: 40 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.3 + index * 0.15, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      >
-        {/* avatar */}
-        <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 font-bold text-black text-xs"
-          style={{ background: `hsl(25,100%,${50 - index * 3}%)` }}>
-          {post.avatar}
-        </div>
-        {/* info */}
-        <div className="flex-1 min-w-0">
-          <p className="font-sans font-bold text-[13px] text-white tracking-tight truncate">{post.handle}</p>
-          <p className="font-sans text-[10px] text-white/40 truncate">{post.label}</p>
-        </div>
-        {/* metrics */}
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="text-right">
-            <p className="font-mono font-bold text-[11px]" style={{ color: "hsl(25,100%,50%)" }}>{fmt(likes)}</p>
-            <p className="font-mono text-[8px] text-white/30">likes</p>
-          </div>
-          <div className="text-right">
-            <p className="font-mono font-bold text-[11px] text-white/60">{fmt(shares)}</p>
-            <p className="font-mono text-[8px] text-white/30">shares</p>
-          </div>
-        </div>
-      </motion.div>
-    );
-  };
 
   // floating notification bubbles
   const bubbles = [
@@ -401,10 +365,29 @@ const InfluencerVisual = () => {
         />
       </motion.div>
 
-      {/* ── Audience engagement cards ── */}
-      <div className="flex flex-col gap-1.5 pr-14">
-        {posts.map((post, i) => (
-          <PostCard key={post.handle} post={post} index={i} />
+      {/* ── Audience reaction cards ── */}
+      <div className="flex flex-col gap-1.5">
+        {reactions.map((r, i) => (
+          <motion.div key={r.handle}
+            className="flex items-center gap-3 px-3 py-2 rounded-xl"
+            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.75 + i * 0.14, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {/* avatar */}
+            <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 font-bold text-black text-xs"
+              style={{ background: `hsl(25,100%,${52 - i * 4}%)` }}>
+              {r.avatar}
+            </div>
+            {/* action */}
+            <div className="flex-1 min-w-0">
+              <p className="font-sans font-bold text-[12px] text-white tracking-tight truncate">{r.handle}</p>
+              <p className="font-sans text-[10px] text-white/50 truncate">{r.action}</p>
+            </div>
+            {/* time */}
+            <span className="font-mono text-[9px] text-white/25 shrink-0">{r.time}</span>
+          </motion.div>
         ))}
       </div>
 
