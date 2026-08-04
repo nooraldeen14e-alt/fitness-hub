@@ -382,7 +382,6 @@ export const SERVICES: Record<string, {
     ],
     stats: [
       { value: "3×", label: "Avg. revenue lift in 6 months" },
-      { value: "93%", label: "Client retention rate" },
       { value: "60+", label: "Brands strategised" },
     ],
     process: [
