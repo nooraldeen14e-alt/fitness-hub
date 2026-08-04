@@ -264,156 +264,112 @@ const EventVisual = () => {
 };
 
 const InfluencerVisual = () => {
-  const COLS = 7, ROWS = 3;
-  const followers = Array.from({ length: COLS * ROWS }, (_, i) => i);
-  const rings = [0, 1, 2];
+  const posts = [
+    { handle: "@layla.ae",    label: "Fashion & Lifestyle", avatar: "L", likes: 18400, shares: 920  },
+    { handle: "@marcotravels", label: "Travel & Adventure",  avatar: "M", likes: 31200, shares: 1540 },
+    { handle: "@chef.nour",   label: "Food & Culture",      avatar: "N", likes: 9800,  shares: 480  },
+    { handle: "@techwithali", label: "Tech & Reviews",      avatar: "A", likes: 24600, shares: 1120 },
+    { handle: "@fitwithsara", label: "Fitness & Wellness",  avatar: "S", likes: 14300, shares: 760  },
+  ];
+
+  // live-ticking number hook
+  const useTick = (target: number, delay: number) => {
+    const [val, setVal] = React.useState(0);
+    React.useEffect(() => {
+      const t = setTimeout(() => {
+        let start = 0;
+        const step = Math.ceil(target / 40);
+        const id = setInterval(() => {
+          start = Math.min(start + step, target);
+          setVal(start);
+          if (start >= target) clearInterval(id);
+        }, 30);
+        return () => clearInterval(id);
+      }, delay);
+      return () => clearTimeout(t);
+    }, [target, delay]);
+    return val;
+  };
+
+  const fmt = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}K` : String(n);
+
+  const PostCard = ({ post, index }: { post: typeof posts[0]; index: number }) => {
+    const likes  = useTick(post.likes,  600 + index * 220);
+    const shares = useTick(post.shares, 900 + index * 220);
+    return (
+      <motion.div
+        className="flex items-center gap-3 px-3 py-2.5 rounded-xl"
+        style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
+        initial={{ opacity: 0, x: 40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.3 + index * 0.15, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {/* avatar */}
+        <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 font-bold text-black text-xs"
+          style={{ background: `hsl(25,100%,${50 - index * 3}%)` }}>
+          {post.avatar}
+        </div>
+        {/* info */}
+        <div className="flex-1 min-w-0">
+          <p className="font-mono font-bold text-[11px] text-white truncate">{post.handle}</p>
+          <p className="font-mono text-[9px] text-white/35 truncate">{post.label}</p>
+        </div>
+        {/* metrics */}
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="text-right">
+            <p className="font-mono font-bold text-[11px]" style={{ color: "hsl(25,100%,50%)" }}>{fmt(likes)}</p>
+            <p className="font-mono text-[8px] text-white/30">likes</p>
+          </div>
+          <div className="text-right">
+            <p className="font-mono font-bold text-[11px] text-white/60">{fmt(shares)}</p>
+            <p className="font-mono text-[8px] text-white/30">shares</p>
+          </div>
+        </div>
+      </motion.div>
+    );
+  };
+
+  // floating notification bubbles
+  const bubbles = [
+    { icon: "❤️", label: "+2.4K",  top: "18%", left: "72%", delay: 1.1 },
+    { icon: "💬", label: "+381",   top: "42%", left: "78%", delay: 1.5 },
+    { icon: "🔁", label: "+920",   top: "66%", left: "70%", delay: 1.9 },
+    { icon: "👁️", label: "+18K",   top: "30%", left: "80%", delay: 2.2 },
+  ];
 
   return (
-    <div className="w-full max-w-sm mx-auto select-none flex flex-col items-center" style={{ perspective: "520px" }}>
-
-      {/* ── Person figure ── */}
-      <div className="relative flex flex-col items-center mb-0">
-        {/* glow rings */}
-        {rings.map(r => (
-          <motion.div key={r}
-            className="absolute rounded-full"
-            style={{
-              width: 70, height: 70,
-              top: "50%", left: "50%",
-              x: "-50%", y: "-50%",
-              border: "1px solid hsl(25,100%,50%,0.35)",
-            }}
-            animate={{ scale: [0.9, 2.2], opacity: [0.5, 0] }}
-            transition={{ duration: 2.2, delay: r * 0.72, repeat: Infinity, ease: "easeOut" }}
-          />
-        ))}
-
-        {/* SVG person */}
-        <motion.svg
-          width="90" height="130" viewBox="0 0 90 130"
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+    <div className="w-full max-w-sm mx-auto select-none relative">
+      {/* floating notification bubbles */}
+      {bubbles.map((b, i) => (
+        <motion.div key={i}
+          className="absolute flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-mono font-bold z-10 pointer-events-none"
+          style={{
+            top: b.top, left: b.left,
+            background: "rgba(255,255,255,0.07)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            color: "hsl(25,100%,55%)",
+          }}
+          initial={{ opacity: 0, y: 8, scale: 0.8 }}
+          animate={{ opacity: [0, 1, 1, 0], y: [8, 0, -8, -16], scale: [0.8, 1, 1, 0.9] }}
+          transition={{ delay: b.delay, duration: 2.4, repeat: Infinity, repeatDelay: 2, ease: "easeOut" }}
         >
-          {/* spotlight glow under feet */}
-          <ellipse cx="45" cy="122" rx="22" ry="5"
-            fill="hsl(25,100%,50%)" opacity="0.25" />
+          <span>{b.icon}</span><span>{b.label}</span>
+        </motion.div>
+      ))}
 
-          {/* legs */}
-          <line x1="45" y1="88" x2="36" y2="118" stroke="hsl(25,100%,50%)" strokeWidth="3.5" strokeLinecap="round"/>
-          <line x1="45" y1="88" x2="54" y2="118" stroke="hsl(25,100%,50%)" strokeWidth="3.5" strokeLinecap="round"/>
-
-          {/* body */}
-          <line x1="45" y1="46" x2="45" y2="88" stroke="hsl(25,100%,50%)" strokeWidth="3.5" strokeLinecap="round"/>
-
-          {/* LEFT arm — animated waving */}
-          <motion.line
-            x1="45" y1="60"
-            x2="16" y2="45"
-            stroke="hsl(25,100%,50%)" strokeWidth="3.5" strokeLinecap="round"
-            animate={{ x2: [16, 12, 16], y2: [45, 38, 45] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          />
-          {/* RIGHT arm — animated waving (mirror, offset) */}
-          <motion.line
-            x1="45" y1="60"
-            x2="74" y2="45"
-            stroke="hsl(25,100%,50%)" strokeWidth="3.5" strokeLinecap="round"
-            animate={{ x2: [74, 78, 74], y2: [45, 38, 45] }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-          />
-
-          {/* head */}
-          <circle cx="45" cy="30" r="14"
-            fill="hsl(25,100%,50%)"
-            style={{ filter: "drop-shadow(0 0 8px hsl(25,100%,50%,0.7))" }}
-          />
-          {/* face — eyes */}
-          <circle cx="40" cy="28" r="2" fill="black"/>
-          <circle cx="50" cy="28" r="2" fill="black"/>
-          {/* smile */}
-          <path d="M 39 35 Q 45 40 51 35" stroke="black" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
-        </motion.svg>
-
-        <motion.span
-          className="font-mono text-[9px] text-primary uppercase tracking-widest -mt-1"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-        >Influencer</motion.span>
+      {/* feed cards */}
+      <div className="flex flex-col gap-2 pr-16">
+        {posts.map((post, i) => (
+          <PostCard key={post.handle} post={post} index={i} />
+        ))}
       </div>
 
-      {/* signal beam */}
-      <motion.div
-        style={{ width: 2, height: 24, originY: 0,
-          background: "linear-gradient(to bottom, hsl(25,100%,50%,0.7), transparent)" }}
-        initial={{ scaleY: 0, opacity: 0 }}
-        animate={{ scaleY: 1, opacity: 1 }}
-        transition={{ delay: 0.6, duration: 0.4 }}
-      />
-
-      {/* ── 3-D crowd of mini people ── */}
-      <motion.div
-        className="grid gap-x-[14px] gap-y-[6px] px-5 py-4 rounded-xl mt-0"
-        style={{
-          gridTemplateColumns: `repeat(${COLS}, 1fr)`,
-          rotateX: 40,
-          transformStyle: "preserve-3d",
-          background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.07)",
-        }}
-        initial={{ opacity: 0, rotateX: 75 }}
-        animate={{ opacity: 1, rotateX: 40 }}
-        transition={{ delay: 0.65, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      >
-        {followers.map(i => {
-          const col = i % COLS;
-          const row = Math.floor(i / COLS);
-          const center = (COLS - 1) / 2;
-          const dist = Math.abs(col - center) / center;
-          const appearDelay = 0.85 + row * 0.18 + dist * 0.1;
-          const armDelay = appearDelay + 0.35;
-          const shade = 52 - row * 6;
-          const color = `hsl(25,100%,${shade}%)`;
-          return (
-            <motion.svg key={i}
-              width="16" height="26" viewBox="0 0 16 26"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: appearDelay, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              style={{ overflow: "visible" }}
-            >
-              {/* head */}
-              <circle cx="8" cy="4.5" r="3.2" fill={color} />
-              {/* body */}
-              <line x1="8" y1="7.7" x2="8" y2="18" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-              {/* left arm — raises from down to up */}
-              <motion.line
-                x1="8" y1="11"
-                stroke={color} strokeWidth="2" strokeLinecap="round"
-                initial={{ x2: 2, y2: 15 }}
-                animate={{ x2: [2, 1, 2], y2: [15, 7, 15] }}
-                transition={{ delay: armDelay, duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-              />
-              {/* right arm — raises opposite phase */}
-              <motion.line
-                x1="8" y1="11"
-                stroke={color} strokeWidth="2" strokeLinecap="round"
-                initial={{ x2: 14, y2: 15 }}
-                animate={{ x2: [14, 15, 14], y2: [15, 7, 15] }}
-                transition={{ delay: armDelay + 0.15, duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
-              />
-              {/* left leg */}
-              <line x1="8" y1="18" x2="4" y2="25" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-              {/* right leg */}
-              <line x1="8" y1="18" x2="12" y2="25" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-            </motion.svg>
-          );
-        })}
+      {/* bottom label */}
+      <motion.div className="flex items-center gap-2 mt-4"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8 }}>
+        <div className="h-[1px] w-5 bg-primary/40" />
+        <span className="font-mono text-[9px] text-white/30 uppercase tracking-widest">500+ active creators</span>
       </motion.div>
-
-      <motion.span
-        className="font-mono text-[9px] text-white/25 uppercase tracking-widest mt-3"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }}
-      >500+ creators in network</motion.span>
     </div>
   );
 };
