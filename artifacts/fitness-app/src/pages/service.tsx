@@ -6,25 +6,63 @@ import MobileNav from "@/components/MobileNav";
 // ─── Unique hero visuals ──────────────────────────────────────────────────────
 
 const FunnelVisual = () => {
-  const stages = ["Awareness", "Interest", "Consideration", "Intent", "Conversion"];
+  const stages = [
+    { label: "Awareness",     pct: 100 },
+    { label: "Engagement",    pct: 78  },
+    { label: "Consideration", pct: 56  },
+    { label: "Conversion",    pct: 34  },
+    { label: "Retention",     pct: 18  },
+  ];
   return (
-    <div className="flex flex-col items-center gap-2 w-full max-w-xs mx-auto">
-      {stages.map((s, i) => (
-        <motion.div key={s}
-          initial={{ opacity: 0, scaleX: 0 }} animate={{ opacity: 1, scaleX: 1 }}
-          transition={{ delay: 0.4 + i * 0.15, duration: 0.6, ease: [0.16,1,0.3,1] }}
-          className="flex items-center justify-center rounded-lg text-black font-mono font-bold text-[11px] uppercase tracking-widest"
-          style={{
-            width: `${100 - i * 15}%`, height: 38,
-            background: `hsl(25,100%,${50 - i * 5}%)`,
-            originX: 0.5,
-          }}
-        >{s}</motion.div>
-      ))}
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }} className="font-mono text-primary text-xs mt-2 tracking-widest">
-        ↑ Full-funnel strategy
-      </motion.p>
+    <div className="w-full max-w-sm mx-auto select-none">
+      {stages.map(({ label, pct }, i) => {
+        const lightness = 52 - i * 4;
+        return (
+          <div key={label} className="flex items-center gap-3 mb-2">
+            {/* Step number */}
+            <span className="font-mono text-[10px] text-white/25 w-5 shrink-0 tabular-nums text-right">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+
+            {/* Label — fixed width, always readable */}
+            <motion.span
+              className="font-mono font-bold text-[11px] uppercase tracking-widest text-white/80 w-28 shrink-0"
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 + i * 0.15, duration: 0.5 }}
+            >{label}</motion.span>
+
+            {/* Bar track */}
+            <div className="relative flex-1 h-[6px] bg-white/8 rounded-full overflow-hidden">
+              <motion.div
+                className="absolute inset-y-0 left-0 rounded-full"
+                style={{ background: `hsl(25,100%,${lightness}%)` }}
+                initial={{ width: 0 }}
+                animate={{ width: `${pct}%` }}
+                transition={{ delay: 0.4 + i * 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </div>
+
+            {/* Percentage */}
+            <motion.span
+              className="font-mono text-[10px] w-8 text-right shrink-0 tabular-nums"
+              style={{ color: `hsl(25,100%,${lightness}%)` }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 + i * 0.15 }}
+            >{pct}%</motion.span>
+          </div>
+        );
+      })}
+
+      <motion.div
+        className="flex items-center gap-2 mt-5 pl-8"
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+      >
+        <div className="h-[1px] w-6 bg-primary/40" />
+        <span className="font-mono text-primary text-[10px] uppercase tracking-widest">Full-funnel strategy</span>
+      </motion.div>
     </div>
   );
 };
