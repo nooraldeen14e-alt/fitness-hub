@@ -818,29 +818,18 @@ const Contact = () => {
     setSending(true);
     setError("");
     try {
-      const body = new URLSearchParams({
-        "form-name": "contact",
-        name: form.name,
-        email: form.email,
-        message: form.message,
-      });
-      const res = await fetch("/", {
+      const res = await fetch("/api-server/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: body.toString(),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
       });
       if (res.ok) {
         setSent(true);
       } else {
-        // Fallback: open mailto link so the message still reaches the team
-        window.location.href =
-          `mailto:anas@swissulife.com?subject=Website%20enquiry%20from%20${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom%3A%20${encodeURIComponent(form.email)}`;
-        setSent(true);
+        setError("Something went wrong. Please try again.");
       }
     } catch {
-      window.location.href =
-        `mailto:anas@swissulife.com?subject=Website%20enquiry%20from%20${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}%0A%0AFrom%3A%20${encodeURIComponent(form.email)}`;
-      setSent(true);
+      setError("Something went wrong. Please try again.");
     } finally {
       setSending(false);
     }
