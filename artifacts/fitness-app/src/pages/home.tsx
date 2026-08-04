@@ -92,8 +92,8 @@ const NoiseOverlay = () => (
 );
 
 const TopBar = () => (
-  <div className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-6 px-6 border-b border-white/5"
-    style={{ height: 34, background: "#0a0a0a" }}>
+  <div className="fixed left-0 right-0 z-39 flex items-center justify-center gap-6 px-6 border-b border-white/5"
+    style={{ top: 64, height: 34, background: "#0a0a0a" }}>
     {[
       { code: "ae", city: "Dubai" },
       { code: "ch", city: "Geneva" },
@@ -152,8 +152,7 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed left-0 right-0 z-40 flex items-center justify-between px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/5"
-        style={{ top: 34 }}
+        className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-8 py-4 bg-black/80 backdrop-blur-md border-b border-white/5"
       >
         {/* Logo */}
         <div className="flex items-center">
