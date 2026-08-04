@@ -399,32 +399,6 @@ const Hero = () => {
             transition={{ delay: 0.9, duration: 0.7 }}
             className="flex flex-row md:flex-col items-center md:items-end gap-6 md:gap-4 shrink-0"
           >
-            <div className="flex flex-col items-end gap-2">
-              <style>{`
-                @keyframes bar-pulse {
-                  0%, 100% { transform: scaleY(0.25); opacity: 0.3; }
-                  50%       { transform: scaleY(1);    opacity: 1;   }
-                }
-              `}</style>
-              <div className="flex items-end gap-[5px]" style={{ height: 38 }}>
-                {[
-                  { h: 10, delay: "0s"    },
-                  { h: 18, delay: "0.18s" },
-                  { h: 28, delay: "0.36s" },
-                  { h: 38, delay: "0.54s" },
-                ].map((bar, i) => (
-                  <div key={i} style={{
-                    width: 7,
-                    height: bar.h,
-                    borderRadius: 4,
-                    background: "hsl(25,100%,50%)",
-                    transformOrigin: "bottom",
-                    animation: `bar-pulse 1.3s ease-in-out ${bar.delay} infinite`,
-                  }} />
-                ))}
-              </div>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-white/40">3M+ Monthly Reach</p>
-            </div>
 
             {/* Slide indicators */}
             <div className="flex gap-2">
@@ -646,40 +620,33 @@ const Stats = () => {
   ];
 
   return (
-    <section className="py-32 px-6 bg-primary text-black relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10 pointer-events-none w-full h-full">
+    <section className="py-14 px-6 bg-primary text-black relative overflow-hidden">
+      {/* Wavy background line */}
+      <div className="absolute inset-0 opacity-[0.08] pointer-events-none w-full h-full">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
-            <Line 
-              type="monotone" 
-              dataKey="value" 
-              stroke="#000000" 
-              strokeWidth={8} 
-              dot={false}
-              isAnimationActive={true}
-              animationDuration={3000}
-            />
+            <Line type="monotone" dataKey="value" stroke="#000" strokeWidth={12} dot={false} isAnimationActive={false} />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 divide-y md:divide-y-0 md:divide-x divide-black/20">
+        <div className="grid grid-cols-1 md:grid-cols-3">
           {[
-            { value: "3M+", label: "Total Reach Per Month" },
+            { value: "3M+",  label: "Total Reach Per Month" },
             { value: "1.8M", label: "Instagram Reach" },
             { value: "293K", label: "Monthly Impressions" },
           ].map((stat, i) => (
-            <motion.div 
+            <motion.div
               key={stat.label}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="pt-8 md:pt-0 md:px-8 flex flex-col justify-center"
+              transition={{ duration: 0.55, delay: i * 0.12 }}
+              className={`flex flex-col justify-center py-6 md:py-0 md:px-12 ${i > 0 ? "border-t md:border-t-0 md:border-l border-black/20" : ""}`}
             >
-              <h4 className="font-display font-bold text-6xl md:text-7xl mb-2">{stat.value}</h4>
-              <p className="font-mono uppercase text-xs font-bold tracking-wider">{stat.label}</p>
+              <h4 className="font-display font-black leading-none mb-2" style={{ fontSize: "clamp(3.5rem,7vw,5.5rem)" }}>{stat.value}</h4>
+              <p className="font-mono uppercase text-[11px] font-bold tracking-[0.25em] opacity-70">{stat.label}</p>
             </motion.div>
           ))}
         </div>
