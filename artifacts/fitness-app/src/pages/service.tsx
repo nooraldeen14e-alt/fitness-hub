@@ -7,61 +7,58 @@ import MobileNav from "@/components/MobileNav";
 
 const FunnelVisual = () => {
   const stages = [
-    { label: "Awareness",     pct: 100 },
-    { label: "Engagement",    pct: 78  },
-    { label: "Consideration", pct: 56  },
-    { label: "Conversion",    pct: 34  },
-    { label: "Retention",     pct: 18  },
+    { label: "Awareness",     shade: 52, w: "100%" },
+    { label: "Engagement",    shade: 47, w: "88%"  },
+    { label: "Consideration", shade: 42, w: "74%"  },
+    { label: "Conversion",    shade: 36, w: "58%"  },
+    { label: "Retention",     shade: 30, w: "42%"  },
   ];
+
   return (
-    <div className="w-full max-w-sm mx-auto select-none">
-      {stages.map(({ label, pct }, i) => {
-        const lightness = 52 - i * 4;
-        return (
-          <div key={label} className="flex items-center gap-3 mb-2">
-            {/* Step number */}
-            <span className="font-mono text-[10px] text-white/25 w-5 shrink-0 tabular-nums text-right">
+    <div
+      className="w-full max-w-xs mx-auto select-none py-4"
+      style={{ perspective: "520px", perspectiveOrigin: "50% 110%" }}
+    >
+      {/* 3-D tilt wrapper */}
+      <motion.div
+        style={{ transformStyle: "preserve-3d" }}
+        initial={{ rotateX: 28 }}
+        animate={{ rotateX: 28 }}
+      >
+        {stages.map(({ label, shade, w }, i) => (
+          <motion.div
+            key={label}
+            className="mx-auto mb-[6px] rounded-xl flex items-center justify-between px-4"
+            style={{
+              width: w,
+              height: 46,
+              background: `linear-gradient(135deg, hsl(25,100%,${shade}%) 0%, hsl(25,100%,${shade - 6}%) 100%)`,
+              boxShadow: `0 6px 18px hsl(25,100%,${shade}%,0.35), inset 0 1px 0 rgba(255,255,255,0.18)`,
+              transformStyle: "preserve-3d",
+            }}
+            initial={{ opacity: 0, rotateX: -55, y: -18 }}
+            animate={{ opacity: 1, rotateX: 0, y: 0 }}
+            transition={{ delay: 0.3 + i * 0.13, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <span className="font-mono font-bold text-[11px] uppercase tracking-widest text-black/80">
+              {label}
+            </span>
+            <span className="font-mono text-[10px] text-black/50 font-bold">
               {String(i + 1).padStart(2, "0")}
             </span>
+          </motion.div>
+        ))}
+      </motion.div>
 
-            {/* Label — fixed width, always readable */}
-            <motion.span
-              className="font-mono font-bold text-[11px] uppercase tracking-widest text-white/80 w-28 shrink-0"
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 + i * 0.15, duration: 0.5 }}
-            >{label}</motion.span>
-
-            {/* Bar track */}
-            <div className="relative flex-1 h-[6px] bg-white/8 rounded-full overflow-hidden">
-              <motion.div
-                className="absolute inset-y-0 left-0 rounded-full"
-                style={{ background: `hsl(25,100%,${lightness}%)` }}
-                initial={{ width: 0 }}
-                animate={{ width: `${pct}%` }}
-                transition={{ delay: 0.4 + i * 0.15, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              />
-            </div>
-
-            {/* Percentage */}
-            <motion.span
-              className="font-mono text-[10px] w-8 text-right shrink-0 tabular-nums"
-              style={{ color: `hsl(25,100%,${lightness}%)` }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 + i * 0.15 }}
-            >{pct}%</motion.span>
-          </div>
-        );
-      })}
-
+      {/* label */}
       <motion.div
-        className="flex items-center gap-2 mt-5 pl-8"
+        className="flex items-center gap-2 mt-5 justify-center"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
+        transition={{ delay: 1.2 }}
       >
-        <div className="h-[1px] w-6 bg-primary/40" />
+        <div className="h-[1px] w-5 bg-primary/50" />
         <span className="font-mono text-primary text-[10px] uppercase tracking-widest">Full-funnel strategy</span>
+        <div className="h-[1px] w-5 bg-primary/50" />
       </motion.div>
     </div>
   );
