@@ -399,9 +399,31 @@ const Hero = () => {
             transition={{ delay: 0.9, duration: 0.7 }}
             className="flex flex-row md:flex-col items-center md:items-end gap-6 md:gap-4 shrink-0"
           >
-            <div className="text-right">
-              <p className="font-display font-black text-white leading-none" style={{ fontSize: "clamp(2.5rem,5vw,4rem)" }}>3M+</p>
-              <p className="font-mono text-xs uppercase tracking-widest text-white/40 mt-1">Monthly Reach</p>
+            <div className="flex flex-col items-end gap-2">
+              <style>{`
+                @keyframes bar-pulse {
+                  0%, 100% { transform: scaleY(0.25); opacity: 0.3; }
+                  50%       { transform: scaleY(1);    opacity: 1;   }
+                }
+              `}</style>
+              <div className="flex items-end gap-[5px]" style={{ height: 38 }}>
+                {[
+                  { h: 10, delay: "0s"    },
+                  { h: 18, delay: "0.18s" },
+                  { h: 28, delay: "0.36s" },
+                  { h: 38, delay: "0.54s" },
+                ].map((bar, i) => (
+                  <div key={i} style={{
+                    width: 7,
+                    height: bar.h,
+                    borderRadius: 4,
+                    background: "hsl(25,100%,50%)",
+                    transformOrigin: "bottom",
+                    animation: `bar-pulse 1.3s ease-in-out ${bar.delay} infinite`,
+                  }} />
+                ))}
+              </div>
+              <p className="font-mono text-[10px] uppercase tracking-widest text-white/40">3M+ Monthly Reach</p>
             </div>
 
             {/* Slide indicators */}
