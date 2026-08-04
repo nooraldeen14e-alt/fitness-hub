@@ -97,7 +97,7 @@ export default function Contact() {
           </div>
 
           <Link href="/about" className="font-sans text-sm font-medium text-white/60 hover:text-white transition-colors">About Us</Link>
-          <Link href="/contact" className="font-sans text-sm font-medium text-primary transition-colors">Contact Us</Link>
+          <Link href="/contact" className="font-sans text-sm font-medium text-white transition-colors">Contact Us</Link>
         </div>
         <div className="flex items-center gap-3">
           <Link href="/contact">
