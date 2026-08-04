@@ -766,9 +766,6 @@ const ProofOfWork = () => (
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-        {/* Featured video reel */}
-        <VideoCard />
-        {/* Image cards */}
         {WORK_ITEMS.map((item, i) => (
           <TiltCard key={i} item={item} isLarge={item.size === "large"} index={i} />
         ))}
