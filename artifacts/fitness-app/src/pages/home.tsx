@@ -531,7 +531,6 @@ const WORK_ITEMS = [
   { video: "work-vid-3.mp4", category: "Fashion",          client: "Blends Abaya",    size: "small" },
   { video: "work-vid-4.mp4", category: "Content",          client: "Latest Work",     size: "large" },
   { video: "work-vid-5.mp4", category: "Fragrance",        client: "Fragrance Reel",  size: "small" },
-  { img: work3b,             category: "PR Management",    client: "Events Company",  size: "small" },
 ];
 
 const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarge: boolean; index: number }) => {
