@@ -235,7 +235,7 @@ function CompanyBuilding({ scrollRef }: { scrollRef: MutableRefObject<number> })
     lobbyRef.current.intensity    = (1.2 + bloom * 1.5) * breathe;
     const bMat = beaconRef.current.material as THREE.MeshBasicMaterial;
     bMat.opacity = Math.sin(t * 4) * 0.4 + 0.6;
-    groupRef.current.position.y = Math.sin(t * 0.5) * 0.05;
+    // Tower stays still — no vertical float
   });
 
   // ── palette ──────────────────────────────────────────────────────────────
@@ -446,11 +446,8 @@ function MarketingEcosystem({ scrollRef }: { scrollRef: MutableRefObject<number>
   const groupRef  = useRef<THREE.Group>(null!);
   const posRef    = useRef<THREE.Vector3[]>(ELEMENTS.map(() => new THREE.Vector3()));
 
-  useFrame(({ clock }, delta) => {
-    const t = clock.elapsedTime;
-    // Gentle idle yaw on the whole system
-    groupRef.current.rotation.y += delta * 0.04;
-    groupRef.current.rotation.x = Math.sin(t * 0.35) * 0.06;
+  useFrame(() => {
+    // Tower is fixed — no idle rotation on the ecosystem group
   });
 
   return (

@@ -50,7 +50,7 @@ function CSSCubeFallback() {
           transform: "translate(-50%, -50%)",
           width: 110, height: 230,
           display: "flex", flexDirection: "column", alignItems: "center",
-          animation: "cssBuildingFloat 4s ease-in-out infinite",
+          animation: "none",
         }}>
           {/* Antenna + red beacon */}
           <div style={{ width: 1.5, height: 18, background: "#ffffff", marginBottom: 0 }} />
