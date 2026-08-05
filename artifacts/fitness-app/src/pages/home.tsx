@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Link } from "wouter";
 import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
-import { ArrowRight, Volume2, VolumeX } from "lucide-react";
+import { ArrowRight, X, Play, Volume2, VolumeX } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 // ─── HERO SLIDESHOW IMAGES ───────────────────────────────────────────────────
 // Replace these imports with your own work images.
@@ -525,6 +525,50 @@ const ClientCard = ({ c }: { c: ClientEntry }) => {
   );
 };
 
+const VideoModal = ({ src, onClose }: { src: string; onClose: () => void }) => {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  return (
+    <AnimatePresence>
+      <motion.div
+        className="fixed inset-0 z-[999] flex items-center justify-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      >
+        <div className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+        <motion.div
+          className="relative z-10 w-full max-w-4xl mx-4"
+          initial={{ scale: 0.92, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.92, opacity: 0 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <video
+            src={`${base}/${src}`}
+            controls
+            autoPlay
+            className="w-full rounded-2xl bg-black"
+            style={{ maxHeight: "80vh" }}
+          />
+          <button
+            onClick={onClose}
+            className="absolute -top-4 -right-4 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm text-white hover:bg-white/20 transition-all"
+          >
+            <X size={18} />
+          </button>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+};
+
 const WORK_ITEMS = [
   { video: "work-vid-1.mp4", category: "Fitness",          client: "Altitude Gym",    size: "large" },
   { video: "work-vid-2.mp4", category: "Fragrance",        client: "Fragrance Brand", size: "small" },
@@ -539,6 +583,7 @@ const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarg
   const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
   const [gloss, setGloss] = React.useState({ x: 50, y: 50 });
   const [hovered, setHovered] = React.useState(false);
+  const [modalSrc, setModalSrc] = React.useState<string | null>(null);
   const [isMuted, setIsMuted] = React.useState(true);
 
   const toggleMute = (e: React.MouseEvent) => {
@@ -573,11 +618,13 @@ const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarg
       transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
       style={{ perspective: 1000 }}
     >
+      {modalSrc && <VideoModal src={modalSrc} onClose={() => setModalSrc(null)} />}
       <div
         ref={ref}
         onMouseMove={onMove}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={onLeave}
+        onClick={() => item.video && setModalSrc(item.video)}
         className="relative overflow-hidden rounded-2xl cursor-pointer w-full"
         style={{
           aspectRatio: isLarge ? "16/10" : "4/3",
@@ -633,16 +680,29 @@ const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarg
           </span>
         </div>
 
-        {/* Mute toggle — only on video cards */}
+        {/* Play button (centre) + Mute button (top-right) — video cards only */}
         {item.video && (
-          <button
-            onClick={toggleMute}
-            className="absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full bg-black/60 border border-white/20 backdrop-blur-sm text-white/80 hover:text-white hover:bg-black/80 transition-all"
-            style={{ transform: "translateZ(20px)" }}
-            title={isMuted ? "Unmute" : "Mute"}
-          >
-            {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
-          </button>
+          <>
+            {/* Centre play button — opens modal */}
+            <div
+              className="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300"
+              style={{ opacity: hovered ? 1 : 0 }}
+            >
+              <div className="flex items-center justify-center w-14 h-14 rounded-full bg-white/15 border border-white/30 backdrop-blur-sm">
+                <Play size={22} className="text-white ml-1" fill="white" />
+              </div>
+            </div>
+
+            {/* Mute toggle — top right */}
+            <button
+              onClick={toggleMute}
+              className="absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full bg-black/60 border border-white/20 backdrop-blur-sm text-white/80 hover:text-white hover:bg-black/80 transition-all"
+              style={{ transform: "translateZ(20px)" }}
+              title={isMuted ? "Unmute" : "Mute"}
+            >
+              {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+            </button>
+          </>
         )}
 
         {/* Bottom info */}
