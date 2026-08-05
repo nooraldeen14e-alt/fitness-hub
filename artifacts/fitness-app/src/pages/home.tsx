@@ -288,23 +288,20 @@ const Hero = () => {
     <section id="hero" className="relative w-full bg-black overflow-hidden" style={{ height: "100vh" }}>
 
       {/* ── Full-screen slideshow ── */}
-      <AnimatePresence initial={false}>
-        {prev !== null && (
-          <motion.img key={`prev-${prev}`} src={HERO_SLIDES[prev]} alt=""
-            className="absolute inset-0 w-full h-full object-cover"
-            initial={{ opacity: 0.9 }} animate={{ opacity: 0.9 }} exit={{ opacity: 0 }}
-            transition={{ duration: 1.4, ease: "easeInOut" }}
-            style={{ zIndex: 1 }}
-          />
-        )}
-      </AnimatePresence>
+      {/* Previous slide stays fully opaque underneath — no fade-out */}
+      {prev !== null && (
+        <img key={`prev-${prev}`} src={HERO_SLIDES[prev]} alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ zIndex: 1, opacity: 1 }}
+        />
+      )}
+      {/* New slide fades in on top — previous is always fully covered when done */}
       <AnimatePresence initial={false}>
         <motion.img key={`slide-${index}`} src={HERO_SLIDES[index]} alt={`Our work ${index + 1}`}
           className="absolute inset-0 w-full h-full object-cover"
-          initial={{ opacity: 0, scale: 1.04 }}
-          animate={{ opacity: 0.9, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.4, ease: "easeInOut" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
           style={{ zIndex: 2 }}
         />
       </AnimatePresence>
