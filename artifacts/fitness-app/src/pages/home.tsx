@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Link } from "wouter";
 import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Volume2, VolumeX } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 // ─── HERO SLIDESHOW IMAGES ───────────────────────────────────────────────────
 // Replace these imports with your own work images.
@@ -529,16 +529,26 @@ const WORK_ITEMS = [
   { video: "work-vid-1.mp4", category: "Fitness",          client: "Altitude Gym",    size: "large" },
   { video: "work-vid-2.mp4", category: "Fragrance",        client: "Fragrance Brand", size: "small" },
   { video: "work-vid-3.mp4", category: "Fashion",          client: "Blends Abaya",    size: "small" },
-  { img: work2b,             category: "Content Creation", client: "Premium F&B",     size: "large" },
+  { video: "work-vid-4.mp4", category: "Content",          client: "Latest Work",     size: "large" },
   { img: slide3,             category: "Website Design",   client: "Tech Startup",    size: "small" },
   { img: work3b,             category: "PR Management",    client: "Events Company",  size: "small" },
 ];
 
 const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarge: boolean; index: number }) => {
   const ref = React.useRef<HTMLDivElement>(null);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
   const [tilt, setTilt] = React.useState({ x: 0, y: 0 });
   const [gloss, setGloss] = React.useState({ x: 50, y: 50 });
   const [hovered, setHovered] = React.useState(false);
+  const [isMuted, setIsMuted] = React.useState(true);
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!videoRef.current) return;
+    const next = !isMuted;
+    videoRef.current.muted = next;
+    setIsMuted(next);
+  };
 
   const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = ref.current;
@@ -581,6 +591,7 @@ const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarg
         {/* Image or Video */}
         {item.video ? (
           <video
+            ref={videoRef}
             src={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/${item.video}`}
             autoPlay muted loop playsInline
             className="w-full h-full object-cover"
@@ -622,6 +633,18 @@ const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarg
             {item.category}
           </span>
         </div>
+
+        {/* Mute toggle — only on video cards */}
+        {item.video && (
+          <button
+            onClick={toggleMute}
+            className="absolute top-4 right-4 flex items-center justify-center w-8 h-8 rounded-full bg-black/60 border border-white/20 backdrop-blur-sm text-white/80 hover:text-white hover:bg-black/80 transition-all"
+            style={{ transform: "translateZ(20px)" }}
+            title={isMuted ? "Unmute" : "Mute"}
+          >
+            {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+          </button>
+        )}
 
         {/* Bottom info */}
         <div
