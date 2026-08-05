@@ -8,9 +8,9 @@ import { LineChart, Line, ResponsiveContainer } from "recharts";
 // ─── HERO SLIDESHOW IMAGES ───────────────────────────────────────────────────
 // Replace these imports with your own work images.
 // Drop your files into attached_assets/ and update the paths below.
-import slide1 from "@assets/work-1.jpg";
-import slide2 from "@assets/work-2.jpg";
-import slide3 from "@assets/work-3.jpg";
+import slide1 from "@assets/hero-1.jpg";
+import slide2 from "@assets/hero-2.jpg";
+import slide3 from "@assets/hero-3.jpg";
 import work1b from "@assets/work-1_2.jpg";
 import work2b from "@assets/work-2_2.jpg";
 import work3b from "@assets/work-3_2.jpg";
