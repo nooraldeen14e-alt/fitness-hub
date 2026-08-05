@@ -363,24 +363,12 @@ const Hero = () => {
               className="w-40 mb-5"
             />
 
+            {/* More About Us — sits directly under the heading */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.55 }}
-              className="flex flex-col sm:flex-row sm:items-center gap-5"
+              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.55 }}
+              className="mb-6"
             >
-              <div>
-                <p className="font-display font-bold text-white leading-tight"
-                  style={{ fontSize: "clamp(1rem, 1.8vw, 1.35rem)" }}>
-                  A 360° Result-Oriented{" "}
-                  <span style={{ color: "hsl(25,100%,50%)" }}>
-                    <CyclingText words={["Digital Marketing Agency", "Social Media Agency", "Brand Strategy Agency", "Influencer Marketing", "Google Ads Agency", "PR & Events Agency"]} />
-                  </span>
-                </p>
-                <p className="text-white/40 text-sm leading-relaxed mt-2 max-w-md">
-                  Tested strategies, diverse niches, zero compromises.
-                </p>
-              </div>
-
               <Link
                 href="/about"
                 className="shrink-0 group inline-flex items-center gap-0 px-7 py-3 rounded-full border border-white/30 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
@@ -390,6 +378,23 @@ const Hero = () => {
                   <ArrowRight size={15} className="ml-1 shrink-0" />
                 </span>
               </Link>
+            </motion.div>
+
+            {/* Subtitle below the button */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.7 }}
+            >
+              <p className="font-display font-bold text-white leading-tight"
+                style={{ fontSize: "clamp(1rem, 1.8vw, 1.35rem)" }}>
+                A 360° Result-Oriented{" "}
+                <span style={{ color: "hsl(25,100%,50%)" }}>
+                  <CyclingText words={["Digital Marketing Agency", "Social Media Agency", "Brand Strategy Agency", "Influencer Marketing", "Google Ads Agency", "PR & Events Agency"]} />
+                </span>
+              </p>
+              <p className="text-white/40 text-sm leading-relaxed mt-2 max-w-md">
+                Tested strategies, diverse niches, zero compromises.
+              </p>
             </motion.div>
           </div>
 
