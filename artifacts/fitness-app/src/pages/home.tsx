@@ -214,6 +214,39 @@ const Navbar = () => {
             </div>
           </div>
 
+          {/* Industries dropdown */}
+          <div className="relative group">
+            <button className={linkClass("industries") + " flex items-center gap-1"}>
+              Industries
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-200 group-hover:rotate-180"><path d="M2 4l4 4 4-4"/></svg>
+            </button>
+            <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div className="bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-56 py-2">
+                {[
+                  "Fashion & Apparel",
+                  "Fitness & Wellness",
+                  "Food & Beverage",
+                  "Fragrance & Beauty",
+                  "Luxury & Lifestyle",
+                  "Hospitality & Travel",
+                  "Real Estate",
+                  "Technology & SaaS",
+                  "E-commerce & Retail",
+                  "Automotive",
+                  "Healthcare & Clinics",
+                  "Entertainment & Media",
+                ].map((label) => (
+                  <div
+                    key={label}
+                    className="px-5 py-2.5 text-sm font-sans text-white/70 hover:text-white hover:bg-white/5 transition-colors cursor-default"
+                  >
+                    {label}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <Link href="/about"   className={linkClass("about")}>About Us</Link>
           <Link href="/contact" className={linkClass("contact")}>Contact Us</Link>
         </div>
