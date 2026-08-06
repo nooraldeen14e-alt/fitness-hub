@@ -89,23 +89,37 @@ function makeMetricTexture(value: string, label: string): THREE.CanvasTexture {
 function MetricCard({
   value, label, pos, index,
 }: { value: string; label: string; pos: [number,number,number]; index: number }) {
-  const meshRef = useRef<THREE.Mesh>(null!);
-  const tex     = useMemo(() => makeMetricTexture(value, label), [value, label]);
-  const seed    = index * 1.37;
+  const meshRef  = useRef<THREE.Mesh>(null!);
+  const tex      = useMemo(() => makeMetricTexture(value, label), [value, label]);
+  const seed     = index * 1.37;
+  const hovered  = useRef(false);
+  const scaleRef = useRef(1);
 
   useFrame(({ clock }) => {
     const t = clock.getElapsedTime();
     if (!meshRef.current) return;
+
+    // Float + tilt
     meshRef.current.position.y = pos[1] + Math.sin(t * 0.38 + seed) * 0.13;
     meshRef.current.rotation.x = Math.sin(t * 0.22 + seed)     * 0.07;
     meshRef.current.rotation.y = Math.sin(t * 0.18 + seed + 1) * 0.09;
+
+    // Smooth scale toward hover target (1.22) or rest (1.0)
+    const goal = hovered.current ? 1.22 : 1.0;
+    scaleRef.current += (goal - scaleRef.current) * 0.1;
+    meshRef.current.scale.setScalar(scaleRef.current);
   });
 
   const aspect = 320 / 200;
   const h = 1.42;
 
   return (
-    <mesh ref={meshRef} position={pos}>
+    <mesh
+      ref={meshRef}
+      position={pos}
+      onPointerEnter={e => { e.stopPropagation(); hovered.current = true;  document.body.style.cursor = "pointer"; }}
+      onPointerLeave={e => { e.stopPropagation(); hovered.current = false; document.body.style.cursor = "default"; }}
+    >
       <planeGeometry args={[h * aspect, h]} />
       <meshBasicMaterial map={tex} transparent opacity={0.93} depthWrite={false} />
     </mesh>
