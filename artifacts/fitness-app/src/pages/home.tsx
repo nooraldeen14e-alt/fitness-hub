@@ -5,17 +5,7 @@ import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
 import { ArrowRight, X, Play, Volume2, VolumeX } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
-// ─── HERO SLIDESHOW IMAGES ───────────────────────────────────────────────────
-// Replace these imports with your own work images.
-// Drop your files into attached_assets/ and update the paths below.
-import slide1 from "@assets/hero-1.jpg";
-import slide2 from "@assets/hero-2.jpg";
-import slide3 from "@assets/hero-3.jpg";
-import work1b from "@assets/work-1_2.jpg";
-import work2b from "@assets/work-2_2.jpg";
-import work3b from "@assets/work-3_2.jpg";
-
-const HERO_SLIDES = [slide1, slide2, slide3];
+import { HeroScene3D } from "@/components/HeroScene3D";
 // simple-icons — locally bundled official SVG logos with brand colours
 import {
   siToyota, siAudi, siVolkswagen, siFerrari, siPorsche, siInfiniti, siRollsroyce,
@@ -272,68 +262,27 @@ const CyclingText = ({ words }: { words: string[] }) => {
 };
 
 const Hero = () => {
-  const [index, setIndex] = React.useState(0);
-  const [prev,  setPrev]  = React.useState<number | null>(null);
-
-  React.useEffect(() => {
-    const id = setInterval(() => {
-      setIndex(i => { setPrev(i); return (i + 1) % HERO_SLIDES.length; });
-    }, 5000);
-    return () => clearInterval(id);
-  }, []);
-
-  const goTo = (i: number) => { setPrev(index); setIndex(i); };
-
   return (
     <section id="hero" className="relative w-full bg-black overflow-hidden" style={{ height: "100vh" }}>
 
-      {/* ── Full-screen slideshow ── */}
-      {/* Previous slide stays fully opaque underneath — no fade-out */}
-      {prev !== null && (
-        <img key={`prev-${prev}`} src={HERO_SLIDES[prev]} alt=""
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ zIndex: 1, opacity: 1 }}
-        />
-      )}
-      {/* New slide fades in on top — previous is always fully covered when done */}
-      <AnimatePresence initial={false}>
-        <motion.img key={`slide-${index}`} src={HERO_SLIDES[index]} alt={`Our work ${index + 1}`}
-          className="absolute inset-0 w-full h-full object-cover"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, ease: "easeInOut" }}
-          style={{ zIndex: 2 }}
-        />
-      </AnimatePresence>
+      {/* ── 3D Marketing Universe ── */}
+      <div className="absolute inset-0" style={{ zIndex: 1 }}>
+        <HeroScene3D />
+      </div>
 
       {/* ── Gradient overlays for text legibility ── */}
-      {/* Heavy dark vignette at bottom */}
       <div className="absolute inset-0 pointer-events-none" style={{
-        zIndex: 3,
-        background: "linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.35) 100%)",
+        zIndex: 2,
+        background: "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.65) 30%, rgba(0,0,0,0.10) 60%, rgba(0,0,0,0.25) 100%)",
       }} />
-      {/* Left edge fade */}
-      <div className="absolute inset-y-0 left-0 w-[30%] pointer-events-none" style={{
-        zIndex: 3,
-        background: "linear-gradient(90deg, rgba(0,0,0,0.6) 0%, transparent 100%)",
+      <div className="absolute inset-y-0 left-0 w-[40%] pointer-events-none" style={{
+        zIndex: 2,
+        background: "linear-gradient(90deg, rgba(0,0,0,0.75) 0%, transparent 100%)",
       }} />
-
-      {/* ── Slide counter — top right ── */}
-      <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 0.6 }}
-        className="absolute top-28 right-10 text-right pointer-events-none"
-        style={{ zIndex: 10 }}
-      >
-        <span className="font-mono text-white/30 text-xs tracking-widest uppercase">
-          {String(index + 1).padStart(2, "0")} / {String(HERO_SLIDES.length).padStart(2, "0")}
-        </span>
-      </motion.div>
 
       {/* ── Main text — bottom left ── */}
       <div className="absolute bottom-0 left-0 right-0 px-8 md:px-16 pb-16 md:pb-14" style={{ zIndex: 10 }}>
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-
-          {/* Left: brand + headline */}
+        <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl">
             <motion.p
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -363,7 +312,7 @@ const Hero = () => {
               className="w-40 mb-5"
             />
 
-            {/* More About Us — sits directly under the heading */}
+            {/* More About Us — directly under the heading */}
             <motion.div
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.55 }}
@@ -380,7 +329,7 @@ const Hero = () => {
               </Link>
             </motion.div>
 
-            {/* Subtitle below the button */}
+            {/* Subtitle */}
             <motion.div
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.7 }}
@@ -397,29 +346,6 @@ const Hero = () => {
               </p>
             </motion.div>
           </div>
-
-          {/* Right: stat + indicators */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.7 }}
-            className="flex flex-row md:flex-col items-center md:items-end gap-6 md:gap-4 shrink-0"
-          >
-
-            {/* Slide indicators */}
-            <div className="flex gap-2">
-              {HERO_SLIDES.map((_, i) => (
-                <button key={i} onClick={() => goTo(i)}
-                  className="transition-all duration-300"
-                  style={{
-                    width: i === index ? 28 : 8, height: 3, borderRadius: 2,
-                    background: i === index ? "hsl(25,100%,50%)" : "rgba(255,255,255,0.3)",
-                    border: "none", cursor: "pointer",
-                  }}
-                />
-              ))}
-            </div>
-          </motion.div>
-
         </div>
       </div>
 
