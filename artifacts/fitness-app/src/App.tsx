@@ -28,7 +28,7 @@ function App() {
             <div className="min-h-screen flex items-center justify-center bg-background text-foreground font-sans">
               <div className="text-center">
                 <h1 className="text-9xl font-display font-bold text-stroke">404</h1>
-                <p className="mt-4 font-mono uppercase tracking-widest text-muted-foreground">Void Reached.</p>
+
                 <a href="/" className="mt-8 inline-block px-8 py-3 bg-primary text-primary-foreground font-mono uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-colors">
                   Return
                 </a>
