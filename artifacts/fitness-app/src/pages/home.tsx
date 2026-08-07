@@ -812,10 +812,7 @@ const OurClients = () => {
     { name: "Liv Bank",       logoUrl: local("liv.svg") },
     { name: "Rani",           logoUrl: local("rani.png") },
     { name: "Univ. of Sharjah", logoUrl: local("sharjah-uni.png") },
-    { name: "Sharjah Chamber",   logoUrl: local("sharjah-chamber.png") },
-    { name: "Sharjah Paintball Park", logoUrl: local("sharjah-paintball.png") },
-    { name: "Clemenceau Medical", logoUrl: local("clemenceau.png") },
-    { name: "W Hotels",          logoUrl: local("w-hotels.svg") },
+    { name: "Sharjah Chamber", logoUrl: local("sharjah-chamber.png") },
   ];
 
   return (
