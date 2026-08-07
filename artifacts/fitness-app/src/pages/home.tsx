@@ -5,7 +5,7 @@ import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
 import { ArrowRight, X, Play, Volume2, VolumeX } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
-import { HeroMorphScene, PHASE_NAMES } from "@/components/HeroMorphScene";
+import { HeroNetworkScene } from "@/components/HeroNetworkScene";
 // simple-icons — locally bundled official SVG logos with brand colours
 import {
   siToyota, siAudi, siVolkswagen, siFerrari, siPorsche, siInfiniti, siRollsroyce,
@@ -294,172 +294,130 @@ const CyclingText = ({ words }: { words: string[] }) => {
   );
 };
 
-const Hero = () => {
-  const [phaseIdx, setPhaseIdx] = React.useState(0);
-  const phaseName = PHASE_NAMES[phaseIdx] ?? PHASE_NAMES[0];
+const Hero = () => (
+  <section id="hero" className="relative w-full bg-black overflow-hidden" style={{ height: "100vh", minHeight: 600 }}>
 
-  return (
-    <section
-      id="hero"
-      className="relative w-full bg-black overflow-hidden"
-      style={{ height: "100vh", minHeight: 600 }}
-    >
-      {/* ── Full-screen grid: left text / right 3D ── */}
-      <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2" style={{ zIndex: 1 }}>
+    {/* ── Full-screen 3D network ── */}
+    <div className="absolute inset-0" style={{ zIndex: 1 }}>
+      <HeroNetworkScene />
+    </div>
 
-        {/* Left text panel — solid dark so copy is always legible */}
-        <div className="relative flex flex-col justify-center px-10 md:px-16 lg:px-20 pt-28 pb-16 md:py-0"
-          style={{ background: "linear-gradient(110deg,#000 70%,transparent 100%)", zIndex: 5 }}>
+    {/* Left-side text legibility gradient */}
+    <div className="absolute inset-0 pointer-events-none" style={{
+      zIndex: 2,
+      background: "linear-gradient(100deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.72) 38%, rgba(0,0,0,0.10) 62%, transparent 100%)",
+    }} />
+    {/* Bottom fade */}
+    <div className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none" style={{
+      zIndex: 2,
+      background: "linear-gradient(to top, #000 0%, transparent 100%)",
+    }} />
 
-          {/* Brand label */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex items-center gap-3 mb-8"
+    {/* ── Text — left side ── */}
+    <div className="absolute inset-0 flex items-center" style={{ zIndex: 10 }}>
+      <div className="px-10 md:px-16 lg:px-24 max-w-xl">
+
+        {/* Brand label */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="flex items-center gap-3 mb-8"
+        >
+          <span className="font-mono text-[0.65rem] uppercase tracking-[0.32em]"
+            style={{ color: "hsl(25,100%,50%)" }}>Swissulife Media</span>
+          <span className="h-px w-10" style={{ background: "hsl(25,100%,50%)", opacity: 0.5 }} />
+          <span className="font-mono text-[0.6rem] uppercase tracking-widest text-white/30">Est. 2020</span>
+        </motion.div>
+
+        {/* Headline */}
+        <div className="overflow-hidden mb-6">
+          <motion.h1
+            initial={{ y: "105%" }} animate={{ y: "0%" }}
+            transition={{ duration: 1.0, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display font-black leading-[0.88] tracking-tight"
+            style={{ fontSize: "clamp(2.8rem, 6vw, 5.6rem)" }}
           >
-            <span className="font-mono text-[0.65rem] uppercase tracking-[0.32em]"
-              style={{ color: "hsl(25,100%,50%)" }}>
-              Swissulife Media
-            </span>
-            <span className="h-px flex-1 max-w-[48px]"
-              style={{ background: "hsl(25,100%,50%)", opacity: 0.5 }} />
-            <span className="font-mono text-[0.6rem] uppercase tracking-widest text-white/30">
-              Since 2020
-            </span>
-          </motion.div>
-
-          {/* Main headline */}
-          <div className="overflow-hidden mb-6">
-            <motion.h1
-              initial={{ y: "105%" }}
-              animate={{ y: "0%" }}
-              transition={{ duration: 1.0, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display font-black leading-[0.88] tracking-tight"
-              style={{ fontSize: "clamp(2.6rem, 5.5vw, 5.2rem)" }}
-            >
-              <span className="text-white">We&nbsp;Shape<br /></span>
-              <span style={{
-                color: "hsl(25,100%,50%)",
-                textShadow: "0 0 80px hsl(25 100% 50% / 0.45)",
-              }}>
-                Ideas
-              </span>
-              <span className="text-white">&nbsp;Into<br />Impact.</span>
-            </motion.h1>
-          </div>
-
-          {/* Accent bar */}
-          <motion.div
-            initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-            transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              originX: 0, height: 1.5,
-              background: "linear-gradient(90deg, hsl(25,100%,50%), transparent)",
-              borderRadius: 2,
-            }}
-            className="w-36 mb-7"
-          />
-
-          {/* Subtext */}
-          <motion.p
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.65 }}
-            className="text-white/55 leading-relaxed mb-10 max-w-sm"
-            style={{ fontSize: "clamp(0.88rem, 1.35vw, 1.05rem)" }}
-          >
-            Creative strategies.&nbsp; Powerful campaigns.&nbsp;
-            <br className="hidden sm:block" />
-            Measurable growth.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.8 }}
-            className="flex flex-wrap items-center gap-4"
-          >
-            <Link
-              href="/contact"
-              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-sans text-sm font-semibold text-black transition-all duration-300 hover:shadow-[0_0_32px_hsl(25,100%,50%,0.5)]"
-              style={{ background: "hsl(25,100%,50%)" }}
-            >
-              Start a Project
-              <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
-
-            <Link
-              href="/about"
-              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full border font-sans text-sm font-medium text-white transition-all duration-300 hover:border-primary hover:text-primary"
-              style={{ borderColor: "rgba(255,255,255,0.2)" }}
-            >
-              More About Us
-              <span className="overflow-hidden w-0 group-hover:w-4 transition-all duration-300">
-                <ArrowRight size={14} className="ml-0.5" />
-              </span>
-            </Link>
-          </motion.div>
-
-          {/* Stats row */}
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.1 }}
-            className="flex items-center gap-8 mt-12 pt-8"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
-          >
-            {[
-              { val: "150+", label: "Brands Scaled" },
-              { val: "19M+", label: "Reach" },
-              { val: "3",    label: "Countries" },
-            ].map(({ val, label }) => (
-              <div key={label}>
-                <p className="font-display font-black text-white"
-                  style={{ fontSize: "clamp(1.3rem, 2.5vw, 1.9rem)", lineHeight: 1 }}>
-                  {val}
-                </p>
-                <p className="font-mono text-white/35 uppercase tracking-widest mt-1"
-                  style={{ fontSize: "0.6rem" }}>
-                  {label}
-                </p>
-              </div>
-            ))}
-          </motion.div>
+            <span className="text-white">We&nbsp;Shape<br /></span>
+            <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 80px hsl(25 100% 50%/0.5)" }}>Ideas</span>
+            <span className="text-white">&nbsp;Into<br />Impact.</span>
+          </motion.h1>
         </div>
 
-        {/* Right — 3D morphing scene */}
-        <div className="relative" style={{ zIndex: 2, height: "100%" }}>
-          {/* subtle vignette so the orb floats */}
-          <div className="absolute inset-0 pointer-events-none" style={{
-            background: "radial-gradient(ellipse 90% 80% at 55% 48%, transparent 30%, #000 100%)",
-            zIndex: 3,
-          }} />
+        {/* Accent bar */}
+        <motion.div
+          initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+          transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          style={{ originX: 0, height: 1.5, background: "linear-gradient(90deg,hsl(25,100%,50%),transparent)", borderRadius: 2 }}
+          className="w-36 mb-7"
+        />
 
-          {/* Phase label — bottom centre of the 3D panel */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={phaseName}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.4 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 font-mono text-[0.6rem] uppercase tracking-[0.28em] pointer-events-none select-none"
-              style={{ zIndex: 10, color: "hsl(25,100%,50%)", opacity: 0.7 }}
-            >
-              ◆ &nbsp;{phaseName}
-            </motion.div>
-          </AnimatePresence>
+        {/* Subtext */}
+        <motion.p
+          initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.65 }}
+          className="text-white/55 leading-relaxed mb-10"
+          style={{ fontSize: "clamp(0.9rem, 1.4vw, 1.08rem)", maxWidth: "34ch" }}
+        >
+          Creative strategies.&nbsp; Powerful campaigns.<br className="hidden sm:block" />
+          Measurable growth.
+        </motion.p>
 
-          <HeroMorphScene onPhaseChange={setPhaseIdx} />
-        </div>
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.8 }}
+          className="flex flex-wrap items-center gap-4 mb-14"
+        >
+          <Link
+            href="/contact"
+            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-sans text-sm font-semibold text-black transition-all duration-300 hover:shadow-[0_0_32px_hsl(25,100%,50%,0.55)]"
+            style={{ background: "hsl(25,100%,50%)" }}
+          >
+            Start a Project
+            <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
+          </Link>
+          <Link
+            href="/about"
+            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full border font-sans text-sm font-medium text-white transition-all duration-300 hover:border-primary hover:text-primary"
+            style={{ borderColor: "rgba(255,255,255,0.22)" }}
+          >
+            More About Us
+            <span className="overflow-hidden w-0 group-hover:w-4 transition-all duration-300">
+              <ArrowRight size={14} className="ml-0.5" />
+            </span>
+          </Link>
+        </motion.div>
+
+        {/* Stats */}
+        <motion.div
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.1 }}
+          className="flex items-center gap-10"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "2rem" }}
+        >
+          {[
+            { val: "150+", label: "Brands Scaled" },
+            { val: "19M+", label: "Total Reach" },
+            { val: "3",    label: "Countries" },
+          ].map(({ val, label }) => (
+            <div key={label}>
+              <p className="font-display font-black text-white" style={{ fontSize: "clamp(1.4rem, 2.6vw, 2rem)", lineHeight: 1 }}>{val}</p>
+              <p className="font-mono text-white/35 uppercase tracking-widest mt-1" style={{ fontSize: "0.58rem" }}>{label}</p>
+            </div>
+          ))}
+        </motion.div>
+
       </div>
+    </div>
 
-      {/* Bottom gradient fade into next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none" style={{
-        zIndex: 6,
-        background: "linear-gradient(to top, #000 0%, transparent 100%)",
-      }} />
-    </section>
-  );
-};
+    {/* Live network label — bottom right */}
+    <div className="absolute bottom-8 right-10 pointer-events-none select-none" style={{ zIndex: 10 }}>
+      <p className="font-mono text-[0.58rem] uppercase tracking-[0.28em]" style={{ color: "hsl(25,100%,50%)", opacity: 0.6 }}>
+        ◆ &nbsp;Live Follower Network
+      </p>
+    </div>
+  </section>
+);
 
 
 
@@ -854,6 +812,7 @@ const OurClients = () => {
     { name: "Liv Bank",       logoUrl: local("liv.svg") },
     { name: "Rani",           logoUrl: local("rani.png") },
     { name: "Univ. of Sharjah", logoUrl: local("sharjah-uni.png") },
+    { name: "Sharjah Chamber", logoUrl: local("sharjah-chamber.png") },
   ];
 
   return (
