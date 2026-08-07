@@ -5,7 +5,7 @@ import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
 import { ArrowRight, X, Play, Volume2, VolumeX } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
-import { HeroScene3D } from "@/components/HeroScene3D";
+import { HeroMorphScene, PHASE_NAMES } from "@/components/HeroMorphScene";
 // simple-icons — locally bundled official SVG logos with brand colours
 import {
   siToyota, siAudi, siVolkswagen, siFerrari, siPorsche, siInfiniti, siRollsroyce,
@@ -295,93 +295,168 @@ const CyclingText = ({ words }: { words: string[] }) => {
 };
 
 const Hero = () => {
+  const [phaseIdx, setPhaseIdx] = React.useState(0);
+  const phaseName = PHASE_NAMES[phaseIdx] ?? PHASE_NAMES[0];
+
   return (
-    <section id="hero" className="relative w-full bg-black overflow-hidden" style={{ height: "100vh" }}>
+    <section
+      id="hero"
+      className="relative w-full bg-black overflow-hidden"
+      style={{ height: "100vh", minHeight: 600 }}
+    >
+      {/* ── Full-screen grid: left text / right 3D ── */}
+      <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-2" style={{ zIndex: 1 }}>
 
-      {/* ── 3D Marketing Universe ── */}
-      <div className="absolute inset-0" style={{ zIndex: 1 }}>
-        <HeroScene3D />
-      </div>
+        {/* Left text panel — solid dark so copy is always legible */}
+        <div className="relative flex flex-col justify-center px-10 md:px-16 lg:px-20 pt-28 pb-16 md:py-0"
+          style={{ background: "linear-gradient(110deg,#000 70%,transparent 100%)", zIndex: 5 }}>
 
-      {/* ── Gradient overlays for text legibility ── */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        zIndex: 2,
-        background: "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.65) 30%, rgba(0,0,0,0.10) 60%, rgba(0,0,0,0.25) 100%)",
-      }} />
-      <div className="absolute inset-y-0 left-0 w-[40%] pointer-events-none" style={{
-        zIndex: 2,
-        background: "linear-gradient(90deg, rgba(0,0,0,0.75) 0%, transparent 100%)",
-      }} />
+          {/* Brand label */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="flex items-center gap-3 mb-8"
+          >
+            <span className="font-mono text-[0.65rem] uppercase tracking-[0.32em]"
+              style={{ color: "hsl(25,100%,50%)" }}>
+              Swissulife Media
+            </span>
+            <span className="h-px flex-1 max-w-[48px]"
+              style={{ background: "hsl(25,100%,50%)", opacity: 0.5 }} />
+            <span className="font-mono text-[0.6rem] uppercase tracking-widest text-white/30">
+              Since 2020
+            </span>
+          </motion.div>
 
-      {/* ── Main text — bottom left ── */}
-      <div className="absolute bottom-0 left-0 right-0 px-8 md:px-16 pb-16 md:pb-14" style={{ zIndex: 10 }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="max-w-2xl">
-            <motion.p
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="font-mono uppercase text-white/50 tracking-widest mb-3"
-              style={{ fontSize: "0.72rem" }}
-            >
-              Dare to be different? — Meet
-            </motion.p>
-
+          {/* Main headline */}
+          <div className="overflow-hidden mb-6">
             <motion.h1
-              initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="font-display font-black uppercase leading-[0.85] mb-5"
-              style={{ fontSize: "clamp(3.8rem, 8vw, 7.5rem)" }}
+              initial={{ y: "105%" }}
+              animate={{ y: "0%" }}
+              transition={{ duration: 1.0, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display font-black leading-[0.88] tracking-tight"
+              style={{ fontSize: "clamp(2.6rem, 5.5vw, 5.2rem)" }}
             >
-              <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 60px hsl(25 100% 50% / 0.5)" }}>Swiss</span>
-              <span className="text-white">u</span>
-              <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 60px hsl(25 100% 50% / 0.5)" }}>life</span>
+              <span className="text-white">We&nbsp;Shape<br /></span>
+              <span style={{
+                color: "hsl(25,100%,50%)",
+                textShadow: "0 0 80px hsl(25 100% 50% / 0.45)",
+              }}>
+                Ideas
+              </span>
+              <span className="text-white">&nbsp;Into<br />Impact.</span>
             </motion.h1>
-
-            {/* Orange accent bar */}
-            <motion.div
-              initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-              transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              style={{ originX: 0, height: 2, background: "linear-gradient(90deg, hsl(25,100%,50%), transparent)", borderRadius: 2 }}
-              className="w-40 mb-5"
-            />
-
-            {/* More About Us — directly under the heading */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.55 }}
-              className="mb-6"
-            >
-              <Link
-                href="/about"
-                className="shrink-0 group inline-flex items-center gap-0 px-7 py-3 rounded-full border border-white/30 text-white font-sans text-sm font-medium hover:bg-primary hover:border-primary hover:text-black transition-all duration-300"
-              >
-                More About Us
-                <span className="overflow-hidden w-0 group-hover:w-5 transition-all duration-300 ease-out flex items-center">
-                  <ArrowRight size={15} className="ml-1 shrink-0" />
-                </span>
-              </Link>
-            </motion.div>
-
-            {/* Subtitle */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.7 }}
-            >
-              <p className="font-display font-bold text-white leading-tight"
-                style={{ fontSize: "clamp(1rem, 1.8vw, 1.35rem)" }}>
-                A 360° Result-Oriented{" "}
-                <span style={{ color: "hsl(25,100%,50%)" }}>
-                  <CyclingText words={["Digital Marketing Agency", "Social Media Agency", "Brand Strategy Agency", "Influencer Marketing", "Google Ads Agency", "PR & Events Agency"]} />
-                </span>
-              </p>
-              <p className="text-white/40 text-sm leading-relaxed mt-2 max-w-md">
-                Tested strategies, diverse niches, zero compromises.
-              </p>
-            </motion.div>
           </div>
+
+          {/* Accent bar */}
+          <motion.div
+            initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+            transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              originX: 0, height: 1.5,
+              background: "linear-gradient(90deg, hsl(25,100%,50%), transparent)",
+              borderRadius: 2,
+            }}
+            className="w-36 mb-7"
+          />
+
+          {/* Subtext */}
+          <motion.p
+            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.65 }}
+            className="text-white/55 leading-relaxed mb-10 max-w-sm"
+            style={{ fontSize: "clamp(0.88rem, 1.35vw, 1.05rem)" }}
+          >
+            Creative strategies.&nbsp; Powerful campaigns.&nbsp;
+            <br className="hidden sm:block" />
+            Measurable growth.
+          </motion.p>
+
+          {/* CTAs */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.8 }}
+            className="flex flex-wrap items-center gap-4"
+          >
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-sans text-sm font-semibold text-black transition-all duration-300 hover:shadow-[0_0_32px_hsl(25,100%,50%,0.5)]"
+              style={{ background: "hsl(25,100%,50%)" }}
+            >
+              Start a Project
+              <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
+            </Link>
+
+            <Link
+              href="/about"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full border font-sans text-sm font-medium text-white transition-all duration-300 hover:border-primary hover:text-primary"
+              style={{ borderColor: "rgba(255,255,255,0.2)" }}
+            >
+              More About Us
+              <span className="overflow-hidden w-0 group-hover:w-4 transition-all duration-300">
+                <ArrowRight size={14} className="ml-0.5" />
+              </span>
+            </Link>
+          </motion.div>
+
+          {/* Stats row */}
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.1 }}
+            className="flex items-center gap-8 mt-12 pt-8"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
+          >
+            {[
+              { val: "150+", label: "Brands Scaled" },
+              { val: "19M+", label: "Reach" },
+              { val: "3",    label: "Countries" },
+            ].map(({ val, label }) => (
+              <div key={label}>
+                <p className="font-display font-black text-white"
+                  style={{ fontSize: "clamp(1.3rem, 2.5vw, 1.9rem)", lineHeight: 1 }}>
+                  {val}
+                </p>
+                <p className="font-mono text-white/35 uppercase tracking-widest mt-1"
+                  style={{ fontSize: "0.6rem" }}>
+                  {label}
+                </p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Right — 3D morphing scene */}
+        <div className="relative" style={{ zIndex: 2, height: "100%" }}>
+          {/* subtle vignette so the orb floats */}
+          <div className="absolute inset-0 pointer-events-none" style={{
+            background: "radial-gradient(ellipse 90% 80% at 55% 48%, transparent 30%, #000 100%)",
+            zIndex: 3,
+          }} />
+
+          {/* Phase label — bottom centre of the 3D panel */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={phaseName}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.4 }}
+              className="absolute bottom-10 left-1/2 -translate-x-1/2 font-mono text-[0.6rem] uppercase tracking-[0.28em] pointer-events-none select-none"
+              style={{ zIndex: 10, color: "hsl(25,100%,50%)", opacity: 0.7 }}
+            >
+              ◆ &nbsp;{phaseName}
+            </motion.div>
+          </AnimatePresence>
+
+          <HeroMorphScene onPhaseChange={setPhaseIdx} />
         </div>
       </div>
 
+      {/* Bottom gradient fade into next section */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none" style={{
+        zIndex: 6,
+        background: "linear-gradient(to top, #000 0%, transparent 100%)",
+      }} />
     </section>
   );
 };
