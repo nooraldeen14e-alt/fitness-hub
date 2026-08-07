@@ -732,7 +732,7 @@ const OurClients = () => {
     { name: "Toyota",      si: siToyota },
     { name: "Audi",        si: siAudi },
     { name: "Volkswagen",  si: siVolkswagen },
-    { name: "Ferrari",     si: siFerrari },
+    { name: "Ferrari",     logoUrl: local("ferrari-logo.svg") },
     { name: "Porsche",     si: siPorsche },
     { name: "Infiniti",    si: siInfiniti },
     { name: "Rolls Royce", si: siRollsroyce },
