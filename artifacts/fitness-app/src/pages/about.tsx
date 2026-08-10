@@ -430,41 +430,6 @@ export default function About() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          HOW WE WORK
-      ══════════════════════════════════════════════════════ */}
-      <section className="py-28 px-8 md:px-16 lg:px-24" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16 items-start">
-          <div className="lg:w-1/3 shrink-0">
-            <Reveal>
-              <p className="font-mono text-[11px] uppercase tracking-[0.3em] mb-4" style={{ color: "hsl(25,100%,50%)" }}>How We Work</p>
-              <h2 className="font-display font-black uppercase text-4xl md:text-5xl leading-tight">
-                From brief to<br />breakthrough.
-              </h2>
-            </Reveal>
-          </div>
-          <div className="flex-1 flex flex-col divide-y" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
-            {[
-              { num: "01", title: "Discover",   desc: "Audit your brand, market, and competitors to find the real opportunity." },
-              { num: "02", title: "Strategize", desc: "Build a tailored roadmap — channels, messaging, timelines, and KPIs." },
-              { num: "03", title: "Create",     desc: "Produce the content, creatives, and assets at studio quality." },
-              { num: "04", title: "Launch",     desc: "Execute across every relevant channel simultaneously." },
-              { num: "05", title: "Optimise",   desc: "Measure results weekly, iterate fast, and scale what works." },
-            ].map((s, i) => (
-              <Reveal key={s.num} delay={i * 0.08}>
-                <div className="flex gap-8 py-7 items-start">
-                  <span className="font-mono text-[11px] font-bold shrink-0 mt-1" style={{ color: "hsl(25,100%,50%)" }}>{s.num}</span>
-                  <div>
-                    <p className="font-display font-black text-lg uppercase text-white mb-1">{s.title}</p>
-                    <p className="text-white/40 text-sm leading-relaxed">{s.desc}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
           WHERE WE OPERATE
       ══════════════════════════════════════════════════════ */}
       <section className="py-28 px-8 md:px-16 lg:px-24" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
