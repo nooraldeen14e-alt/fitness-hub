@@ -63,6 +63,7 @@ const Lightbox = ({ url, onClose }: { url: string; onClose: () => void }) => {
 // ─── Portrait video card ──────────────────────────────────────────────────────
 const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen: () => void }) => {
   const isLocal = url.startsWith("/") || url.endsWith(".mp4");
+  const num = String(index + 1).padStart(2, "0");
   return (
     <motion.button
       initial={{ opacity: 0, y: 20 }}
@@ -73,7 +74,7 @@ const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen:
       whileTap={{ scale: 0.97 }}
       onClick={onOpen}
       className="group relative w-full rounded-2xl overflow-hidden border border-white/10 cursor-pointer focus:outline-none"
-      style={{ aspectRatio: "9/16", background: "#0a0a0a" }}
+      style={{ aspectRatio: "9/16", background: "#111" }}
     >
       {/* video thumbnail / preview */}
       {isLocal ? (
@@ -90,17 +91,34 @@ const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen:
           alt="video thumbnail"
         />
       )}
-      {/* dark overlay */}
-      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
-      {/* play button */}
+
+      {/* gradient overlays — top + bottom */}
+      <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 35%, transparent 55%, rgba(0,0,0,0.75) 100%)" }} />
+
+      {/* top-left number */}
+      <div className="absolute top-3 left-3 flex items-center gap-1.5">
+        <div className="w-1 h-4 rounded-full" style={{ background: "hsl(25,100%,50%)" }} />
+        <span className="font-mono text-[11px] font-bold text-white/70 tracking-widest">{num}</span>
+      </div>
+
+      {/* bottom label */}
+      <div className="absolute bottom-0 left-0 right-0 px-4 pb-4">
+        <p className="font-display font-black uppercase text-white text-sm leading-tight tracking-wide">
+          Work {num}
+        </p>
+        <p className="font-mono text-[10px] uppercase tracking-widest mt-0.5" style={{ color: "hsl(25,100%,50%)" }}>
+          Tap to play
+        </p>
+      </div>
+
+      {/* centre play button */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <motion.div
-          whileHover={{ scale: 1.12 }}
-          className="w-14 h-14 rounded-full flex items-center justify-center border-2 border-white/60 group-hover:border-white group-hover:bg-white/10 transition-all"
-          style={{ backdropFilter: "blur(6px)", background: "rgba(255,98,0,0.18)" }}
+        <div
+          className="w-12 h-12 rounded-full flex items-center justify-center border border-white/50 group-hover:border-white group-hover:scale-110 transition-all duration-200"
+          style={{ backdropFilter: "blur(6px)", background: "rgba(255,98,0,0.22)" }}
         >
-          <Play size={22} className="text-white ml-1" fill="white" />
-        </motion.div>
+          <Play size={18} className="text-white ml-0.5" fill="white" />
+        </div>
       </div>
     </motion.button>
   );
