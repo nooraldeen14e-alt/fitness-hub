@@ -68,14 +68,29 @@ const VideoCard = ({ entry, index, onOpen, carousel }: { entry: VideoEntry; inde
   const url    = videoUrl(entry);
   const poster = videoPoster(entry);
   const isLocal = url.startsWith("/") || url.endsWith(".mp4");
-  const [dims, setDims] = React.useState<{ w: number; h: number } | null>(null);
+  const [dims, setDims]       = React.useState<{ w: number; h: number } | null>(null);
+  const [thumb, setThumb]     = React.useState<string | null>(null);
 
   React.useEffect(() => {
     if (!isLocal) { setDims({ w: 16, h: 9 }); return; }
     const v = document.createElement("video");
-    v.preload = "metadata";
+    v.preload = "auto";
+    v.muted = true;
+    v.playsInline = true;
+    v.crossOrigin = "anonymous";
     v.src = url;
-    v.onloadedmetadata = () => setDims({ w: v.videoWidth, h: v.videoHeight });
+    v.onloadedmetadata = () => {
+      setDims({ w: v.videoWidth, h: v.videoHeight });
+      v.currentTime = 0.01;
+    };
+    v.onseeked = () => {
+      try {
+        const c = document.createElement("canvas");
+        c.width = v.videoWidth; c.height = v.videoHeight;
+        c.getContext("2d")!.drawImage(v, 0, 0, c.width, c.height);
+        setThumb(c.toDataURL("image/jpeg", 0.85));
+      } catch { /* cross-origin or decode error — fall back silently */ }
+    };
   }, [url, isLocal]);
 
   // In carousel mode: fixed height, auto width from real aspect ratio
@@ -103,11 +118,13 @@ const VideoCard = ({ entry, index, onOpen, carousel }: { entry: VideoEntry; inde
         flexShrink: 0,
       }}
     >
-      {/* media */}
+      {/* media — poster > captured first frame > video element fallback */}
       {poster ? (
         <img src={poster} className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" alt="thumbnail" style={{ padding: "8%" }} />
+      ) : thumb ? (
+        <img src={thumb} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
       ) : isLocal ? (
-        <video src={url} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" muted playsInline preload="metadata" style={{ pointerEvents: "none" }} />
+        <video src={url} className="absolute inset-0 w-full h-full object-cover" muted playsInline preload="auto" style={{ pointerEvents: "none" }} />
       ) : (
         <img src={`https://img.youtube.com/vi/${url.split("/embed/")[1]?.split("?")[0]}/hqdefault.jpg`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
       )}
