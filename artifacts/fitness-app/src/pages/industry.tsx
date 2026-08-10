@@ -64,34 +64,19 @@ const Lightbox = ({ url, onClose }: { url: string; onClose: () => void }) => {
 };
 
 // ─── Portrait video card ──────────────────────────────────────────────────────
-const VideoCard = ({ entry, index, onOpen, carousel }: { entry: VideoEntry; index: number; onOpen: () => void; carousel?: boolean }) => {
+const VideoCard = ({ entry, index, onOpen, carousel, preload = "metadata" }: {
+  entry: VideoEntry; index: number; onOpen: () => void; carousel?: boolean; preload?: "auto" | "metadata" | "none";
+}) => {
   const url    = videoUrl(entry);
   const poster = videoPoster(entry);
   const isLocal = url.startsWith("/") || url.endsWith(".mp4");
-  const [dims, setDims]       = React.useState<{ w: number; h: number } | null>(null);
-  const [thumb, setThumb]     = React.useState<string | null>(null);
+  const [dims, setDims] = React.useState<{ w: number; h: number } | null>(null);
 
-  React.useEffect(() => {
-    if (!isLocal) { setDims({ w: 16, h: 9 }); return; }
-    const v = document.createElement("video");
-    v.preload = "auto";
-    v.muted = true;
-    v.playsInline = true;
-    v.crossOrigin = "anonymous";
-    v.src = url;
-    v.onloadedmetadata = () => {
-      setDims({ w: v.videoWidth, h: v.videoHeight });
-      v.currentTime = 0.01;
-    };
-    v.onseeked = () => {
-      try {
-        const c = document.createElement("canvas");
-        c.width = v.videoWidth; c.height = v.videoHeight;
-        c.getContext("2d")!.drawImage(v, 0, 0, c.width, c.height);
-        setThumb(c.toDataURL("image/jpeg", 0.85));
-      } catch { /* cross-origin or decode error — fall back silently */ }
-    };
-  }, [url, isLocal]);
+  const handleLoaded = React.useCallback((e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const v = e.currentTarget;
+    setDims({ w: v.videoWidth, h: v.videoHeight });
+    v.currentTime = 0.5;
+  }, []);
 
   // In carousel mode: fixed height, auto width from real aspect ratio
   const carouselStyle = carousel && dims
@@ -118,13 +103,17 @@ const VideoCard = ({ entry, index, onOpen, carousel }: { entry: VideoEntry; inde
         flexShrink: 0,
       }}
     >
-      {/* media — poster > captured first frame > video element fallback */}
+      {/* media */}
       {poster ? (
         <img src={poster} className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" alt="thumbnail" style={{ padding: "8%" }} />
-      ) : thumb ? (
-        <img src={thumb} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
       ) : isLocal ? (
-        <video src={url} className="absolute inset-0 w-full h-full object-cover" muted playsInline preload="auto" style={{ pointerEvents: "none" }} />
+        <video
+          src={url}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          muted playsInline preload={preload}
+          style={{ pointerEvents: "none" }}
+          onLoadedMetadata={handleLoaded}
+        />
       ) : (
         <img src={`https://img.youtube.com/vi/${url.split("/embed/")[1]?.split("?")[0]}/hqdefault.jpg`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
       )}
@@ -278,15 +267,16 @@ export default function IndustryPage() {
           /* Horizontal infinite ticker */
           <div className="overflow-hidden" style={{ WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)" }}>
             <div className="ind-track">
-              {/* duplicate for seamless loop */}
-              {[...industry.videos, ...industry.videos].map((entry, i) => (
-                <div
-                  key={i}
-                  className="shrink-0 cursor-pointer"
-                  style={{ height: 340 }}
-                  onClick={() => setLightboxUrl(videoUrl(entry))}
-                >
-                  <VideoCard entry={entry} index={i % industry.videos.length} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel />
+              {/* first set — preload eagerly */}
+              {industry.videos.map((entry, i) => (
+                <div key={`a-${i}`} className="shrink-0" style={{ height: 340 }}>
+                  <VideoCard entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel preload="auto" />
+                </div>
+              ))}
+              {/* duplicate set — don't preload (seamless loop) */}
+              {industry.videos.map((entry, i) => (
+                <div key={`b-${i}`} className="shrink-0" style={{ height: 340 }}>
+                  <VideoCard entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel preload="none" />
                 </div>
               ))}
             </div>
