@@ -56,7 +56,7 @@ export const INDUSTRIES: Record<string, {
       "/automotive-reel-3.mp4",
       "/automotive-reel-4.mp4",
       "/automotive-reel-5.mp4",
-      "/automotive-reel-6.mp4",
+      { url: "/automotive-reel-6.mp4", poster: "/automotive-reel-6-poster.png" },
     ],
   },
   "healthcare-clinics": {
