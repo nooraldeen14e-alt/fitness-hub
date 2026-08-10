@@ -14,7 +14,13 @@ export const INDUSTRIES: Record<string, {
     name: "Fashion & Apparel",
     tagline: "Campaigns that make people stop, look, and buy.",
     description: `Fashion moves fast — and your content needs to move faster. We work with fashion and apparel brands across the GCC and Europe to build content strategies that position you as a taste-maker, not just a seller.\n\nFrom seasonal lookbook shoots and reels to influencer seeding and paid media, we handle the full marketing picture. Our team understands the language of fashion — the aesthetics, the pacing, the platforms, and the communities that drive purchase intent.\n\nWhether you're a luxury label, a streetwear brand, or an emerging designer, we build campaigns that make people feel something — and then make them buy.`,
-    videos: [],
+    videos: [
+      "/fashion-reel-1.mp4",
+      "/fashion-reel-2.mp4",
+      "/fashion-reel-3.mp4",
+      "/fashion-reel-4.mp4",
+      "/fashion-reel-5.mp4",
+    ],
   },
   "fitness-wellness": {
     name: "Fitness & Wellness",
