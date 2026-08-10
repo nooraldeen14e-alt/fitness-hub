@@ -210,18 +210,37 @@ export default function GlobeScene() {
 
       ctx.clearRect(0, 0, W, H);
 
+      const hlPulse = 0.80 + 0.20 * Math.sin(t * 2.5);
+
       // ── Sphere base ──────────────────────────────────────────────────────
       const bg = ctx.createRadialGradient(cx - R * 0.25, cy - R * 0.3, R * 0.05, cx, cy, R);
       bg.addColorStop(0, "#0d1f38"); bg.addColorStop(0.7, "#061225"); bg.addColorStop(1, "#020810");
       ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fillStyle = bg; ctx.fill();
 
+      // ── PRE-CLIP: large glow halos behind highlighted countries ───────────
+      // These are drawn BEFORE the clip so shadowBlur isn't cut off
+      for (const shape of shapes) {
+        if (!HIGHLIGHT_IDS.has(shape.id)) continue;
+        const [clon, clat] = shape.centroid;
+        const cp = project(clon, clat, rot, R, cx, cy);
+        if (cp.z < R * 0.05) continue;
+
+        const glowR = R * 0.40 * hlPulse;
+        const grad = ctx.createRadialGradient(cp.x, cp.y, 0, cp.x, cp.y, glowR);
+        grad.addColorStop(0,   `rgba(255,130,0,${0.55 * hlPulse})`);
+        grad.addColorStop(0.35,`rgba(255,90,0,${0.28 * hlPulse})`);
+        grad.addColorStop(1,   "rgba(255,60,0,0)");
+        ctx.beginPath(); ctx.arc(cp.x, cp.y, glowR, 0, Math.PI * 2);
+        ctx.fillStyle = grad; ctx.fill();
+      }
+
       // ── Clip to sphere ───────────────────────────────────────────────────
       ctx.save();
       ctx.beginPath(); ctx.arc(cx, cy, R - 0.5, 0, Math.PI * 2); ctx.clip();
 
-      // ── Country fills ────────────────────────────────────────────────────
+      // ── Non-highlighted country fills ────────────────────────────────────
       for (const shape of shapes) {
-        const isHL = HIGHLIGHT_IDS.has(shape.id);
+        if (HIGHLIGHT_IDS.has(shape.id)) continue;
         for (const ring of shape.rings) {
           ctx.beginPath();
           let pen = false;
@@ -231,13 +250,38 @@ export default function GlobeScene() {
             pen ? ctx.lineTo(p.x, p.y) : (ctx.moveTo(p.x, p.y), pen = true);
           }
           ctx.closePath();
-          if (isHL) {
-            ctx.fillStyle = "rgba(255,110,0,0.72)"; ctx.fill();
-            ctx.strokeStyle = "rgba(255,180,80,0.95)"; ctx.lineWidth = 1.2; ctx.stroke();
-          } else {
-            ctx.fillStyle = "rgba(25,75,135,0.32)"; ctx.fill();
-            ctx.strokeStyle = "rgba(55,115,195,0.22)"; ctx.lineWidth = 0.5; ctx.stroke();
+          ctx.fillStyle = "rgba(25,75,135,0.32)"; ctx.fill();
+          ctx.strokeStyle = "rgba(55,115,195,0.22)"; ctx.lineWidth = 0.5; ctx.stroke();
+        }
+      }
+
+      // ── Highlighted country fills — vivid orange on top ──────────────────
+      for (const shape of shapes) {
+        if (!HIGHLIGHT_IDS.has(shape.id)) continue;
+        const [clon, clat] = shape.centroid;
+        const cp = project(clon, clat, rot, R, cx, cy);
+        if (cp.z < R * 0.05) continue;
+
+        for (const ring of shape.rings) {
+          ctx.beginPath();
+          let pen = false;
+          for (const [lon, lat] of ring) {
+            const p = project(lon, lat, rot, R, cx, cy);
+            if (p.z < -R * 0.05) { pen = false; continue; }
+            pen ? ctx.lineTo(p.x, p.y) : (ctx.moveTo(p.x, p.y), pen = true);
           }
+          ctx.closePath();
+
+          // Solid vivid fill
+          ctx.fillStyle = `rgba(255,105,0,${0.92 * hlPulse})`; ctx.fill();
+
+          // Bright glowing border
+          ctx.shadowColor = "rgba(255,200,60,1)";
+          ctx.shadowBlur = 12;
+          ctx.strokeStyle = "rgba(255,230,100,1)";
+          ctx.lineWidth = 2.0 + 0.8 * Math.sin(t * 4);
+          ctx.stroke();
+          ctx.shadowBlur = 0;
         }
       }
 
@@ -321,26 +365,98 @@ export default function GlobeScene() {
       rim.addColorStop(0, "rgba(40,110,255,0)"); rim.addColorStop(0.7, "rgba(40,110,255,0)"); rim.addColorStop(1, "rgba(60,130,255,0.22)");
       ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fillStyle = rim; ctx.fill();
 
-      // ── Country markers ───────────────────────────────────────────────────
-      for (const m of MARKERS) {
+      // ── Country beacons — large, unmissable spotlights ───────────────────
+      const BEACON_DATA = [
+        { name: "UAE",         lat: 24.47, lon: 54.37, flag: "🇦🇪" },
+        { name: "Switzerland", lat: 46.82, lon:  8.23, flag: "🇨🇭" },
+        { name: "Slovenia",    lat: 46.12, lon: 14.81, flag: "🇸🇮" },
+      ];
+
+      for (const m of BEACON_DATA) {
         const p = project(m.lon, m.lat, rot, R, cx, cy);
-        if (p.z < R * 0.1) continue;
-        const pulse  = (Math.sin(t * 2.4) + 1) / 2;
-        const pulse2 = (Math.sin(t * 2.4 + Math.PI) + 1) / 2;
+        if (p.z < R * 0.15) continue;  // skip when on back hemisphere
 
-        const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 18);
-        glow.addColorStop(0, `rgba(255,140,40,${0.8 * pulse})`); glow.addColorStop(1, "rgba(255,98,0,0)");
-        ctx.beginPath(); ctx.arc(p.x, p.y, 18, 0, Math.PI * 2); ctx.fillStyle = glow; ctx.fill();
+        const pulse  = (Math.sin(t * 2.2) + 1) / 2;
+        const pulse2 = (Math.sin(t * 2.2 + Math.PI * 0.66) + 1) / 2;
+        const pulse3 = (Math.sin(t * 2.2 + Math.PI * 1.33) + 1) / 2;
 
-        ctx.beginPath(); ctx.arc(p.x, p.y, 8 + 5 * pulse, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255,160,40,${0.85 * (1 - pulse * 0.4)})`; ctx.lineWidth = 1.5; ctx.stroke();
+        // ── Layer 1: huge soft glow blob ──────────────────────────────────
+        const bigR = R * (0.22 + 0.05 * pulse);
+        const bigGlow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, bigR);
+        bigGlow.addColorStop(0,    `rgba(255,140,0,${0.55 * hlPulse})`);
+        bigGlow.addColorStop(0.3,  `rgba(255,100,0,${0.30 * hlPulse})`);
+        bigGlow.addColorStop(0.7,  `rgba(255,60,0,${0.10 * hlPulse})`);
+        bigGlow.addColorStop(1,    "rgba(255,40,0,0)");
+        ctx.beginPath(); ctx.arc(p.x, p.y, bigR, 0, Math.PI * 2);
+        ctx.fillStyle = bigGlow; ctx.fill();
 
-        ctx.beginPath(); ctx.arc(p.x, p.y, 14 + 5 * pulse2, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255,100,0,${0.4 * (1 - pulse2 * 0.4)})`; ctx.lineWidth = 1; ctx.stroke();
+        // ── Layer 2: three expanding rings ────────────────────────────────
+        const rings = [
+          { r: 18 + 14 * pulse,  a: 0.85 * (1 - pulse  * 0.6), w: 2.0 },
+          { r: 26 + 14 * pulse2, a: 0.55 * (1 - pulse2 * 0.5), w: 1.4 },
+          { r: 36 + 14 * pulse3, a: 0.30 * (1 - pulse3 * 0.4), w: 1.0 },
+        ];
+        for (const ring of rings) {
+          ctx.beginPath(); ctx.arc(p.x, p.y, ring.r, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(255,190,60,${ring.a})`;
+          ctx.lineWidth = ring.w; ctx.stroke();
+        }
 
-        ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = "#FF8030"; ctx.fill();
-        ctx.strokeStyle = "#FFAA60"; ctx.lineWidth = 1.2; ctx.stroke();
+        // ── Layer 3: 8-point starburst light rays ─────────────────────────
+        const rayLen = 18 + 8 * pulse;
+        const rayAlpha = 0.6 + 0.4 * pulse;
+        ctx.save();
+        ctx.translate(p.x, p.y); ctx.rotate(t * 0.5);
+        ctx.strokeStyle = `rgba(255,220,100,${rayAlpha})`;
+        ctx.lineWidth = 1.5;
+        for (let i = 0; i < 8; i++) {
+          const a = (i / 8) * Math.PI * 2;
+          ctx.beginPath();
+          ctx.moveTo(Math.cos(a) * 9, Math.sin(a) * 9);
+          ctx.lineTo(Math.cos(a) * (9 + rayLen), Math.sin(a) * (9 + rayLen));
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        // ── Layer 4: bright core dot ──────────────────────────────────────
+        const dotGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 8);
+        dotGrad.addColorStop(0, "#FFFFFF");
+        dotGrad.addColorStop(0.3, "#FFCC60");
+        dotGrad.addColorStop(1, "rgba(255,120,0,0)");
+        ctx.beginPath(); ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+        ctx.fillStyle = dotGrad; ctx.fill();
+
+        // ── Layer 5: floating name badge ──────────────────────────────────
+        // Badge floats above & slightly right of the beacon
+        const badgeX = p.x + (p.x < cx ? -90 : 16);
+        const badgeY = p.y - 40 - 8 * pulse;
+        const label  = m.name.toUpperCase();
+
+        // Connector line
+        ctx.beginPath();
+        ctx.moveTo(p.x + (p.x < cx ? -10 : 10), p.y - 8);
+        ctx.lineTo(badgeX + (p.x < cx ? 80 : 0), badgeY + 12);
+        ctx.strokeStyle = `rgba(255,180,60,${0.55 + 0.2 * pulse})`;
+        ctx.lineWidth = 1.2; ctx.stroke();
+
+        // Badge background
+        const bw = 80, bh = 26, br = 6;
+        ctx.beginPath();
+        ctx.roundRect(badgeX, badgeY, bw, bh, br);
+        ctx.fillStyle = `rgba(255,100,0,${0.80 + 0.15 * pulse})`;
+        ctx.fill();
+        ctx.strokeStyle = `rgba(255,220,100,${0.9})`;
+        ctx.lineWidth = 1.2; ctx.stroke();
+
+        // Badge text
+        const fs = Math.max(9, R * 0.028);
+        ctx.font = `bold ${fs}px 'Inter', monospace`;
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillStyle = "#FFFFFF";
+        ctx.shadowColor = "rgba(0,0,0,0.7)"; ctx.shadowBlur = 3;
+        ctx.fillText(label, badgeX + bw / 2, badgeY + bh / 2);
+        ctx.shadowBlur = 0;
+        ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
       }
 
       // ── Orbit ring ────────────────────────────────────────────────────────
