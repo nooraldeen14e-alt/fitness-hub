@@ -92,24 +92,8 @@ const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen:
         />
       )}
 
-      {/* gradient overlays — top + bottom */}
-      <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 35%, transparent 55%, rgba(0,0,0,0.75) 100%)" }} />
-
-      {/* top-left number */}
-      <div className="absolute top-3 left-3 flex items-center gap-1.5">
-        <div className="w-1 h-4 rounded-full" style={{ background: "hsl(25,100%,50%)" }} />
-        <span className="font-mono text-[11px] font-bold text-white/70 tracking-widest">{num}</span>
-      </div>
-
-      {/* bottom label */}
-      <div className="absolute bottom-0 left-0 right-0 px-4 pb-4">
-        <p className="font-display font-black uppercase text-white text-sm leading-tight tracking-wide">
-          Work {num}
-        </p>
-        <p className="font-mono text-[10px] uppercase tracking-widest mt-0.5" style={{ color: "hsl(25,100%,50%)" }}>
-          Tap to play
-        </p>
-      </div>
+      {/* dark overlay */}
+      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
 
       {/* centre play button */}
       <div className="absolute inset-0 flex items-center justify-center">
