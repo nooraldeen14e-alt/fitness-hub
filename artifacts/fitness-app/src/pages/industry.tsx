@@ -28,29 +28,31 @@ const Lightbox = ({ url, onClose }: { url: string; onClose: () => void }) => {
         animate={{ scale: 1,    opacity: 1, y: 0  }}
         exit={{    scale: 0.88, opacity: 0, y: 16 }}
         transition={{ type: "spring", damping: 28, stiffness: 320 }}
-        className="relative w-full max-w-sm rounded-3xl overflow-hidden"
-        style={{ aspectRatio: "9/16", background: "#000", boxShadow: "0 40px 120px rgba(0,0,0,0.8)" }}
+        className="relative rounded-3xl overflow-hidden"
+        style={{ background: "#000", boxShadow: "0 40px 120px rgba(0,0,0,0.8)", maxHeight: "88vh", maxWidth: "min(92vw, 900px)", width: "100%" }}
         onClick={e => e.stopPropagation()}
       >
         {isLocal ? (
           <video
             src={url}
-            className="w-full h-full object-contain"
-            style={{ background: "#000" }}
+            className="block w-full"
+            style={{ maxHeight: "88vh", objectFit: "contain", background: "#000" }}
             autoPlay controls playsInline
           />
         ) : (
-          <iframe
-            src={url + "?autoplay=1"}
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          <div style={{ aspectRatio: "16/9" }}>
+            <iframe
+              src={url + "?autoplay=1"}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
         )}
         {/* close */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-base transition-colors z-10"
+          className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-base z-10"
           style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)" }}
         >✕</button>
       </motion.div>
