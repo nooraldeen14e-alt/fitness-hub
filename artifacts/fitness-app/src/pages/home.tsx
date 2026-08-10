@@ -228,7 +228,7 @@ const Navbar = () => {
                   "Food & Beverage",
                   "Fragrance & Beauty",
                   "Luxury & Lifestyle",
-                  "Hospitality & Travel",
+
                   "Real Estate",
                   "Technology & SaaS",
                   "E-commerce & Retail",
