@@ -9,8 +9,9 @@ import { INDUSTRIES } from "@/data/industries";
 const VideoPlaceholder = ({ index }: { index: number }) => (
   <motion.div
     initial={{ opacity: 0, y: 24 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.3 + index * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay: 0.1 + index * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
     className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center group"
   >
     <div
@@ -23,32 +24,59 @@ const VideoPlaceholder = ({ index }: { index: number }) => (
   </motion.div>
 );
 
-// ─── Embed card ───────────────────────────────────────────────────────────────
+// ─── Featured full-width video (single video) ─────────────────────────────────
+const FeaturedVideo = ({ url }: { url: string }) => {
+  const isLocal = url.startsWith("/") || url.endsWith(".mp4");
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+      className="w-full rounded-3xl overflow-hidden border border-white/10"
+      style={{ background: "#0a0a0a", boxShadow: "0 40px 120px rgba(255,98,0,0.10)" }}
+    >
+      {/* orange top accent */}
+      <div className="h-[3px] w-full" style={{ background: "linear-gradient(90deg, hsl(25,100%,50%), transparent)" }} />
+      <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+        {isLocal ? (
+          <video
+            src={url}
+            className="w-full h-full object-contain"
+            style={{ background: "#000" }}
+            controls
+            playsInline
+            preload="metadata"
+          />
+        ) : (
+          <iframe
+            src={url}
+            className="absolute inset-0 w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
+// ─── Grid video card ──────────────────────────────────────────────────────────
 const VideoEmbed = ({ url, index }: { url: string; index: number }) => {
   const isLocal = url.startsWith("/") || url.endsWith(".mp4");
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3 + index * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       className="relative aspect-video rounded-2xl overflow-hidden border border-white/10"
+      style={{ background: "#0a0a0a" }}
     >
       {isLocal ? (
-        <video
-          src={url}
-          className="w-full h-full object-cover"
-          controls
-          playsInline
-          preload="metadata"
-        />
+        <video src={url} className="w-full h-full object-contain" style={{ background: "#000" }} controls playsInline preload="metadata" />
       ) : (
-        <iframe
-          src={url}
-          className="w-full h-full"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          loading="lazy"
-        />
+        <iframe src={url} className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" />
       )}
     </motion.div>
   );
@@ -142,11 +170,20 @@ export default function IndustryPage() {
           <h2 className="font-display font-black text-3xl md:text-4xl">Our Work in {industry.name}</h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {industry.videos.length > 0
-            ? industry.videos.map((url, i) => <VideoEmbed key={i} url={url} index={i} />)
-            : Array.from({ length: videoCount }).map((_, i) => <VideoPlaceholder key={i} index={i} />)}
-        </div>
+        {industry.videos.length === 1 ? (
+          /* Single video → full-width cinematic */
+          <FeaturedVideo url={industry.videos[0]} />
+        ) : industry.videos.length > 1 ? (
+          /* Multiple videos → 2-col grid */
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {industry.videos.map((url, i) => <VideoEmbed key={i} url={url} index={i} />)}
+          </div>
+        ) : (
+          /* No videos → placeholder grid */
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {Array.from({ length: 3 }).map((_, i) => <VideoPlaceholder key={i} index={i} />)}
+          </div>
+        )}
       </section>
 
       {/* ── CTA ── */}
