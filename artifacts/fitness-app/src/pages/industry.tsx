@@ -3,6 +3,7 @@ import { Link, useParams } from "wouter";
 import { motion } from "framer-motion";
 import { ArrowLeft, Play } from "lucide-react";
 import SiteNav from "@/components/SiteNav";
+import IndustryVisual from "@/components/IndustryVisual";
 import { INDUSTRIES } from "@/data/industries";
 
 // ─── Video placeholder card ───────────────────────────────────────────────────
@@ -55,7 +56,6 @@ export default function IndustryPage() {
   if (!industry) return null;
 
   const paragraphs = industry.description.split("\n\n");
-  // Show at least 3 placeholders if no real videos yet
   const videoCount = Math.max(industry.videos.length, 3);
 
   return (
@@ -63,86 +63,124 @@ export default function IndustryPage() {
       <SiteNav active="industries" />
 
       {/* ── Hero ── */}
-      <section className="relative pt-40 pb-24 px-6 md:px-16 lg:px-24 overflow-hidden">
-        {/* background glow */}
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+
+        {/* ambient glow behind visual */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute right-0 top-0 bottom-0 w-1/2 pointer-events-none"
           style={{
-            background: "radial-gradient(ellipse 60% 40% at 70% 50%, hsl(25,100%,50%,0.07) 0%, transparent 70%)",
+            background:
+              "radial-gradient(ellipse 70% 60% at 75% 50%, hsl(25,100%,50%,0.09) 0%, transparent 70%)",
           }}
         />
 
-        {/* back link */}
-        <motion.div
-          initial={{ opacity: 0, x: -16 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-10"
-        >
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm font-mono uppercase tracking-widest"
+        {/* ── Left: text ── */}
+        <div className="relative z-10 w-full lg:w-1/2 px-6 md:px-16 lg:pl-20 lg:pr-10 pt-36 pb-20">
+
+          {/* back link */}
+          <motion.div
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-10"
           >
-            <ArrowLeft size={14} />
-            All Industries
-          </Link>
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 text-white/40 hover:text-white transition-colors text-sm font-mono uppercase tracking-widest"
+            >
+              <ArrowLeft size={14} />
+              All Industries
+            </Link>
+          </motion.div>
+
+          {/* label */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.5 }}
+            className="font-mono text-[11px] uppercase tracking-[0.25em] mb-5"
+            style={{ color: "hsl(25,100%,50%)" }}
+          >
+            Industry
+          </motion.p>
+
+          {/* title */}
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display font-black text-5xl md:text-6xl lg:text-7xl tracking-tight leading-none mb-6"
+          >
+            {industry.name}
+          </motion.h1>
+
+          {/* tagline */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.6 }}
+            className="text-lg md:text-xl text-white/50 font-light leading-relaxed mb-6 max-w-md"
+          >
+            {industry.tagline}
+          </motion.p>
+
+          {/* divider */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.35, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="w-16 h-[3px] origin-left"
+            style={{ background: "hsl(25,100%,50%)" }}
+          />
+
+          {/* first paragraph preview */}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45, duration: 0.6 }}
+            className="mt-8 text-base text-white/55 leading-relaxed max-w-md"
+          >
+            {paragraphs[0]}
+          </motion.p>
+        </div>
+
+        {/* ── Right: 3-D visual ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.9 }}
+          className="hidden lg:flex absolute right-0 top-0 bottom-0 w-1/2 items-center justify-center pr-10"
+        >
+          <IndustryVisual slug={slug} />
         </motion.div>
 
-        {/* label */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.5 }}
-          className="font-mono text-[11px] uppercase tracking-[0.25em] mb-4"
-          style={{ color: "hsl(25,100%,50%)" }}
-        >
-          Industry
-        </motion.p>
-
-        {/* title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="font-display font-black text-5xl md:text-7xl lg:text-8xl tracking-tight leading-none mb-6 max-w-4xl"
-        >
-          {industry.name}
-        </motion.h1>
-
-        {/* tagline */}
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25, duration: 0.6 }}
-          className="text-xl md:text-2xl text-white/50 font-light max-w-2xl leading-relaxed mb-4"
-        >
-          {industry.tagline}
-        </motion.p>
-
-        {/* divider */}
+        {/* scroll hint */}
         <motion.div
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ delay: 0.35, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="w-20 h-[3px] origin-left mt-2"
-          style={{ background: "hsl(25,100%,50%)" }}
-        />
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4, duration: 0.6 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        >
+          <motion.div
+            animate={{ y: [0, 7, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="w-[1px] h-10 bg-gradient-to-b from-primary/60 to-transparent"
+          />
+          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/20">Scroll</span>
+        </motion.div>
       </section>
 
-      {/* ── Description ── */}
+      {/* ── Description (remaining paragraphs) ── */}
       <section className="px-6 md:px-16 lg:px-24 pb-24 max-w-4xl">
         <div className="space-y-6">
-          {paragraphs.map((para, i) => (
+          {paragraphs.slice(1).map((para, i) => (
             <motion.p
               key={i}
               initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 + i * 0.1, duration: 0.6 }}
-              className={`leading-relaxed ${
-                i === 0
-                  ? "text-lg md:text-xl text-white/85"
-                  : "text-base md:text-lg text-white/55"
-              }`}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ delay: i * 0.1, duration: 0.6 }}
+              className="text-base md:text-lg text-white/55 leading-relaxed"
             >
               {para}
             </motion.p>
@@ -152,30 +190,23 @@ export default function IndustryPage() {
 
       {/* ── Proof of Work ── */}
       <section className="px-6 md:px-16 lg:px-24 pb-32">
-        {/* section header */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.55 }}
-          className="flex items-center gap-4 mb-10"
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.55 }}
+          className="mb-10"
         >
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] mb-1" style={{ color: "hsl(25,100%,50%)" }}>
-              Proof of Work
-            </p>
-            <h2 className="font-display font-black text-3xl md:text-4xl">Our Work in {industry.name}</h2>
-          </div>
+          <p className="font-mono text-[11px] uppercase tracking-[0.25em] mb-2" style={{ color: "hsl(25,100%,50%)" }}>
+            Proof of Work
+          </p>
+          <h2 className="font-display font-black text-3xl md:text-4xl">Our Work in {industry.name}</h2>
         </motion.div>
 
-        {/* video grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {industry.videos.length > 0
-            ? industry.videos.map((url, i) => (
-                <VideoEmbed key={i} url={url} index={i} />
-              ))
-            : Array.from({ length: videoCount }).map((_, i) => (
-                <VideoPlaceholder key={i} index={i} />
-              ))}
+            ? industry.videos.map((url, i) => <VideoEmbed key={i} url={url} index={i} />)
+            : Array.from({ length: videoCount }).map((_, i) => <VideoPlaceholder key={i} index={i} />)}
         </div>
       </section>
 
@@ -183,8 +214,9 @@ export default function IndustryPage() {
       <section className="px-6 md:px-16 lg:px-24 pb-32">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6 }}
           className="rounded-3xl border border-white/10 p-10 md:p-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8"
           style={{ background: "rgba(255,98,0,0.05)" }}
         >
@@ -196,13 +228,13 @@ export default function IndustryPage() {
               Let's build a campaign that moves your audience — and your numbers.
             </p>
           </div>
-          <button
-            onClick={() => setScheduleOpen(true)}
+          <Link
+            href="/contact"
             className="shrink-0 inline-flex items-center gap-2 px-8 py-4 rounded-full text-white font-bold text-base hover:opacity-90 transition-opacity"
             style={{ background: "hsl(25,100%,50%)" }}
           >
             Start a Project
-          </button>
+          </Link>
         </motion.div>
       </section>
 
@@ -218,4 +250,3 @@ export default function IndustryPage() {
     </div>
   );
 }
-
