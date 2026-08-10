@@ -526,19 +526,30 @@ export default function About() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: "rgba(255,255,255,0.06)" }}>
             {[
-              { icon: "◈", name: "Social Media Management",  detail: "Content, scheduling & community management across all platforms." },
-              { icon: "◉", name: "Paid Advertising",          detail: "High-ROAS campaigns on Meta, Google, TikTok and Snapchat." },
-              { icon: "◎", name: "Influencer Marketing",      detail: "Access to a 19M+ reach network of verified creators." },
-              { icon: "◆", name: "Branding & Identity",       detail: "Logo, visual language, tone of voice and brand positioning." },
-              { icon: "▸", name: "Content Production",        detail: "Video, photography, reels, podcasts and copywriting." },
-              { icon: "◐", name: "Marketing Strategy",        detail: "Full-funnel strategy, audience research and growth roadmaps." },
+              { num: "01", name: "Social Media Management", slug: "social-media-management", detail: "Content, scheduling & community management across all platforms." },
+              { num: "02", name: "Paid Advertising",         slug: "paid-advertising",         detail: "High-ROAS campaigns on Meta, Google, TikTok and Snapchat." },
+              { num: "03", name: "Influencer Marketing",     slug: "influencer-marketing",     detail: "Access to a 19M+ reach network of verified creators." },
+              { num: "04", name: "Branding & Identity",      slug: "branding-identity",        detail: "Logo, visual language, tone of voice and brand positioning." },
+              { num: "05", name: "Content Production",       slug: "content-production",       detail: "Video, photography, reels, podcasts and copywriting." },
+              { num: "06", name: "Marketing Strategy",       slug: "marketing-strategy",       detail: "Full-funnel strategy, audience research and growth roadmaps." },
             ].map((s, i) => (
               <Reveal key={s.name} delay={i * 0.07}>
-                <div className="p-8 h-full" style={{ background: "#050505" }}>
-                  <span className="text-2xl mb-5 block" style={{ color: "hsl(25,100%,50%)" }}>{s.icon}</span>
-                  <h3 className="font-display font-black text-lg uppercase mb-3 text-white">{s.name}</h3>
-                  <p className="text-white/40 text-sm leading-relaxed">{s.detail}</p>
-                </div>
+                <Link href={`/services/${s.slug}`}>
+                  <div
+                    className="group relative p-8 h-full flex flex-col cursor-pointer overflow-hidden transition-all duration-300 hover:bg-[#0d0d0d]"
+                    style={{ background: "#050505" }}
+                  >
+                    {/* hover accent line */}
+                    <div className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500" style={{ background: "hsl(25,100%,50%)" }} />
+
+                    <span className="font-mono text-[11px] mb-6 block" style={{ color: "hsl(25,100%,50%)" }}>{s.num}</span>
+                    <h3 className="font-display font-black text-xl uppercase mb-3 text-white group-hover:text-white leading-tight flex-1">{s.name}</h3>
+                    <p className="text-white/35 text-sm leading-relaxed mb-6">{s.detail}</p>
+                    <span className="inline-flex items-center gap-1 text-white/25 group-hover:text-orange-500 font-mono text-[11px] uppercase tracking-widest transition-colors">
+                      Explore <span className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                    </span>
+                  </div>
+                </Link>
               </Reveal>
             ))}
           </div>
