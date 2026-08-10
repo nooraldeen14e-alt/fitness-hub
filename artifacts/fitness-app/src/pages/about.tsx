@@ -44,110 +44,14 @@ function CSSCubeFallback() {
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
       <div style={{ width: 480, height: 480, position: "relative" }}>
-        {/* ── CSS Building — matches reference photo ── */}
+        {/* centre glow */}
         <div style={{
           position: "absolute", inset: "50%",
-          transform: "translate(-50%, -50%)",
-          width: 110, height: 230,
-          display: "flex", flexDirection: "column", alignItems: "center",
-          animation: "none",
-        }}>
-          {/* Antenna + red beacon */}
-          <div style={{ width: 1.5, height: 18, background: "#ffffff", marginBottom: 0 }} />
-          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#ff0000",
-            boxShadow: "0 0 8px #ff0000, 0 0 16px #ff000066", marginTop: -2,
-            animation: "cssBuildingPulse 1.2s ease-in-out infinite" }} />
-
-          {/* Crown / parapet — carries "swissulife media" */}
-          <div style={{
-            width: 108, marginTop: 2,
-            background: "#1a3358",
-            border: "1px solid #ffffff44",
-            borderTop: "2px solid #ffffff",
-            borderBottom: "1px solid #ffffff66",
-            padding: "5px 6px 5px",
-            display: "flex", flexDirection: "column", alignItems: "center", gap: 1,
-            boxShadow: "0 0 12px #ffffff22",
-          }}>
-            <div style={{
-              fontSize: 9, fontFamily: "sans-serif", letterSpacing: "0.12em",
-              color: "#ffaa66", fontWeight: 700, whiteSpace: "nowrap",
-              textShadow: "0 0 6px #ff5500bb, 0 0 14px #ff550055",
-            }}>Swissulife Media</div>
-          </div>
-
-          {/* Main tower body — two side wings + central cylinder */}
-          <div style={{
-            width: 108, flex: 1, position: "relative",
-            display: "flex", alignItems: "stretch",
-            boxShadow: "0 0 40px #ffffff22",
-          }}>
-            {/* Left wing */}
-            <div style={{
-              width: 28, background: "#0d1b2e",
-              borderLeft: "2px solid #ffffff",
-              position: "relative", overflow: "hidden",
-            }}>
-              {/* Amber floor lines */}
-              {Array.from({ length: 12 }, (_, i) => (
-                <div key={i} style={{
-                  position: "absolute", left: 2, right: 2,
-                  top: `${8 + i * 8}%`, height: 1.5,
-                  background: "#ffffff", boxShadow: "0 0 4px #ffffff", opacity: 0.75,
-                }} />
-              ))}
-            </div>
-
-            {/* Central section — window grid */}
-            <div style={{
-              flex: 1, background: "#1a3358",
-              position: "relative", overflow: "hidden",
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gridTemplateRows: "repeat(12, 1fr)",
-              gap: 2, padding: 3,
-            }}>
-              {Array.from({ length: 48 }, (_, i) => (
-                <div key={i} style={{
-                  background: "#a8c4ff22",
-                  border: "1px solid #a8c4ff55",
-                  borderRadius: 1,
-                  boxShadow: "0 0 3px #a8c4ff44",
-                }} />
-              ))}
-            </div>
-
-            {/* Right wing */}
-            <div style={{
-              width: 28, background: "#0d1b2e",
-              borderRight: "2px solid #ffffff",
-              position: "relative", overflow: "hidden",
-            }}>
-              {Array.from({ length: 12 }, (_, i) => (
-                <div key={i} style={{
-                  position: "absolute", left: 2, right: 2,
-                  top: `${8 + i * 8}%`, height: 1.5,
-                  background: "#ffffff", boxShadow: "0 0 4px #ffffff", opacity: 0.75,
-                }} />
-              ))}
-            </div>
-          </div>
-
-          {/* Lobby / base — wider, warm glass glow */}
-          <div style={{
-            width: 118, height: 22,
-            background: "#0d1b2e",
-            borderTop: "1.5px solid #ffffff",
-            boxShadow: "0 0 14px #ffffff44",
-            position: "relative", overflow: "hidden",
-          }}>
-            {/* Warm amber glass glow across lobby front */}
-            <div style={{
-              position: "absolute", left: "10%", right: "10%", top: 3, bottom: 3,
-              background: "rgba(245,160,66,0.18)", borderRadius: 2,
-            }} />
-          </div>
-        </div>
+          transform: "translate(-50%,-50%)",
+          width: 80, height: 80, borderRadius: "50%",
+          background: "radial-gradient(circle, hsl(25,100%,50%,0.18) 0%, transparent 70%)",
+          boxShadow: "0 0 40px hsl(25,100%,50%,0.15)",
+        }} />
 
         {/* Orbiting platform labels */}
         {PLATFORM_ICONS.map(({ name, color, icon }, i) => {
