@@ -180,13 +180,128 @@ const Reveal = ({ children, delay = 0, className = "" }: { children: React.React
   </motion.div>
 );
 
+// ─── Work overlay data ────────────────────────────────────────────────────────
+const SERVICES = [
+  { num: "01", name: "Social Media Management", slug: "social-media-management" },
+  { num: "02", name: "Paid Advertising",         slug: "paid-advertising" },
+  { num: "03", name: "Influencer Marketing",     slug: "influencer-marketing" },
+  { num: "04", name: "Branding & Identity",      slug: "branding-identity" },
+  { num: "05", name: "Content Production",       slug: "content-production" },
+  { num: "06", name: "Marketing Strategy",       slug: "marketing-strategy" },
+];
+const INDUSTRY_LIST = [
+  { name: "Fashion & Apparel",     slug: "fashion-apparel" },
+  { name: "Fitness & Wellness",    slug: "fitness-wellness" },
+  { name: "Food & Beverage",       slug: "food-beverage" },
+  { name: "Fragrance & Beauty",    slug: "fragrance-beauty" },
+  { name: "Real Estate",           slug: "real-estate" },
+  { name: "Technology & SaaS",     slug: "technology-saas" },
+  { name: "Automotive",            slug: "automotive" },
+  { name: "Healthcare & Clinics",  slug: "healthcare-clinics" },
+  { name: "Entertainment & Media", slug: "entertainment-media" },
+];
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function About() {
   const [scheduleOpen, setScheduleOpen] = React.useState(false);
+  const [workOpen,     setWorkOpen]     = React.useState(false);
 
   return (
     <div className="bg-[#050505] text-white font-sans overflow-x-hidden">
       <ScheduleModal open={scheduleOpen} onClose={() => setScheduleOpen(false)} />
+
+      {/* ── View Our Work overlay ───────────────────────────────────────────── */}
+      <motion.div
+        initial={false}
+        animate={workOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: "100%" }}
+        transition={{ type: "spring", damping: 32, stiffness: 280 }}
+        className="fixed inset-0 z-[999] flex flex-col overflow-y-auto"
+        style={{ background: "#050505", pointerEvents: workOpen ? "auto" : "none" }}
+      >
+        {/* top bar */}
+        <div className="flex items-center justify-between px-8 md:px-16 py-6 border-b shrink-0" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+          <span className="font-display font-black text-white tracking-tight">
+            SWISSULIFE <span style={{ color: "hsl(25,100%,50%)" }}>MEDIA</span>
+          </span>
+          <button
+            onClick={() => setWorkOpen(false)}
+            className="w-10 h-10 rounded-full border flex items-center justify-center text-white/50 hover:text-white hover:border-white/40 transition-all font-sans text-lg"
+            style={{ borderColor: "rgba(255,255,255,0.15)" }}
+          >✕</button>
+        </div>
+
+        {/* content */}
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0">
+
+          {/* LEFT — Services */}
+          <div className="px-8 md:px-16 py-14 border-r" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
+            <p className="font-mono text-[11px] uppercase tracking-[0.4em] mb-10" style={{ color: "hsl(25,100%,50%)" }}>What We Do</p>
+            <div className="flex flex-col gap-1">
+              {SERVICES.map((s, i) => (
+                <motion.div
+                  key={s.slug}
+                  animate={workOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }}
+                  transition={{ delay: workOpen ? 0.08 + i * 0.07 : 0, duration: 0.45 }}
+                >
+                  <Link
+                    href={`/services/${s.slug}`}
+                    onClick={() => setWorkOpen(false)}
+                    className="group flex items-center gap-6 py-5 border-b hover:border-orange-500/40 transition-all"
+                    style={{ borderColor: "rgba(255,255,255,0.06)" }}
+                  >
+                    <span className="font-mono text-[11px] w-6 shrink-0" style={{ color: "hsl(25,100%,50%)" }}>{s.num}</span>
+                    <span className="font-display font-black uppercase text-2xl md:text-3xl text-white/80 group-hover:text-white transition-colors leading-tight">{s.name}</span>
+                    <span className="ml-auto text-white/20 group-hover:text-orange-500 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 text-lg">↗</span>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* RIGHT — Industries */}
+          <div className="px-8 md:px-16 py-14">
+            <p className="font-mono text-[11px] uppercase tracking-[0.4em] mb-10" style={{ color: "hsl(25,100%,50%)" }}>Industries We Serve</p>
+            <div className="flex flex-wrap gap-3">
+              {INDUSTRY_LIST.map((ind, i) => (
+                <motion.div
+                  key={ind.slug}
+                  animate={workOpen ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.88 }}
+                  transition={{ delay: workOpen ? 0.18 + i * 0.06 : 0, duration: 0.4 }}
+                >
+                  <Link
+                    href={`/industries/${ind.slug}`}
+                    onClick={() => setWorkOpen(false)}
+                    className="group inline-flex items-center gap-2 px-5 py-3 rounded-full border font-display font-bold text-sm uppercase tracking-wider text-white/60 hover:text-white hover:border-orange-500 transition-all"
+                    style={{ borderColor: "rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.02)" }}
+                  >
+                    {ind.name}
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-orange-500">↗</span>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* bottom cta */}
+            <motion.div
+              animate={workOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+              transition={{ delay: workOpen ? 0.7 : 0, duration: 0.5 }}
+              className="mt-16 p-8 rounded-2xl border"
+              style={{ borderColor: "rgba(255,98,0,0.25)", background: "rgba(255,98,0,0.04)" }}
+            >
+              <p className="font-display font-black uppercase text-xl text-white mb-2">Don't see your industry?</p>
+              <p className="text-white/40 text-sm mb-5">We work across every vertical. If you have ambition, we have the system.</p>
+              <button
+                onClick={() => { setWorkOpen(false); setScheduleOpen(true); }}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-display font-bold text-sm uppercase tracking-widest text-white hover:opacity-90 transition-opacity"
+                style={{ background: "hsl(25,100%,50%)" }}
+              >
+                Let's Talk <ArrowRight size={14} />
+              </button>
+            </motion.div>
+          </div>
+        </div>
+      </motion.div>
+
       <AboutNavbar />
 
       {/* ══════════════════════════════════════════════════════
@@ -255,13 +370,14 @@ export default function About() {
             >
               Get in Touch <ArrowRight size={15} />
             </button>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full border font-sans text-sm font-medium text-white/70 hover:text-white hover:border-white/40 transition-all"
+            <button
+              onClick={() => setWorkOpen(true)}
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-full border font-display font-bold text-sm uppercase tracking-widest text-white/70 hover:text-white hover:border-white/40 transition-all"
               style={{ borderColor: "rgba(255,255,255,0.18)" }}
             >
-              Start a Project
-            </Link>
+              View Our Work
+              <span className="inline-block transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+            </button>
           </motion.div>
         </div>
 
