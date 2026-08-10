@@ -75,7 +75,9 @@ const VideoCard = ({ entry, index, onOpen, carousel, preload = "metadata" }: {
   const handleLoaded = React.useCallback((e: React.SyntheticEvent<HTMLVideoElement>) => {
     const v = e.currentTarget;
     setDims({ w: v.videoWidth, h: v.videoHeight });
-    v.currentTime = 0.5;
+    // seek to 5% of duration (min 1s, max 4s) to skip any black intro frames
+    const t = isFinite(v.duration) ? Math.min(Math.max(v.duration * 0.05, 1), 4) : 1;
+    v.currentTime = t;
   }, []);
 
   // In carousel mode: fixed height, auto width from real aspect ratio
