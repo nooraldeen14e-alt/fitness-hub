@@ -63,7 +63,18 @@ const Lightbox = ({ url, onClose }: { url: string; onClose: () => void }) => {
 // ─── Portrait video card ──────────────────────────────────────────────────────
 const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen: () => void }) => {
   const isLocal = url.startsWith("/") || url.endsWith(".mp4");
-  const num = String(index + 1).padStart(2, "0");
+  const [ratio, setRatio] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!isLocal) { setRatio("16/9"); return; }
+    const v = document.createElement("video");
+    v.preload = "metadata";
+    v.src = url;
+    v.onloadedmetadata = () => {
+      setRatio(`${v.videoWidth}/${v.videoHeight}`);
+    };
+  }, [url, isLocal]);
+
   return (
     <motion.button
       initial={{ opacity: 0, y: 20 }}
@@ -74,9 +85,8 @@ const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen:
       whileTap={{ scale: 0.97 }}
       onClick={onOpen}
       className="group relative w-full rounded-2xl overflow-hidden border border-white/10 cursor-pointer focus:outline-none"
-      style={{ aspectRatio: "9/16", background: "#111" }}
+      style={{ aspectRatio: ratio ?? "9/16", background: "#111" }}
     >
-      {/* video thumbnail / preview */}
       {isLocal ? (
         <video
           src={url}
@@ -91,11 +101,7 @@ const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen:
           alt="video thumbnail"
         />
       )}
-
-      {/* dark overlay */}
       <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
-
-      {/* centre play button */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div
           className="w-12 h-12 rounded-full flex items-center justify-center border border-white/50 group-hover:border-white group-hover:scale-110 transition-all duration-200"
