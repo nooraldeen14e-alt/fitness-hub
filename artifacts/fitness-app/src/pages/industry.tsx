@@ -64,35 +64,43 @@ const Lightbox = ({ url, onClose }: { url: string; onClose: () => void }) => {
 };
 
 // ─── Portrait video card ──────────────────────────────────────────────────────
-const VideoCard = ({ entry, index, onOpen }: { entry: VideoEntry; index: number; onOpen: () => void }) => {
+const VideoCard = ({ entry, index, onOpen, carousel }: { entry: VideoEntry; index: number; onOpen: () => void; carousel?: boolean }) => {
   const url    = videoUrl(entry);
   const poster = videoPoster(entry);
   const isLocal = url.startsWith("/") || url.endsWith(".mp4");
-  const [ratio, setRatio] = React.useState<string | null>(null);
+  const [dims, setDims] = React.useState<{ w: number; h: number } | null>(null);
 
   React.useEffect(() => {
-    if (!isLocal) { setRatio("16/9"); return; }
+    if (!isLocal) { setDims({ w: 16, h: 9 }); return; }
     const v = document.createElement("video");
     v.preload = "metadata";
     v.src = url;
-    v.onloadedmetadata = () => setRatio(`${v.videoWidth}/${v.videoHeight}`);
+    v.onloadedmetadata = () => setDims({ w: v.videoWidth, h: v.videoHeight });
   }, [url, isLocal]);
+
+  // In carousel mode: fixed height, auto width from real aspect ratio
+  const carouselStyle = carousel && dims
+    ? { height: "100%", width: `${(340 * dims.w) / dims.h}px` }
+    : carousel
+    ? { height: "100%", width: "191px" } // fallback 9:16
+    : { aspectRatio: dims ? `${dims.w}/${dims.h}` : "9/16", width: "100%" };
 
   return (
     <motion.button
-      initial={{ opacity: 0, y: 28, scale: 0.96 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      initial={carousel ? false : { opacity: 0, y: 28, scale: 0.96 }}
+      whileInView={carousel ? undefined : { opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ delay: index * 0.07, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       whileHover={{ scale: 1.025, transition: { duration: 0.2 } }}
       whileTap={{ scale: 0.97 }}
       onClick={onOpen}
-      className="group relative w-full overflow-hidden cursor-pointer focus:outline-none"
+      className="group relative overflow-hidden cursor-pointer focus:outline-none"
       style={{
-        aspectRatio: ratio ?? "9/16",
+        ...carouselStyle,
         background: "#0d0d0d",
         borderRadius: "16px",
         boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
+        flexShrink: 0,
       }}
     >
       {/* media */}
@@ -229,13 +237,19 @@ export default function IndustryPage() {
       </section>
 
       {/* ── Proof of Work ── */}
-      <section className="px-6 md:px-16 lg:px-24 pb-32">
+      <section className="pb-32">
+        <style>{`
+          @keyframes ind-scroll { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+          .ind-track { display:flex; width:max-content; gap:14px; animation: ind-scroll 28s linear infinite; }
+          .ind-track:hover { animation-play-state: paused; }
+        `}</style>
+
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.55 }}
-          className="mb-10"
+          className="mb-10 px-6 md:px-16 lg:px-24"
         >
           <p className="font-mono text-[11px] uppercase tracking-[0.25em] mb-2" style={{ color: "hsl(25,100%,50%)" }}>
             Proof of Work
@@ -243,15 +257,28 @@ export default function IndustryPage() {
           <h2 className="font-display font-black text-3xl md:text-4xl">Our Work in {industry.name}</h2>
         </motion.div>
 
-        {/* Portrait grid — 4 cols desktop, 2 mobile */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {industry.videos.length > 0
-            ? industry.videos.map((entry, i) => (
-                <VideoCard key={i} entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} />
-              ))
-            : Array.from({ length: 4 }).map((_, i) => <VideoPlaceholder key={i} index={i} />)
-          }
-        </div>
+        {industry.videos.length > 0 ? (
+          /* Horizontal infinite ticker */
+          <div className="overflow-hidden" style={{ WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)" }}>
+            <div className="ind-track">
+              {/* duplicate for seamless loop */}
+              {[...industry.videos, ...industry.videos].map((entry, i) => (
+                <div
+                  key={i}
+                  className="shrink-0 cursor-pointer"
+                  style={{ height: 340 }}
+                  onClick={() => setLightboxUrl(videoUrl(entry))}
+                >
+                  <VideoCard entry={entry} index={i % industry.videos.length} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="px-6 md:px-16 lg:px-24 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {Array.from({ length: 4 }).map((_, i) => <VideoPlaceholder key={i} index={i} />)}
+          </div>
+        )}
       </section>
 
       {/* ── CTA ── */}
