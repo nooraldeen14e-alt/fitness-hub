@@ -66,6 +66,6 @@ export const INDUSTRIES: Record<string, {
     name: "Government",
     tagline: "Communicating with clarity, authority, and reach.",
     description: `Government entities and public institutions require a different standard of communication — precise, trustworthy, and built for mass audiences. We help government bodies, ministries, and public-sector organisations craft digital strategies that inform, engage, and inspire public confidence.\n\nFrom large-scale awareness campaigns and multilingual social media management to event coverage and press content, we deliver communication that meets the standards of public office while connecting with citizens across every platform.\n\nOur work spans national initiatives, regional authorities, and municipal campaigns — always with the accuracy, sensitivity, and production quality that government communication demands.`,
-    videos: ["/government-reel.mp4"],
+    videos: ["/government-reel.mp4", "/government-reel-2.mp4"],
   },
 };
