@@ -324,7 +324,7 @@ const Hero = () => {
             style={{ width: "clamp(200px, 22vw, 340px)" }}
           >
             <img
-              src="/person-left.png"
+              src="/person-left-nobg.png"
               alt="Team member"
               className="w-full object-cover object-top select-none pointer-events-none"
               style={{ height: "clamp(340px, 65vh, 660px)", display: "block" }}
@@ -427,7 +427,7 @@ const Hero = () => {
             style={{ width: "clamp(200px, 22vw, 340px)" }}
           >
             <img
-              src="/person-right.png"
+              src="/person-right-nobg.png"
               alt="Team member"
               className="w-full object-cover object-top select-none pointer-events-none"
               style={{ height: "clamp(340px, 65vh, 660px)", display: "block" }}
