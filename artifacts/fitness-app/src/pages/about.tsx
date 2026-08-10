@@ -235,7 +235,7 @@ export default function About() {
               Swissulife Media is the leading full-service digital marketing agency for ambitious brands across the UAE, Switzerland, and Slovenia. We excel in social media, paid advertising, content production, and creative strategy.
             </p>
             <p className="text-white/55 text-base leading-relaxed">
-              As strategic consultants and content architects, we innovate and elevate your marketing with a boutique approach — tailor-made solutions, unparalleled creativity, and measurable results across every channel.
+              As strategic consultants and content architects, we innovate and elevate your marketing with a boutique approach, tailor-made solutions, unparalleled creativity, and measurable results across every channel.
             </p>
             <p className="text-white/55 text-base leading-relaxed">
               We've built and scaled 150+ brands. If your business has ambition, we have the system to back it.
