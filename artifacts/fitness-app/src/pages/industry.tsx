@@ -80,28 +80,55 @@ const VideoCard = ({ entry, index, onOpen }: { entry: VideoEntry; index: number;
 
   return (
     <motion.button
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ scale: 1.03 }}
+      initial={{ opacity: 0, y: 28, scale: 0.96 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ delay: index * 0.07, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ scale: 1.025, transition: { duration: 0.2 } }}
       whileTap={{ scale: 0.97 }}
       onClick={onOpen}
-      className="group relative w-full rounded-2xl overflow-hidden border border-white/10 cursor-pointer focus:outline-none"
-      style={{ aspectRatio: ratio ?? "9/16", background: "#111" }}
+      className="group relative w-full overflow-hidden cursor-pointer focus:outline-none"
+      style={{
+        aspectRatio: ratio ?? "9/16",
+        background: "#0d0d0d",
+        borderRadius: "16px",
+        boxShadow: "0 4px 24px rgba(0,0,0,0.5)",
+      }}
     >
-      {/* poster image takes priority for thumbnail */}
+      {/* media */}
       {poster ? (
-        <img src={poster} className="absolute inset-0 w-full h-full object-cover" alt="thumbnail" />
+        <img src={poster} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
       ) : isLocal ? (
-        <video src={url} className="absolute inset-0 w-full h-full object-cover" muted playsInline preload="metadata" style={{ pointerEvents: "none" }} />
+        <video src={url} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" muted playsInline preload="metadata" style={{ pointerEvents: "none" }} />
       ) : (
-        <img src={`https://img.youtube.com/vi/${url.split("/embed/")[1]?.split("?")[0]}/hqdefault.jpg`} className="absolute inset-0 w-full h-full object-cover" alt="thumbnail" />
+        <img src={`https://img.youtube.com/vi/${url.split("/embed/")[1]?.split("?")[0]}/hqdefault.jpg`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
       )}
-      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
+
+      {/* base dark vignette */}
+      <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.5) 100%)" }} />
+
+      {/* hover: orange glow border */}
+      <div className="absolute inset-0 rounded-[16px] opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ boxShadow: "inset 0 0 0 1.5px rgba(255,98,0,0.6), 0 0 32px rgba(255,98,0,0.12)" }} />
+
+      {/* top-right: duration badge placeholder */}
+      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
+        <div className="px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-widest text-white" style={{ background: "rgba(255,98,0,0.85)", backdropFilter: "blur(6px)" }}>
+          Play
+        </div>
+      </div>
+
+      {/* centre play ring */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-12 h-12 rounded-full flex items-center justify-center border border-white/50 group-hover:border-white group-hover:scale-110 transition-all duration-200" style={{ backdropFilter: "blur(6px)", background: "rgba(255,98,0,0.22)" }}>
-          <Play size={18} className="text-white ml-0.5" fill="white" />
+        <div
+          className="relative flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+          style={{ width: 52, height: 52 }}
+        >
+          {/* outer pulse ring */}
+          <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping" style={{ background: "rgba(255,98,0,0.25)", animationDuration: "1.4s" }} />
+          {/* solid ring */}
+          <div className="relative w-full h-full rounded-full flex items-center justify-center border-2 border-white/70 group-hover:border-orange-500 transition-colors duration-200" style={{ backdropFilter: "blur(8px)", background: "rgba(0,0,0,0.35)" }}>
+            <Play size={18} className="text-white ml-0.5" fill="white" />
+          </div>
         </div>
       </div>
     </motion.button>
