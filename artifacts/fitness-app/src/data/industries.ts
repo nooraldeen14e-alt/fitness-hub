@@ -48,7 +48,7 @@ export const INDUSTRIES: Record<string, {
     name: "Automotive",
     tagline: "Content that makes engines and audiences rev.",
     description: `Automotive marketing is visual, emotional, and deeply tribal. Whether you're selling supercars or daily drivers, the audience expects world-class production and content that speaks their language.\n\nWe produce cinematic automotive content — track shoots, lifestyle campaigns, launch events, and influencer partnerships — for dealerships, importers, and manufacturers across the Middle East. Our team understands the car community: the culture, the platforms (Instagram, YouTube, TikTok), and the content formats that drive genuine engagement.\n\nWe've built campaigns for premium and exotic brands that have generated millions of views and driven showroom floor traffic across the GCC.`,
-    videos: [],
+    videos: ["/automotive-reel-1.mp4"],
   },
   "healthcare-clinics": {
     name: "Healthcare & Clinics",
