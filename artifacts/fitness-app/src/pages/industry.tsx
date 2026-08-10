@@ -1,86 +1,125 @@
 import React from "react";
 import { Link, useParams } from "wouter";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Play } from "lucide-react";
 import SiteNav from "@/components/SiteNav";
 import { INDUSTRIES } from "@/data/industries";
 
-// ─── Video placeholder card ───────────────────────────────────────────────────
-const VideoPlaceholder = ({ index }: { index: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 24 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay: 0.1 + index * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-    className="relative aspect-video rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center group"
-  >
-    <div
-      className="w-14 h-14 rounded-full flex items-center justify-center mb-3 border border-white/20 group-hover:border-primary/50 transition-colors"
-      style={{ background: "rgba(255,98,0,0.08)" }}
-    >
-      <Play size={22} className="text-white/40 group-hover:text-primary transition-colors ml-1" />
-    </div>
-    <p className="font-mono text-[11px] uppercase tracking-widest text-white/25">Coming Soon</p>
-  </motion.div>
-);
-
-// ─── Featured full-width video (single video) ─────────────────────────────────
-const FeaturedVideo = ({ url }: { url: string }) => {
+// ─── Lightbox modal ───────────────────────────────────────────────────────────
+const Lightbox = ({ url, onClose }: { url: string; onClose: () => void }) => {
   const isLocal = url.startsWith("/") || url.endsWith(".mp4");
+  React.useEffect(() => {
+    const handler = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
   return (
     <motion.div
-      initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      className="w-full rounded-3xl overflow-hidden border border-white/10"
-      style={{ background: "#0a0a0a", boxShadow: "0 40px 120px rgba(255,98,0,0.10)" }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.22 }}
+      className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-10"
+      style={{ background: "rgba(0,0,0,0.88)", backdropFilter: "blur(12px)" }}
+      onClick={onClose}
     >
-      {/* orange top accent */}
-      <div className="h-[3px] w-full" style={{ background: "linear-gradient(90deg, hsl(25,100%,50%), transparent)" }} />
-      <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+      <motion.div
+        initial={{ scale: 0.82, opacity: 0, y: 32 }}
+        animate={{ scale: 1,    opacity: 1, y: 0  }}
+        exit={{    scale: 0.88, opacity: 0, y: 16 }}
+        transition={{ type: "spring", damping: 28, stiffness: 320 }}
+        className="relative w-full max-w-sm rounded-3xl overflow-hidden"
+        style={{ aspectRatio: "9/16", background: "#000", boxShadow: "0 40px 120px rgba(0,0,0,0.8)" }}
+        onClick={e => e.stopPropagation()}
+      >
         {isLocal ? (
           <video
             src={url}
             className="w-full h-full object-contain"
             style={{ background: "#000" }}
-            controls
-            playsInline
-            preload="metadata"
+            autoPlay controls playsInline
           />
         ) : (
           <iframe
-            src={url}
-            className="absolute inset-0 w-full h-full"
+            src={url + "?autoplay=1"}
+            className="w-full h-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
         )}
-      </div>
+        {/* close */}
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-base transition-colors z-10"
+          style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)" }}
+        >✕</button>
+      </motion.div>
     </motion.div>
   );
 };
 
-// ─── Grid video card ──────────────────────────────────────────────────────────
-const VideoEmbed = ({ url, index }: { url: string; index: number }) => {
+// ─── Portrait video card ──────────────────────────────────────────────────────
+const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen: () => void }) => {
   const isLocal = url.startsWith("/") || url.endsWith(".mp4");
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
+    <motion.button
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay: index * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      className="relative aspect-video rounded-2xl overflow-hidden border border-white/10"
-      style={{ background: "#0a0a0a" }}
+      transition={{ delay: index * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
+      onClick={onOpen}
+      className="group relative w-full rounded-2xl overflow-hidden border border-white/10 cursor-pointer focus:outline-none"
+      style={{ aspectRatio: "9/16", background: "#0a0a0a" }}
     >
+      {/* video thumbnail / preview */}
       {isLocal ? (
-        <video src={url} className="w-full h-full object-contain" style={{ background: "#000" }} controls playsInline preload="metadata" />
+        <video
+          src={url}
+          className="absolute inset-0 w-full h-full object-cover"
+          muted playsInline preload="metadata"
+          style={{ pointerEvents: "none" }}
+        />
       ) : (
-        <iframe src={url} className="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy" />
+        <img
+          src={`https://img.youtube.com/vi/${url.split("/embed/")[1]?.split("?")[0]}/hqdefault.jpg`}
+          className="absolute inset-0 w-full h-full object-cover"
+          alt="video thumbnail"
+        />
       )}
-    </motion.div>
+      {/* dark overlay */}
+      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
+      {/* play button */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <motion.div
+          whileHover={{ scale: 1.12 }}
+          className="w-14 h-14 rounded-full flex items-center justify-center border-2 border-white/60 group-hover:border-white group-hover:bg-white/10 transition-all"
+          style={{ backdropFilter: "blur(6px)", background: "rgba(255,98,0,0.18)" }}
+        >
+          <Play size={22} className="text-white ml-1" fill="white" />
+        </motion.div>
+      </div>
+    </motion.button>
   );
 };
+
+// ─── Placeholder portrait card ────────────────────────────────────────────────
+const VideoPlaceholder = ({ index }: { index: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay: index * 0.08, duration: 0.5 }}
+    className="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] flex flex-col items-center justify-center"
+    style={{ aspectRatio: "9/16" }}
+  >
+    <div className="w-12 h-12 rounded-full flex items-center justify-center mb-3 border border-white/15" style={{ background: "rgba(255,98,0,0.07)" }}>
+      <Play size={18} className="text-white/30 ml-0.5" />
+    </div>
+    <p className="font-mono text-[10px] uppercase tracking-widest text-white/20">Coming Soon</p>
+  </motion.div>
+);
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function IndustryPage() {
@@ -95,11 +134,14 @@ export default function IndustryPage() {
 
   if (!industry) return null;
 
+  const [lightboxUrl, setLightboxUrl] = React.useState<string | null>(null);
   const paragraphs = industry.description.split("\n\n");
-  const videoCount = Math.max(industry.videos.length, 3);
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans overflow-x-hidden">
+      <AnimatePresence>
+        {lightboxUrl && <Lightbox url={lightboxUrl} onClose={() => setLightboxUrl(null)} />}
+      </AnimatePresence>
       <SiteNav active="industries" />
 
       {/* ── Hero ── */}
@@ -170,20 +212,15 @@ export default function IndustryPage() {
           <h2 className="font-display font-black text-3xl md:text-4xl">Our Work in {industry.name}</h2>
         </motion.div>
 
-        {industry.videos.length === 1 ? (
-          /* Single video → full-width cinematic */
-          <FeaturedVideo url={industry.videos[0]} />
-        ) : industry.videos.length > 1 ? (
-          /* Multiple videos → 2-col grid */
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {industry.videos.map((url, i) => <VideoEmbed key={i} url={url} index={i} />)}
-          </div>
-        ) : (
-          /* No videos → placeholder grid */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {Array.from({ length: 3 }).map((_, i) => <VideoPlaceholder key={i} index={i} />)}
-          </div>
-        )}
+        {/* Portrait grid — 4 cols desktop, 2 mobile */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {industry.videos.length > 0
+            ? industry.videos.map((url, i) => (
+                <VideoCard key={i} url={url} index={i} onOpen={() => setLightboxUrl(url)} />
+              ))
+            : Array.from({ length: 4 }).map((_, i) => <VideoPlaceholder key={i} index={i} />)
+          }
+        </div>
       </section>
 
       {/* ── CTA ── */}
