@@ -97,7 +97,7 @@ const VideoCard = ({ entry, index, onOpen }: { entry: VideoEntry; index: number;
     >
       {/* media */}
       {poster ? (
-        <img src={poster} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
+        <img src={poster} className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" alt="thumbnail" style={{ padding: "8%" }} />
       ) : isLocal ? (
         <video src={url} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" muted playsInline preload="metadata" style={{ pointerEvents: "none" }} />
       ) : (
