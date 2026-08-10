@@ -24,11 +24,11 @@ const AboutNavbar = () => {
           </span>
         </Link>
         <div className="hidden md:flex items-center gap-8">
-          <Link href="/" className="font-sans text-sm font-medium text-white/50 hover:text-white transition-colors">Home</Link>
+          <Link href="/" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors">Home</Link>
 
           {/* We Offer dropdown */}
           <div className="relative group">
-            <button className="font-sans text-sm font-medium text-white/50 hover:text-white transition-colors flex items-center gap-1">
+            <button className="font-sans text-sm font-medium text-primary hover:text-white transition-colors flex items-center gap-1">
               We Offer
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-200 group-hover:rotate-180"><path d="M2 4l4 4 4-4"/></svg>
             </button>
@@ -55,7 +55,7 @@ const AboutNavbar = () => {
 
           {/* Industries dropdown */}
           <div className="relative group">
-            <button className="font-sans text-sm font-medium text-white/50 hover:text-white transition-colors flex items-center gap-1">
+            <button className="font-sans text-sm font-medium text-primary hover:text-white transition-colors flex items-center gap-1">
               Industries
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform duration-200 group-hover:rotate-180"><path d="M2 4l4 4 4-4"/></svg>
             </button>
@@ -82,7 +82,7 @@ const AboutNavbar = () => {
           </div>
 
           <span className="font-sans text-sm font-medium text-white cursor-default">About Us</span>
-          <Link href="/contact" className="font-sans text-sm font-medium text-white/50 hover:text-white transition-colors">Contact Us</Link>
+          <Link href="/contact" className="font-sans text-sm font-medium text-primary hover:text-white transition-colors">Contact Us</Link>
         </div>
         <div className="flex items-center gap-3">
           <button
