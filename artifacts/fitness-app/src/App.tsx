@@ -5,6 +5,7 @@ import Home from '@/pages/home';
 import About from '@/pages/about';
 import Contact from '@/pages/contact';
 import ServicePage from '@/pages/service';
+import IndustryPage from '@/pages/industry';
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
           <Route path="/services/:slug" component={ServicePage} />
+          <Route path="/industries/:slug" component={IndustryPage} />
           <Route>{() => { window.location.replace("/"); return null; }}</Route>
         </Switch>
       </WouterRouter>
