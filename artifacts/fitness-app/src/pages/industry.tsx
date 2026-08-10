@@ -3,7 +3,10 @@ import { Link, useParams } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Play } from "lucide-react";
 import SiteNav from "@/components/SiteNav";
-import { INDUSTRIES } from "@/data/industries";
+import { INDUSTRIES, type VideoEntry } from "@/data/industries";
+
+const videoUrl    = (v: VideoEntry) => typeof v === "string" ? v : v.url;
+const videoPoster = (v: VideoEntry) => typeof v === "string" ? undefined : v.poster;
 
 // ─── Lightbox modal ───────────────────────────────────────────────────────────
 const Lightbox = ({ url, onClose }: { url: string; onClose: () => void }) => {
@@ -61,7 +64,9 @@ const Lightbox = ({ url, onClose }: { url: string; onClose: () => void }) => {
 };
 
 // ─── Portrait video card ──────────────────────────────────────────────────────
-const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen: () => void }) => {
+const VideoCard = ({ entry, index, onOpen }: { entry: VideoEntry; index: number; onOpen: () => void }) => {
+  const url    = videoUrl(entry);
+  const poster = videoPoster(entry);
   const isLocal = url.startsWith("/") || url.endsWith(".mp4");
   const [ratio, setRatio] = React.useState<string | null>(null);
 
@@ -70,9 +75,7 @@ const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen:
     const v = document.createElement("video");
     v.preload = "metadata";
     v.src = url;
-    v.onloadedmetadata = () => {
-      setRatio(`${v.videoWidth}/${v.videoHeight}`);
-    };
+    v.onloadedmetadata = () => setRatio(`${v.videoWidth}/${v.videoHeight}`);
   }, [url, isLocal]);
 
   return (
@@ -87,26 +90,17 @@ const VideoCard = ({ url, index, onOpen }: { url: string; index: number; onOpen:
       className="group relative w-full rounded-2xl overflow-hidden border border-white/10 cursor-pointer focus:outline-none"
       style={{ aspectRatio: ratio ?? "9/16", background: "#111" }}
     >
-      {isLocal ? (
-        <video
-          src={url}
-          className="absolute inset-0 w-full h-full object-cover"
-          muted playsInline preload="metadata"
-          style={{ pointerEvents: "none" }}
-        />
+      {/* poster image takes priority for thumbnail */}
+      {poster ? (
+        <img src={poster} className="absolute inset-0 w-full h-full object-cover" alt="thumbnail" />
+      ) : isLocal ? (
+        <video src={url} className="absolute inset-0 w-full h-full object-cover" muted playsInline preload="metadata" style={{ pointerEvents: "none" }} />
       ) : (
-        <img
-          src={`https://img.youtube.com/vi/${url.split("/embed/")[1]?.split("?")[0]}/hqdefault.jpg`}
-          className="absolute inset-0 w-full h-full object-cover"
-          alt="video thumbnail"
-        />
+        <img src={`https://img.youtube.com/vi/${url.split("/embed/")[1]?.split("?")[0]}/hqdefault.jpg`} className="absolute inset-0 w-full h-full object-cover" alt="thumbnail" />
       )}
       <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
       <div className="absolute inset-0 flex items-center justify-center">
-        <div
-          className="w-12 h-12 rounded-full flex items-center justify-center border border-white/50 group-hover:border-white group-hover:scale-110 transition-all duration-200"
-          style={{ backdropFilter: "blur(6px)", background: "rgba(255,98,0,0.22)" }}
-        >
+        <div className="w-12 h-12 rounded-full flex items-center justify-center border border-white/50 group-hover:border-white group-hover:scale-110 transition-all duration-200" style={{ backdropFilter: "blur(6px)", background: "rgba(255,98,0,0.22)" }}>
           <Play size={18} className="text-white ml-0.5" fill="white" />
         </div>
       </div>
@@ -225,8 +219,8 @@ export default function IndustryPage() {
         {/* Portrait grid — 4 cols desktop, 2 mobile */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {industry.videos.length > 0
-            ? industry.videos.map((url, i) => (
-                <VideoCard key={i} url={url} index={i} onOpen={() => setLightboxUrl(url)} />
+            ? industry.videos.map((entry, i) => (
+                <VideoCard key={i} entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} />
               ))
             : Array.from({ length: 4 }).map((_, i) => <VideoPlaceholder key={i} index={i} />)
           }
