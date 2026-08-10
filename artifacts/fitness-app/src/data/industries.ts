@@ -32,12 +32,6 @@ export const INDUSTRIES: Record<string, {
     description: `Fragrance and beauty brands sell emotion before they sell product. The brand story, the visual world, and the feeling of aspiration — that's what moves units at this level.\n\nWe work with perfume houses, cosmetics brands, and skincare lines to build campaigns that feel premium, authentic, and culturally relevant. From editorial-style content and influencer gifting campaigns to Arabic-language social strategy and paid media, we position your brand exactly where your audience is already spending time.\n\nOur campaigns have driven everything from launch sell-outs to regional brand awareness that rival global houses.`,
     videos: [],
   },
-  "luxury-lifestyle": {
-    name: "Luxury & Lifestyle",
-    tagline: "Premium brands require premium creative.",
-    description: `Luxury is not about price — it's about perception. Every piece of content your brand publishes either reinforces or undermines the premium world you've built. We make sure it reinforces it.\n\nWe work with luxury hospitality, fashion, automotive, and lifestyle brands to craft marketing that speaks to high-net-worth audiences without ever being obvious about it. Understated storytelling, cinematic content, and white-glove community management — done with the same care and attention your products are made with.\n\nFrom Geneva to Dubai, we understand the codes of luxury across cultures and markets.`,
-    videos: [],
-  },
   "real-estate": {
     name: "Real Estate",
     tagline: "Turning properties into brands people want to live in.",
@@ -48,12 +42,6 @@ export const INDUSTRIES: Record<string, {
     name: "Technology & SaaS",
     tagline: "Making complex products feel simple and essential.",
     description: `Tech companies often know their product inside out — but struggle to explain why someone should care. We bridge the gap between what you've built and the audience who needs it.\n\nWe work with SaaS companies, fintech startups, and tech platforms to create clear, compelling messaging across every channel. Product explainer videos, LinkedIn thought-leadership, case study content, and performance campaigns that target decision-makers in the right industries.\n\nWhether you're B2B or B2C, pre-launch or scaling, we build the marketing engine your product deserves.`,
-    videos: [],
-  },
-  "ecommerce-retail": {
-    name: "E-commerce & Retail",
-    tagline: "Driving traffic that converts, not just traffic.",
-    description: `E-commerce success is a numbers game — but the numbers only follow when the creative and strategy are right. We build full-funnel campaigns that bring the right people to your store and give them every reason to buy.\n\nFrom product photography and UGC-style video content to Google Shopping campaigns and Meta retargeting — we run the whole machine. We also optimise for the moments that matter: launches, sales events, and seasonal peaks when your competitors are spending big.\n\nOur clients see measurable improvements in ROAS, cart conversion rates, and customer lifetime value within the first 90 days.`,
     videos: [],
   },
   "automotive": {
