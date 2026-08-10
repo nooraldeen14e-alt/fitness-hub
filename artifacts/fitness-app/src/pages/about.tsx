@@ -345,7 +345,7 @@ export default function About() {
             { text: "We don't run", orange: false },
             { text: "campaigns.", orange: false },
             { text: "We build", orange: false },
-            { text: "movements.", orange: true },
+            { text: "empires.", orange: true },
           ].reduce<React.ReactNode[]>((acc, word, i) => {
             acc.push(
               <motion.span
