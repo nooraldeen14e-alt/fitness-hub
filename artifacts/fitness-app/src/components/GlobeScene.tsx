@@ -303,25 +303,24 @@ export default function GlobeScene() {
         if (p.z < R * 0.12) continue; // must be clearly on front face
 
         if (isHL) {
-          // Highlighted country label — bold orange, readable
-          const fontSize = Math.max(9, Math.min(13, R * 0.032));
-          ctx.font = `bold ${fontSize}px 'Inter', sans-serif`;
+          // Highlighted label — large, bold, white with dark outline so it pops
+          const fontSize = Math.max(14, Math.min(22, R * 0.065));
+          ctx.font = `900 ${fontSize}px 'Inter', sans-serif`;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-
-          // Text shadow / halo for legibility
-          ctx.shadowColor = "rgba(0,0,0,0.9)";
-          ctx.shadowBlur = 6;
+          // Thick dark outline for contrast against any background
+          ctx.strokeStyle = "rgba(0,0,0,0.95)";
+          ctx.lineWidth = 4;
+          ctx.lineJoin = "round";
+          ctx.strokeText(name, p.x, p.y);
+          // Bright orange fill
+          ctx.fillStyle = "#FF6200";
+          ctx.fillText(name, p.x, p.y);
+          // White highlight pass
+          ctx.globalAlpha = 0.55;
           ctx.fillStyle = "#FFFFFF";
           ctx.fillText(name, p.x, p.y);
-          ctx.shadowBlur = 0;
-
-          // Orange overlay
-          ctx.shadowColor = "rgba(255,110,0,0.6)";
-          ctx.shadowBlur = 4;
-          ctx.fillStyle = "#FFB060";
-          ctx.fillText(name, p.x, p.y);
-          ctx.shadowBlur = 0;
+          ctx.globalAlpha = 1;
         } else {
           // Normal country label — small, subtle white
           const fontSize = Math.max(7, Math.min(10, R * 0.024));
@@ -338,35 +337,6 @@ export default function GlobeScene() {
 
       ctx.restore(); // end sphere clip
 
-      // ── POST-CLIP: country surface glow — additive blend so it ALWAYS shows ──
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter"; // additive — orange adds brightness
-      for (const shape of shapes) {
-        if (!HIGHLIGHT_IDS.has(shape.id)) continue;
-        const [clon, clat] = shape.centroid;
-        const cp = project(clon, clat, rot, R, cx, cy);
-        if (cp.z < 0) continue;
-
-        // Outer bloom — wide, fades to transparent
-        const bloomR = R * 0.52;
-        const bloom = ctx.createRadialGradient(cp.x, cp.y, 0, cp.x, cp.y, bloomR);
-        bloom.addColorStop(0,    `rgba(255,110,0,${0.55 * hlPulse})`);
-        bloom.addColorStop(0.25, `rgba(255,80,0,${0.30 * hlPulse})`);
-        bloom.addColorStop(0.60, `rgba(200,50,0,${0.10 * hlPulse})`);
-        bloom.addColorStop(1,    "rgba(150,30,0,0)");
-        ctx.beginPath(); ctx.arc(cp.x, cp.y, bloomR, 0, Math.PI * 2);
-        ctx.fillStyle = bloom; ctx.fill();
-
-        // Inner hotspot — intense bright centre
-        const coreR = R * 0.16;
-        const core = ctx.createRadialGradient(cp.x, cp.y, 0, cp.x, cp.y, coreR);
-        core.addColorStop(0,    `rgba(255,200,80,${0.90 * hlPulse})`);
-        core.addColorStop(0.40, `rgba(255,130,0,${0.55 * hlPulse})`);
-        core.addColorStop(1,    "rgba(255,80,0,0)");
-        ctx.beginPath(); ctx.arc(cp.x, cp.y, coreR, 0, Math.PI * 2);
-        ctx.fillStyle = core; ctx.fill();
-      }
-      ctx.restore();
 
       // ── Atmosphere ───────────────────────────────────────────────────────
       const atmo = ctx.createRadialGradient(cx, cy, R * 0.91, cx, cy, R * 1.14);
