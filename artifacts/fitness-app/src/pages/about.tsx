@@ -139,7 +139,7 @@ const ClientsTicker = () => {
   const row2 = clients.filter((_, i) => i % 2 === 1);
 
   return (
-    <section className="relative py-20 overflow-hidden" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+    <section className="relative py-8 overflow-hidden" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
       <style>{`
         @keyframes about-ticker-l { from{transform:translateX(0)} to{transform:translateX(-50%)} }
         @keyframes about-ticker-r { from{transform:translateX(-50%)} to{transform:translateX(0)} }
@@ -147,11 +147,6 @@ const ClientsTicker = () => {
         .about-tr { display:flex; width:max-content; animation:about-ticker-r 36s linear infinite; }
         .about-tl:hover,.about-tr:hover { animation-play-state:paused; }
       `}</style>
-
-      <div className="text-center mb-12">
-        <p className="font-mono text-[11px] uppercase tracking-[0.3em] mb-3" style={{ color: "hsl(25,100%,50%)" }}>Some of our</p>
-        <h2 className="font-display font-black uppercase text-5xl md:text-7xl text-white/80">Clients</h2>
-      </div>
 
       <div className="overflow-hidden mb-3">
         <div className="about-tl">
