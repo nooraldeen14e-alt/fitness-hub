@@ -24,17 +24,7 @@ function App() {
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
           <Route path="/services/:slug" component={ServicePage} />
-          <Route>
-            <div className="min-h-screen flex items-center justify-center bg-background text-foreground font-sans">
-              <div className="text-center">
-                <h1 className="text-9xl font-display font-bold text-stroke">404</h1>
-
-                <a href="/" className="mt-8 inline-block px-8 py-3 bg-primary text-primary-foreground font-mono uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-colors">
-                  Return
-                </a>
-              </div>
-            </div>
-          </Route>
+          <Route>{() => { window.location.replace("/"); return null; }}</Route>
         </Switch>
       </WouterRouter>
     </QueryClientProvider>
