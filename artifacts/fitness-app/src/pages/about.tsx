@@ -315,6 +315,88 @@ export default function About() {
       <ClientsTicker />
 
       {/* ══════════════════════════════════════════════════════
+          BRAND MANIFESTO
+      ══════════════════════════════════════════════════════ */}
+      <section className="relative py-32 px-6 overflow-hidden" style={{ background: "#050505" }}>
+        {/* background texture — faint diagonal lines */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{
+            backgroundImage: "repeating-linear-gradient(135deg, #FF6200 0px, #FF6200 1px, transparent 1px, transparent 60px)",
+          }} />
+
+        {/* big orange glow behind text */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] pointer-events-none"
+          style={{ background: "radial-gradient(ellipse, rgba(255,98,0,0.08) 0%, transparent 70%)", filter: "blur(40px)" }} />
+
+        <div className="relative z-10 max-w-6xl mx-auto text-center">
+
+          {/* eyebrow */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.6 }}
+            className="font-mono text-[11px] uppercase tracking-[0.4em] mb-10"
+            style={{ color: "hsl(25,100%,50%)" }}
+          >
+            Our Belief
+          </motion.p>
+
+          {/* main statement — word-by-word reveal */}
+          {[
+            { text: "We don't run", orange: false },
+            { text: "campaigns.", orange: false },
+            { text: "We build", orange: false },
+            { text: "movements.", orange: true },
+          ].reduce<React.ReactNode[]>((acc, word, i) => {
+            acc.push(
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 28, filter: "blur(6px)" }}
+                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, delay: i * 0.14 }}
+                className={`inline-block mr-[0.22em] font-display font-black uppercase leading-none ${word.orange ? "" : "text-white"}`}
+                style={word.orange
+                  ? { color: "hsl(25,100%,50%)", fontSize: "clamp(3.2rem,8vw,7rem)" }
+                  : { fontSize: "clamp(3.2rem,8vw,7rem)" }
+                }
+              >
+                {word.text}
+              </motion.span>
+            );
+            return acc;
+          }, [])}
+
+          {/* divider line */}
+          <motion.div
+            initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.7 }}
+            className="mx-auto my-12 h-px w-32 origin-left"
+            style={{ background: "hsl(25,100%,50%)" }}
+          />
+
+          {/* three supporting lines */}
+          {[
+            "We've scaled 150+ brands across the GCC and Europe — not by following trends, but by setting them.",
+            "Every reel, every ad, every strategy is built with one obsession: measurable, undeniable growth.",
+            "If your brand has ambition, we have the system to back it.",
+          ].map((line, i) => (
+            <motion.p
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, delay: 0.85 + i * 0.15 }}
+              className="mx-auto max-w-2xl font-sans text-base md:text-lg leading-relaxed mb-4 last:mb-0"
+              style={{ color: i === 2 ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.45)" }}
+            >
+              {line}
+            </motion.p>
+          ))}
+
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
           WHAT WE DO
       ══════════════════════════════════════════════════════ */}
       <section className="py-28 px-8 md:px-16 lg:px-24" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
