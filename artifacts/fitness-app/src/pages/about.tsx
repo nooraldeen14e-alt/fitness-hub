@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
+import GlobeScene from "@/components/GlobeScene";
 import {
   siToyota, siAudi, siVolkswagen, siPorsche, siInfiniti, siRollsroyce,
   siApple, siSamsung, siAdidas, siDior, siFarfetch,
@@ -269,30 +270,39 @@ export default function About() {
           </motion.div>
         </div>
 
-        {/* RIGHT — photo panel */}
+        {/* RIGHT — Globe panel */}
         <motion.div
           initial={{ opacity: 0 }} animate={{ opacity: 1 }}
           transition={{ duration: 1.0, delay: 0.2 }}
           className="hidden lg:flex w-[52%] relative overflow-hidden"
-          style={{ background: "#0a0a0a" }}
+          style={{ background: "#050505" }}
         >
-          {/* orange glow */}
-          <div className="absolute inset-0 pointer-events-none" style={{
-            background: "radial-gradient(ellipse 70% 60% at 60% 80%, hsl(25,100%,50%,0.12) 0%, transparent 70%)",
-          }} />
-          {/* left edge fade so it blends into the left panel */}
-          <div className="absolute inset-y-0 left-0 w-32 pointer-events-none z-10"
+          {/* left edge fade */}
+          <div className="absolute inset-y-0 left-0 w-24 pointer-events-none z-10"
             style={{ background: "linear-gradient(to right, #050505 0%, transparent 100%)" }} />
 
-          <img
-            src="/person-right-nobg.png"
-            alt="Swissulife Media team"
-            className="absolute bottom-0 right-0 h-[90%] w-auto object-contain object-bottom select-none pointer-events-none"
-            draggable={false}
-          />
+          {/* Globe canvas — fills panel */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <GlobeScene />
+          </div>
 
-          {/* stats overlay — bottom left of photo panel */}
-          <div className="absolute bottom-10 left-12 z-20 flex gap-10">
+          {/* Country labels */}
+          <div className="absolute top-1/2 right-8 z-20 -translate-y-1/2 flex flex-col gap-3">
+            {[
+              { flag: "🇦🇪", name: "UAE" },
+              { flag: "🇨🇭", name: "Switzerland" },
+              { flag: "🇸🇮", name: "Slovenia" },
+            ].map(({ flag, name }) => (
+              <div key={name} className="flex items-center gap-2 bg-black/40 backdrop-blur-sm border border-white/10 rounded-full px-3 py-1.5">
+                <span className="text-sm">{flag}</span>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-white/60">{name}</span>
+                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "hsl(25,100%,50%)" }} />
+              </div>
+            ))}
+          </div>
+
+          {/* stats overlay — bottom */}
+          <div className="absolute bottom-8 left-12 z-20 flex gap-10">
             {[
               { val: "150+", label: "Brands Scaled" },
               { val: "19M+", label: "Total Reach" },
