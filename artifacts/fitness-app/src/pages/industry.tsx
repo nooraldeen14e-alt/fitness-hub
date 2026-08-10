@@ -71,13 +71,12 @@ const VideoCard = ({ entry, index, onOpen, carousel, preload = "metadata" }: {
   const poster = videoPoster(entry);
   const isLocal = url.startsWith("/") || url.endsWith(".mp4");
   const [dims, setDims] = React.useState<{ w: number; h: number } | null>(null);
+  // auto-detect pre-extracted ffmpeg thumbnail (replaces .mp4 → -thumb.jpg)
+  const autoThumb = isLocal ? url.replace(/\.mp4$/i, "-thumb.jpg") : null;
 
   const handleLoaded = React.useCallback((e: React.SyntheticEvent<HTMLVideoElement>) => {
     const v = e.currentTarget;
     setDims({ w: v.videoWidth, h: v.videoHeight });
-    // seek to 5% of duration (min 1s, max 4s) to skip any black intro frames
-    const t = isFinite(v.duration) ? Math.min(Math.max(v.duration * 0.05, 1), 4) : 1;
-    v.currentTime = t;
   }, []);
 
   // In carousel mode: fixed height, auto width from real aspect ratio
@@ -105,17 +104,15 @@ const VideoCard = ({ entry, index, onOpen, carousel, preload = "metadata" }: {
         flexShrink: 0,
       }}
     >
-      {/* media */}
+      {/* media — explicit poster > auto ffmpeg thumb > youtube thumbnail */}
       {poster ? (
         <img src={poster} className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" alt="thumbnail" style={{ padding: "8%" }} />
-      ) : isLocal ? (
-        <video
-          src={url}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          muted playsInline preload={preload}
-          style={{ pointerEvents: "none" }}
-          onLoadedMetadata={handleLoaded}
-        />
+      ) : autoThumb ? (
+        <>
+          <img src={autoThumb} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
+          {/* hidden video just to get dimensions */}
+          <video src={url} className="hidden" preload="metadata" onLoadedMetadata={handleLoaded} />
+        </>
       ) : (
         <img src={`https://img.youtube.com/vi/${url.split("/embed/")[1]?.split("?")[0]}/hqdefault.jpg`} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
       )}
