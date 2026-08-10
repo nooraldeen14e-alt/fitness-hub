@@ -324,21 +324,11 @@ const Hero = () => {
             style={{ width: "clamp(200px, 22vw, 340px)" }}
           >
             <img
-              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&h=700&fit=crop&crop=top"
+              src="/person-left.png"
               alt="Team member"
               className="w-full object-cover object-top select-none pointer-events-none"
-              style={{ height: "clamp(340px, 58vh, 600px)", display: "block" }}
+              style={{ height: "clamp(340px, 65vh, 660px)", display: "block" }}
               draggable={false}
-            />
-            {/* fade to bg at top */}
-            <div
-              className="absolute inset-x-0 top-0 h-2/5 pointer-events-none"
-              style={{ background: "linear-gradient(to bottom, #050505 0%, transparent 100%)" }}
-            />
-            {/* fade to bg at sides */}
-            <div
-              className="absolute inset-y-0 right-0 w-1/3 pointer-events-none"
-              style={{ background: "linear-gradient(to left, #050505 0%, transparent 100%)" }}
             />
           </motion.div>
 
@@ -437,21 +427,11 @@ const Hero = () => {
             style={{ width: "clamp(200px, 22vw, 340px)" }}
           >
             <img
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=700&fit=crop&crop=top"
+              src="/person-right.png"
               alt="Team member"
               className="w-full object-cover object-top select-none pointer-events-none"
-              style={{ height: "clamp(340px, 58vh, 600px)", display: "block" }}
+              style={{ height: "clamp(340px, 65vh, 660px)", display: "block" }}
               draggable={false}
-            />
-            {/* fade at top */}
-            <div
-              className="absolute inset-x-0 top-0 h-2/5 pointer-events-none"
-              style={{ background: "linear-gradient(to bottom, #050505 0%, transparent 100%)" }}
-            />
-            {/* fade at sides */}
-            <div
-              className="absolute inset-y-0 left-0 w-1/3 pointer-events-none"
-              style={{ background: "linear-gradient(to right, #050505 0%, transparent 100%)" }}
             />
           </motion.div>
         </div>
