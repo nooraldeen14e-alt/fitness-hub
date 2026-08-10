@@ -452,7 +452,6 @@ function MarketingEcosystem({ scrollRef }: { scrollRef: MutableRefObject<number>
 
   return (
     <group ref={groupRef}>
-      <CompanyBuilding scrollRef={scrollRef} />
       {ELEMENTS.map((def, i) => (
         <OrbitElement key={def.name} def={def} index={i} scrollRef={scrollRef} posRef={posRef} />
       ))}
