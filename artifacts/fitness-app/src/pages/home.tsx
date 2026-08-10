@@ -774,15 +774,48 @@ const ProofOfWork = () => (
   </section>
 );
 
+/* ── Single logo pill for the ticker ── */
+const LogoPill = ({ c }: { c: ClientEntry }) => {
+  const [imgFailed, setFailed] = React.useState(false);
+
+  const logo = () => {
+    if (c.si) {
+      return (
+        <svg viewBox="0 0 24 24" style={{ width: 22, height: 22, flexShrink: 0 }}>
+          <path d={c.si.path} fill={`#${c.si.hex}`} />
+        </svg>
+      );
+    }
+    if (c.logoUrl && !imgFailed) {
+      return (
+        <img
+          src={c.logoUrl}
+          alt={c.name}
+          onError={() => setFailed(true)}
+          draggable={false}
+          style={{ width: 26, height: 26, objectFit: "contain", flexShrink: 0 }}
+        />
+      );
+    }
+    return null;
+  };
+
+  return (
+    <div
+      className="flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 bg-white/[0.03] whitespace-nowrap select-none"
+      style={{ backdropFilter: "blur(4px)" }}
+    >
+      {logo()}
+      <span className="font-sans font-semibold text-sm text-white/70">{c.name}</span>
+    </div>
+  );
+};
+
 const OurClients = () => {
-  // Local logos — served from public/logos/ (work in preview & production)
   const base = import.meta.env.BASE_URL.replace(/\/$/, "");
   const local = (file: string) => `${base}/logos/${file}`;
-  // Clearbit fallback — works in production when direct download wasn't possible
-  const cb = (d: string) => `https://logo.clearbit.com/${d}`;
 
   const clients: ClientEntry[] = [
-    // ── Automotive — simple-icons (official SVG + brand colour) ──
     { name: "Toyota",      si: siToyota },
     { name: "Audi",        si: siAudi },
     { name: "Volkswagen",  si: siVolkswagen },
@@ -790,71 +823,89 @@ const OurClients = () => {
     { name: "Porsche",     si: siPorsche },
     { name: "Infiniti",    si: siInfiniti },
     { name: "Rolls Royce", si: siRollsroyce },
-    // Local SVG logos downloaded from official sources
     { name: "Lexus",       logoUrl: local("lexus.svg") },
     { name: "GEELY",       logoUrl: local("geely.svg") },
-
-    // ── Tech / consumer ──────────────────────────────────────────
-    { name: "Apple",       si: siApple,   dark: true },
+    { name: "Apple",       si: siApple },
     { name: "Samsung",     si: siSamsung },
     { name: "Canon",       logoUrl: local("canon.svg") },
     { name: "Amazon",      logoUrl: local("amazon.svg") },
-
-    // ── Fashion & luxury ─────────────────────────────────────────
-    { name: "Adidas",          si: siAdidas,   dark: true },
-    { name: "Dior",            si: siDior,     dark: true },
-    { name: "Farfetch",        si: siFarfetch, dark: true },
-    { name: "Chanel",          logoUrl: local("chanel.svg") },
-    { name: "L'Oréal",         logoUrl: local("loreal.svg") },
-
-    // ── Food & beverage ──────────────────────────────────────────
-    { name: "KFC",          si: siKfc },
-    { name: "McDonald's",   si: siMcdonalds },
-    { name: "Red Bull",     si: siRedbull,   dark: true },
-    { name: "Costa Coffee", logoUrl: local("costa.svg") },
-    { name: "Subway",       logoUrl: local("subway.svg") },
-    { name: "Quaker",       logoUrl: local("quaker.png") },
-    { name: "Oreo",         logoUrl: local("oreo.png") },
-
-    // ── Retail & e-commerce ──────────────────────────────────────
-    { name: "Carrefour",      si: siCarrefour },
-    { name: "Noon",           logoUrl: local("noon.svg") },
-
-    // ── Logistics & delivery ─────────────────────────────────────
-    { name: "DHL",       si: siDhl },
-    { name: "Deliveroo", si: siDeliveroo, dark: true },
-    { name: "Talabat",   logoUrl: local("talabat.svg") },
-
-    // ── UAE / regional ───────────────────────────────────────────
-    { name: "Emaar",          logoUrl: local("emaar.svg") },
-    { name: "DAMAC",          logoUrl: local("damac.svg") },
-    { name: "fäm Properties", logoUrl: local("fam.svg") },
-    { name: "Escapology",     logoUrl: local("escapology.png") },
-    { name: "Liv Bank",       logoUrl: local("liv.svg") },
-    { name: "Rani",           logoUrl: local("rani.png") },
+    { name: "Adidas",      si: siAdidas },
+    { name: "Dior",        si: siDior },
+    { name: "Farfetch",    si: siFarfetch },
+    { name: "Chanel",      logoUrl: local("chanel.svg") },
+    { name: "L'Oréal",     logoUrl: local("loreal.svg") },
+    { name: "KFC",         si: siKfc },
+    { name: "McDonald's",  si: siMcdonalds },
+    { name: "Red Bull",    si: siRedbull },
+    { name: "Costa Coffee",logoUrl: local("costa.svg") },
+    { name: "Subway",      logoUrl: local("subway.svg") },
+    { name: "Carrefour",   si: siCarrefour },
+    { name: "DHL",         si: siDhl },
+    { name: "Deliveroo",   si: siDeliveroo },
+    { name: "Talabat",     logoUrl: local("talabat.svg") },
+    { name: "Emaar",       logoUrl: local("emaar.svg") },
+    { name: "DAMAC",       logoUrl: local("damac.svg") },
+    { name: "Noon",        logoUrl: local("noon.svg") },
+    { name: "Escapology",  logoUrl: local("escapology.png") },
+    { name: "Liv Bank",    logoUrl: local("liv.svg") },
+    { name: "Quaker",      logoUrl: local("quaker.png") },
+    { name: "Oreo",        logoUrl: local("oreo.png") },
+    { name: "Rani",        logoUrl: local("rani.png") },
     { name: "Univ. of Sharjah", logoUrl: local("sharjah-uni.png") },
-    { name: "Sharjah Chamber", logoUrl: local("sharjah-chamber.png") },
+    { name: "Sharjah Chamber",  logoUrl: local("sharjah-chamber.png") },
   ];
 
+  // Split into two rows, interleaved
+  const row1 = clients.filter((_, i) => i % 2 === 0);
+  const row2 = clients.filter((_, i) => i % 2 === 1);
+
   return (
-    <section id="clients" className="relative py-24 px-6 overflow-hidden" style={{ background: "#050505" }}>
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[400px] rounded-full opacity-10"
-          style={{ background: "radial-gradient(ellipse, hsl(25,100%,50%) 0%, transparent 70%)", filter: "blur(80px)" }} />
+    <section id="clients" className="relative py-24 overflow-hidden" style={{ background: "#050505" }}>
+      {/* ambient glow */}
+      <div className="absolute top-0 left-1/3 w-[600px] h-[300px] pointer-events-none opacity-[0.07]"
+        style={{ background: "radial-gradient(ellipse, hsl(25,100%,50%) 0%, transparent 70%)", filter: "blur(60px)" }} />
+
+      <style>{`
+        @keyframes ticker-left  { from { transform: translateX(0) }     to { transform: translateX(-50%) } }
+        @keyframes ticker-right { from { transform: translateX(-50%) }  to { transform: translateX(0) } }
+        .ticker-left  { display:flex; width:max-content; animation: ticker-left  28s linear infinite; }
+        .ticker-right { display:flex; width:max-content; animation: ticker-right 32s linear infinite; }
+        .ticker-left:hover, .ticker-right:hover { animation-play-state: paused; }
+      `}</style>
+
+      {/* heading */}
+      <div className="text-center mb-14 px-6">
+        <p className="font-mono text-primary uppercase tracking-[0.35em] text-xs mb-3">Some of our</p>
+        <h2 className="font-display font-bold text-6xl md:text-8xl uppercase text-white/80">Clients</h2>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <p className="font-mono text-primary uppercase tracking-[0.35em] text-xs mb-3">Some of our</p>
-          <h2 className="font-display font-bold text-6xl md:text-8xl uppercase text-white/80">Clients</h2>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-          {clients.map((c) => (
-            <ClientCard key={c.name} c={c} />
+      {/* Row 1 — scrolls left */}
+      <div className="overflow-hidden mb-4">
+        <div className="ticker-left">
+          {[...row1, ...row1].map((c, i) => (
+            <div key={i} className="px-2">
+              <LogoPill c={c} />
+            </div>
           ))}
         </div>
       </div>
+
+      {/* Row 2 — scrolls right */}
+      <div className="overflow-hidden">
+        <div className="ticker-right">
+          {[...row2, ...row2].map((c, i) => (
+            <div key={i} className="px-2">
+              <LogoPill c={c} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* edge fades */}
+      <div className="absolute inset-y-0 left-0 w-24 pointer-events-none z-10"
+        style={{ background: "linear-gradient(to right, #050505 0%, transparent 100%)" }} />
+      <div className="absolute inset-y-0 right-0 w-24 pointer-events-none z-10"
+        style={{ background: "linear-gradient(to left, #050505 0%, transparent 100%)" }} />
     </section>
   );
 };
