@@ -292,130 +292,173 @@ const CyclingText = ({ words }: { words: string[] }) => {
   );
 };
 
-const Hero = () => (
-  <section id="hero" className="relative w-full bg-black overflow-hidden" style={{ height: "100vh", minHeight: 600 }}>
-
-    {/* ── Full-screen 3D network ── */}
-    <div className="absolute inset-0" style={{ zIndex: 1 }}>
-      <HeroNetworkScene />
-    </div>
-
-    {/* Left-side text legibility gradient */}
-    <div className="absolute inset-0 pointer-events-none" style={{
-      zIndex: 2,
-      background: "linear-gradient(100deg, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.72) 38%, rgba(0,0,0,0.10) 62%, transparent 100%)",
-    }} />
-    {/* Bottom fade */}
-    <div className="absolute bottom-0 left-0 right-0 h-28 pointer-events-none" style={{
-      zIndex: 2,
-      background: "linear-gradient(to top, #000 0%, transparent 100%)",
-    }} />
-
-    {/* ── Text — left side ── */}
-    <div className="absolute inset-0 flex items-center" style={{ zIndex: 10 }}>
-      <div className="px-10 md:px-16 lg:px-24 max-w-xl">
-
-        {/* Brand label */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex items-center gap-3 mb-8"
-        >
-          <span className="font-mono text-[0.65rem] uppercase tracking-[0.32em]"
-            style={{ color: "hsl(25,100%,50%)" }}>Swissulife Media</span>
-          <span className="h-px w-10" style={{ background: "hsl(25,100%,50%)", opacity: 0.5 }} />
-          <span className="font-mono text-[0.6rem] uppercase tracking-widest text-white/30">Est. 2020</span>
-        </motion.div>
-
-        {/* Headline */}
-        <div className="overflow-hidden mb-6">
-          <motion.h1
-            initial={{ y: "105%" }} animate={{ y: "0%" }}
-            transition={{ duration: 1.0, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display font-black leading-[0.88] tracking-tight"
-            style={{ fontSize: "clamp(2.8rem, 6vw, 5.6rem)" }}
-          >
-            <span className="text-white">We&nbsp;Shape<br /></span>
-            <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 80px hsl(25 100% 50%/0.5)" }}>Ideas</span>
-            <span className="text-white">&nbsp;Into<br />Impact.</span>
-          </motion.h1>
-        </div>
-
-        {/* Accent bar */}
-        <motion.div
-          initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-          transition={{ duration: 0.9, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          style={{ originX: 0, height: 1.5, background: "linear-gradient(90deg,hsl(25,100%,50%),transparent)", borderRadius: 2 }}
-          className="w-36 mb-7"
+const Hero = () => {
+  const [scheduleOpen, setScheduleOpen] = React.useState(false);
+  return (
+    <>
+      <ScheduleModal open={scheduleOpen} onClose={() => setScheduleOpen(false)} />
+      <section
+        id="hero"
+        className="relative w-full bg-[#050505] overflow-hidden"
+        style={{ minHeight: "82vh" }}
+      >
+        {/* subtle radial glow behind center text */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse 55% 60% at 50% 50%, hsl(25,100%,50%,0.07) 0%, transparent 70%)",
+            zIndex: 1,
+          }}
         />
 
-        {/* Subtext */}
-        <motion.p
-          initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.65 }}
-          className="text-white/55 leading-relaxed mb-10"
-          style={{ fontSize: "clamp(0.9rem, 1.4vw, 1.08rem)", maxWidth: "34ch" }}
-        >
-          Creative strategies.&nbsp; Powerful campaigns.<br className="hidden sm:block" />
-          Measurable growth.
-        </motion.p>
+        {/* ── Three-column grid ── */}
+        <div className="relative w-full h-full flex items-end" style={{ zIndex: 2 }}>
 
-        {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.8 }}
-          className="flex flex-wrap items-center gap-4 mb-14"
-        >
-          <Link
-            href="/contact"
-            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full font-sans text-sm font-semibold text-black transition-all duration-300 hover:shadow-[0_0_32px_hsl(25,100%,50%,0.55)]"
-            style={{ background: "hsl(25,100%,50%)" }}
+          {/* LEFT person */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="hidden md:block flex-shrink-0 relative self-end"
+            style={{ width: "clamp(200px, 22vw, 340px)" }}
           >
-            Start a Project
-            <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
-          </Link>
-          <Link
-            href="/about"
-            className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full border font-sans text-sm font-medium text-white transition-all duration-300 hover:border-primary hover:text-primary"
-            style={{ borderColor: "rgba(255,255,255,0.22)" }}
+            <img
+              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&h=700&fit=crop&crop=top"
+              alt="Team member"
+              className="w-full object-cover object-top select-none pointer-events-none"
+              style={{ height: "clamp(340px, 58vh, 600px)", display: "block" }}
+              draggable={false}
+            />
+            {/* fade to bg at top */}
+            <div
+              className="absolute inset-x-0 top-0 h-2/5 pointer-events-none"
+              style={{ background: "linear-gradient(to bottom, #050505 0%, transparent 100%)" }}
+            />
+            {/* fade to bg at sides */}
+            <div
+              className="absolute inset-y-0 right-0 w-1/3 pointer-events-none"
+              style={{ background: "linear-gradient(to left, #050505 0%, transparent 100%)" }}
+            />
+          </motion.div>
+
+          {/* CENTER content */}
+          <div className="flex-1 flex flex-col items-center justify-center text-center px-6 pt-36 pb-16 md:pb-20">
+
+            {/* label */}
+            <motion.p
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.5 }}
+              className="font-mono text-[11px] uppercase tracking-[0.3em] mb-6"
+              style={{ color: "hsl(25,100%,50%)" }}
+            >
+              Swissulife Media
+            </motion.p>
+
+            {/* headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="font-display font-black uppercase leading-[0.9] tracking-tight text-white mb-6"
+              style={{ fontSize: "clamp(2.4rem, 5.5vw, 5.2rem)", maxWidth: "14ch" }}
+            >
+              Do You Want To{" "}
+              <span style={{ color: "hsl(25,100%,50%)", textShadow: "0 0 60px hsl(25,100%,50%,0.4)" }}>
+                Scale
+              </span>{" "}
+              Your Business?
+            </motion.h1>
+
+            {/* sub */}
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.38, duration: 0.6 }}
+              className="text-white/50 text-base md:text-lg leading-relaxed mb-10"
+              style={{ maxWidth: "36ch" }}
+            >
+              Work with the team that has built and scaled brands across
+              the GCC and Europe — from zero to millions.
+            </motion.p>
+
+            {/* CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.52, duration: 0.6 }}
+              className="flex flex-wrap items-center justify-center gap-4 mb-14"
+            >
+              <button
+                onClick={() => setScheduleOpen(true)}
+                className="group inline-flex items-center gap-2 px-8 py-4 rounded-full font-display font-black text-sm uppercase tracking-widest text-white transition-all duration-300 hover:shadow-[0_0_40px_hsl(25,100%,50%,0.6)] hover:scale-[1.03]"
+                style={{ background: "hsl(25,100%,50%)" }}
+              >
+                I'm Ready to Scale
+                <ArrowRight size={15} className="transition-transform duration-200 group-hover:translate-x-1" />
+              </button>
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-full border font-sans text-sm font-medium text-white/70 hover:text-white hover:border-white/40 transition-all duration-300"
+                style={{ borderColor: "rgba(255,255,255,0.18)" }}
+              >
+                More About Us
+              </Link>
+            </motion.div>
+
+            {/* Stats row */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.75, duration: 0.7 }}
+              className="flex items-center gap-8 md:gap-14"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "1.75rem" }}
+            >
+              {[
+                { val: "150+", label: "Brands Scaled" },
+                { val: "19M+", label: "Total Reach" },
+                { val: "3",    label: "Countries" },
+              ].map(({ val, label }) => (
+                <div key={label} className="text-center">
+                  <p className="font-display font-black text-white" style={{ fontSize: "clamp(1.5rem, 2.8vw, 2.2rem)", lineHeight: 1 }}>{val}</p>
+                  <p className="font-mono text-white/30 uppercase tracking-widest mt-1.5" style={{ fontSize: "0.58rem" }}>{label}</p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* RIGHT person */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="hidden md:block flex-shrink-0 relative self-end"
+            style={{ width: "clamp(200px, 22vw, 340px)" }}
           >
-            More About Us
-            <span className="overflow-hidden w-0 group-hover:w-4 transition-all duration-300">
-              <ArrowRight size={14} className="ml-0.5" />
-            </span>
-          </Link>
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1.1 }}
-          className="flex items-center gap-10"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "2rem" }}
-        >
-          {[
-            { val: "150+", label: "Brands Scaled" },
-            { val: "19M+", label: "Total Reach" },
-            { val: "3",    label: "Countries" },
-          ].map(({ val, label }) => (
-            <div key={label}>
-              <p className="font-display font-black text-white" style={{ fontSize: "clamp(1.4rem, 2.6vw, 2rem)", lineHeight: 1 }}>{val}</p>
-              <p className="font-mono text-white/35 uppercase tracking-widest mt-1" style={{ fontSize: "0.58rem" }}>{label}</p>
-            </div>
-          ))}
-        </motion.div>
-
-      </div>
-    </div>
-
-    {/* Live network label — bottom right */}
-    <div className="absolute bottom-8 right-10 pointer-events-none select-none" style={{ zIndex: 10 }}>
-      <p className="font-mono text-[0.58rem] uppercase tracking-[0.28em]" style={{ color: "hsl(25,100%,50%)", opacity: 0.6 }}>
-        ◆ &nbsp;Live Follower Network
-      </p>
-    </div>
-  </section>
-);
+            <img
+              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&h=700&fit=crop&crop=top"
+              alt="Team member"
+              className="w-full object-cover object-top select-none pointer-events-none"
+              style={{ height: "clamp(340px, 58vh, 600px)", display: "block" }}
+              draggable={false}
+            />
+            {/* fade at top */}
+            <div
+              className="absolute inset-x-0 top-0 h-2/5 pointer-events-none"
+              style={{ background: "linear-gradient(to bottom, #050505 0%, transparent 100%)" }}
+            />
+            {/* fade at sides */}
+            <div
+              className="absolute inset-y-0 left-0 w-1/3 pointer-events-none"
+              style={{ background: "linear-gradient(to right, #050505 0%, transparent 100%)" }}
+            />
+          </motion.div>
+        </div>
+      </section>
+    </>
+  );
+};
 
 
 
