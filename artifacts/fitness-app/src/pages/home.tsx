@@ -232,6 +232,7 @@ const Navbar = () => {
                   { label: "Automotive",           slug: "automotive"         },
                   { label: "Healthcare & Clinics", slug: "healthcare-clinics" },
                   { label: "Entertainment & Media",slug: "entertainment-media"},
+                  { label: "Government",           slug: "government"         },
                 ].map(({ label, slug }) => (
                   <Link
                     key={slug}

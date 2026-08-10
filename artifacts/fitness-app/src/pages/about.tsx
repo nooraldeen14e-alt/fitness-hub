@@ -71,6 +71,7 @@ const AboutNavbar = () => {
                   { label: "Automotive",            slug: "automotive"          },
                   { label: "Healthcare & Clinics",  slug: "healthcare-clinics"  },
                   { label: "Entertainment & Media", slug: "entertainment-media" },
+                  { label: "Government",            slug: "government"          },
                 ].map(({ label, slug }) => (
                   <Link key={slug} href={`/industries/${slug}`}
                     className="block px-5 py-2.5 text-sm font-sans text-white/70 hover:text-white hover:bg-white/5 transition-colors">

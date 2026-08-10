@@ -62,4 +62,10 @@ export const INDUSTRIES: Record<string, {
     description: `Entertainment and media brands don't just need to be good — they need to be talked about. Buzz, reach, and cultural relevance are the currency, and we know how to earn all three.\n\nWe work with events, TV shows, streaming platforms, talent agencies, and media brands to build campaigns that get people excited, talking, and showing up. From teaser campaigns and influencer activations to paid social and PR strategy — we understand the mechanics of cultural moments.\n\nOur work spans live events in Sharjah and Dubai, content IPs, and regional media brands that have grown their audiences by six and seven figures.`,
     videos: [],
   },
+  "government": {
+    name: "Government",
+    tagline: "Communicating with clarity, authority, and reach.",
+    description: `Government entities and public institutions require a different standard of communication — precise, trustworthy, and built for mass audiences. We help government bodies, ministries, and public-sector organisations craft digital strategies that inform, engage, and inspire public confidence.\n\nFrom large-scale awareness campaigns and multilingual social media management to event coverage and press content, we deliver communication that meets the standards of public office while connecting with citizens across every platform.\n\nOur work spans national initiatives, regional authorities, and municipal campaigns — always with the accuracy, sensitivity, and production quality that government communication demands.`,
+    videos: ["/government-reel.mp4"],
+  },
 };

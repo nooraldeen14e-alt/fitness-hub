@@ -24,22 +24,35 @@ const VideoPlaceholder = ({ index }: { index: number }) => (
 );
 
 // ─── Embed card ───────────────────────────────────────────────────────────────
-const VideoEmbed = ({ url, index }: { url: string; index: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 24 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.3 + index * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-    className="relative aspect-video rounded-2xl overflow-hidden border border-white/10"
-  >
-    <iframe
-      src={url}
-      className="w-full h-full"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
-      loading="lazy"
-    />
-  </motion.div>
-);
+const VideoEmbed = ({ url, index }: { url: string; index: number }) => {
+  const isLocal = url.startsWith("/") || url.endsWith(".mp4");
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 + index * 0.1, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      className="relative aspect-video rounded-2xl overflow-hidden border border-white/10"
+    >
+      {isLocal ? (
+        <video
+          src={url}
+          className="w-full h-full object-cover"
+          controls
+          playsInline
+          preload="metadata"
+        />
+      ) : (
+        <iframe
+          src={url}
+          className="w-full h-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          loading="lazy"
+        />
+      )}
+    </motion.div>
+  );
+};
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function IndustryPage() {
