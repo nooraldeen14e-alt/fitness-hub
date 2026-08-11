@@ -14,13 +14,13 @@ router.post("/book-meeting", async (req, res) => {
   }
 
   // ── Send email ────────────────────────────────────────────────────────────
+  const smtpHost = process.env["SMTP_HOST"];
+  const smtpPort = Number(process.env["SMTP_PORT"] ?? "465");
   const smtpUser = process.env["SMTP_USER"];
   const smtpPass = process.env["SMTP_PASS"];
 
-  if (!smtpUser || !smtpPass) {
-    // Credentials not set yet — log the booking and respond OK so the UI still
-    // shows the confirmation screen while the owner sets up email.
-    console.warn("[booking] SMTP_USER / SMTP_PASS not set — booking logged only:", {
+  if (!smtpHost || !smtpUser || !smtpPass) {
+    console.warn("[booking] SMTP not configured — booking logged only:", {
       name, email, phone, date, time,
     });
     res.json({ ok: true, warning: "Email not sent (SMTP not configured)" });
@@ -28,7 +28,9 @@ router.post("/book-meeting", async (req, res) => {
   }
 
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465,
     auth: { user: smtpUser, pass: smtpPass },
   });
 
@@ -73,17 +75,21 @@ router.post("/contact", async (req, res) => {
     return;
   }
 
+  const smtpHost = process.env["SMTP_HOST"];
+  const smtpPort = Number(process.env["SMTP_PORT"] ?? "465");
   const smtpUser = process.env["SMTP_USER"];
   const smtpPass = process.env["SMTP_PASS"];
 
-  if (!smtpUser || !smtpPass) {
+  if (!smtpHost || !smtpUser || !smtpPass) {
     console.warn("[contact] SMTP not configured — message logged:", { name, email, company, message });
     res.json({ ok: true, warning: "Email not sent (SMTP not configured)" });
     return;
   }
 
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: smtpHost,
+    port: smtpPort,
+    secure: smtpPort === 465,
     auth: { user: smtpUser, pass: smtpPass },
   });
 
