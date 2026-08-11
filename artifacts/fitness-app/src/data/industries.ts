@@ -44,7 +44,14 @@ export const INDUSTRIES: Record<string, {
     name: "Real Estate",
     tagline: "Properties sell on emotion. We make them feel irresistible.",
     description: `Real estate buyers make one of the biggest decisions of their lives — and the content they see before stepping through a door shapes everything. We help developers, agencies, and brokers create campaigns that generate qualified leads, build brand trust, and turn listings into sold units.\n\nFrom cinematic property tours and drone aerials to social media management, paid lead-gen campaigns, and off-plan launch events, we cover the full marketing funnel. Our work speaks to both local end-users and international investors — in the right language, on the right platforms, at the right time.\n\nWe've supported projects across the UAE and GCC, helping real estate brands stand out in one of the world's most competitive property markets.`,
-    videos: [],
+    videos: [
+      "/real-estate-reel-1.mp4",
+      "/real-estate-reel-2.mp4",
+      "/real-estate-reel-3.mp4",
+      "/real-estate-reel-4.mp4",
+      "/real-estate-reel-5.mp4",
+      "/real-estate-reel-6.mp4",
+    ],
   },
   "technology-saas": {
     name: "Technology & SaaS",
