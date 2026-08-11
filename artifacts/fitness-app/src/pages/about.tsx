@@ -58,14 +58,15 @@ const AboutNavbar = () => {
               <div className="bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-56 py-2">
                 {[
                   { label: "Architecture",           slug: "architecture"        },
+                  { label: "Automotive",            slug: "automotive"          },
+                  { label: "Entertainment & Media", slug: "entertainment-media" },
                   { label: "Fashion & Apparel",     slug: "fashion-apparel"     },
                   { label: "Fitness & Wellness",    slug: "fitness-wellness"    },
                   { label: "Food & Beverage",       slug: "food-beverage"       },
                   { label: "Fragrance & Beauty",    slug: "fragrance-beauty"    },
-                  { label: "Technology & SaaS",     slug: "technology-saas"     },
-                  { label: "Automotive",            slug: "automotive"          },
-                  { label: "Entertainment & Media", slug: "entertainment-media" },
                   { label: "Government",            slug: "government"          },
+                  { label: "Real Estate",           slug: "real-estate"         },
+                  { label: "Technology & SaaS",     slug: "technology-saas"     },
                 ].map(({ label, slug }) => (
                   <Link key={slug} href={`/industries/${slug}`}
                     className="block px-5 py-2.5 text-sm font-sans text-white/70 hover:text-white hover:bg-white/5 transition-colors">
@@ -216,13 +217,16 @@ const SERVICES = [
   { num: "06", name: "Marketing Strategy",       slug: "marketing-strategy" },
 ];
 const INDUSTRY_LIST = [
-  { name: "Fashion & Apparel",     slug: "fashion-apparel" },
-  { name: "Fitness & Wellness",    slug: "fitness-wellness" },
-  { name: "Food & Beverage",       slug: "food-beverage" },
-  { name: "Fragrance & Beauty",    slug: "fragrance-beauty" },
-  { name: "Technology & SaaS",     slug: "technology-saas" },
-  { name: "Automotive",            slug: "automotive" },
-  { name: "Entertainment & Media", slug: "entertainment-media" },
+  { name: "Architecture",         slug: "architecture" },
+  { name: "Automotive",           slug: "automotive" },
+  { name: "Entertainment & Media",slug: "entertainment-media" },
+  { name: "Fashion & Apparel",    slug: "fashion-apparel" },
+  { name: "Fitness & Wellness",   slug: "fitness-wellness" },
+  { name: "Food & Beverage",      slug: "food-beverage" },
+  { name: "Fragrance & Beauty",   slug: "fragrance-beauty" },
+  { name: "Government",           slug: "government" },
+  { name: "Real Estate",          slug: "real-estate" },
+  { name: "Technology & SaaS",    slug: "technology-saas" },
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────

@@ -40,6 +40,12 @@ export const INDUSTRIES: Record<string, {
     description: `Fragrance and beauty brands sell emotion before they sell product. The brand story, the visual world, and the feeling of aspiration — that's what moves units at this level.\n\nWe work with perfume houses, cosmetics brands, and skincare lines to build campaigns that feel premium, authentic, and culturally relevant. From editorial-style content and influencer gifting campaigns to Arabic-language social strategy and paid media, we position your brand exactly where your audience is already spending time.\n\nOur campaigns have driven everything from launch sell-outs to regional brand awareness that rival global houses.`,
     videos: ["/beauty-reel-1.mp4", "/beauty-reel-2.mp4", "/beauty-reel-3.mp4", "/beauty-reel-4.mp4", "/beauty-reel-5.mp4", "/beauty-reel-6.mp4"],
   },
+  "real-estate": {
+    name: "Real Estate",
+    tagline: "Properties sell on emotion. We make them feel irresistible.",
+    description: `Real estate buyers make one of the biggest decisions of their lives — and the content they see before stepping through a door shapes everything. We help developers, agencies, and brokers create campaigns that generate qualified leads, build brand trust, and turn listings into sold units.\n\nFrom cinematic property tours and drone aerials to social media management, paid lead-gen campaigns, and off-plan launch events, we cover the full marketing funnel. Our work speaks to both local end-users and international investors — in the right language, on the right platforms, at the right time.\n\nWe've supported projects across the UAE and GCC, helping real estate brands stand out in one of the world's most competitive property markets.`,
+    videos: [],
+  },
   "technology-saas": {
     name: "Technology & SaaS",
     tagline: "Making complex products feel simple and essential.",
