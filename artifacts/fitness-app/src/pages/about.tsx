@@ -243,7 +243,6 @@ const ClientsTicker = () => {
         @keyframes about-ticker-r { from{transform:translateX(-50%)} to{transform:translateX(0)} }
         .about-tl { display:flex; width:max-content; animation:about-ticker-l 30s linear infinite; }
         .about-tr { display:flex; width:max-content; animation:about-ticker-r 36s linear infinite; }
-        .about-tl:hover,.about-tr:hover { animation-play-state:paused; }
       `}</style>
 
       <div className="overflow-hidden mb-3">
