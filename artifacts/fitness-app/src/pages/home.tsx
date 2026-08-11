@@ -92,6 +92,9 @@ const ClientsTicker = () => {
     { name: "Altitude The Gym",       logoUrl: local("altitude-gym.png") },
     { name: "Audi",                   logoUrl: local("audi.png") },
     { name: "Univ. of Sharjah",       logoUrl: local("university-of-sharjah.png") },
+    { name: "Rashed Bugaraa",         logoUrl: local("rashed-bugaraa.png") },
+    { name: "Savva All Day Lounge",   logoUrl: local("savva-lounge.png") },
+    { name: "Rolls Royce",            logoUrl: local("rolls-royce.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
@@ -902,6 +905,9 @@ const OurClients = () => {
     { name: "Altitude The Gym",       logoUrl: local("altitude-gym.png") },
     { name: "Audi",                   logoUrl: local("audi.png") },
     { name: "Univ. of Sharjah",       logoUrl: local("university-of-sharjah.png") },
+    { name: "Rashed Bugaraa",         logoUrl: local("rashed-bugaraa.png") },
+    { name: "Savva All Day Lounge",   logoUrl: local("savva-lounge.png") },
+    { name: "Rolls Royce",            logoUrl: local("rolls-royce.png") },
   ];
 
   return (
