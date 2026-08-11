@@ -649,37 +649,55 @@ const VideoModal = ({ src, onClose }: { src: string; onClose: () => void }) => {
   }, [onClose]);
   return (
     <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-[999] flex items-center justify-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        onClick={onClose}
-      >
-        <div className="absolute inset-0 bg-black/90 backdrop-blur-md" />
+      <>
+        <style>{`
+          @keyframes vm-glow-pop {
+            0%   { box-shadow: 0 0 0 0 hsl(25,100%,50%,0.7), 0 40px 120px rgba(0,0,0,0.9); }
+            40%  { box-shadow: 0 0 60px 20px hsl(25,100%,50%,0.35), 0 40px 120px rgba(0,0,0,0.9); }
+            100% { box-shadow: 0 0 40px 8px hsl(25,100%,50%,0.12), 0 40px 120px rgba(0,0,0,0.9); }
+          }
+        `}</style>
+        {/* Backdrop */}
         <motion.div
-          className="relative z-10 w-full max-w-4xl mx-4"
-          initial={{ scale: 0.92, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.92, opacity: 0 }}
-          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          onClick={(e) => e.stopPropagation()}
+          className="fixed inset-0 z-[998]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.28 }}
+          style={{ background: "rgba(0,0,0,0.92)", backdropFilter: "blur(18px)" }}
+          onClick={onClose}
+        />
+        {/* Panel */}
+        <motion.div
+          className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-10 pointer-events-none"
+          style={{ perspective: 1200 }}
+          initial={{ scale: 0.55, opacity: 0, y: 60, rotateX: 8 }}
+          animate={{ scale: 1,    opacity: 1, y: 0,  rotateX: 0 }}
+          exit={{    scale: 0.75, opacity: 0, y: 30, rotateX: 4 }}
+          transition={{ type: "spring", damping: 22, stiffness: 260, mass: 0.8 }}
         >
-          <video
-            src={`${base}/${src}`}
-            controls
-            autoPlay
-            className="w-full rounded-2xl bg-black"
-            style={{ maxHeight: "80vh" }}
-          />
-          <button
-            onClick={onClose}
-            className="absolute -top-4 -right-4 flex items-center justify-center w-10 h-10 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm text-white hover:bg-white/20 transition-all"
+          <div
+            className="relative w-full max-w-4xl rounded-3xl overflow-hidden pointer-events-auto"
+            style={{ background: "#000", animation: "vm-glow-pop 0.7s ease forwards" }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <X size={18} />
-          </button>
+            <video
+              src={`${base}/${src}`}
+              controls
+              autoPlay
+              className="w-full bg-black"
+              style={{ maxHeight: "80vh", display: "block" }}
+            />
+            <button
+              onClick={onClose}
+              className="absolute top-3 right-3 flex items-center justify-center w-10 h-10 rounded-full text-white hover:scale-110 transition-transform"
+              style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.15)" }}
+            >
+              <X size={18} />
+            </button>
+          </div>
         </motion.div>
-      </motion.div>
+      </>
     </AnimatePresence>
   );
 };

@@ -17,49 +17,70 @@ const Lightbox = ({ url, onClose }: { url: string; onClose: () => void }) => {
     return () => window.removeEventListener("keydown", handler);
   }, [onClose]);
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.22 }}
-      className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-10"
-      style={{ background: "rgba(0,0,0,0.88)", backdropFilter: "blur(12px)" }}
-      onClick={onClose}
-    >
+    <>
+      <style>{`
+        @keyframes lb-glow-pop {
+          0%   { box-shadow: 0 0 0 0 hsl(25,100%,50%,0.7), 0 40px 120px rgba(0,0,0,0.9); }
+          40%  { box-shadow: 0 0 60px 20px hsl(25,100%,50%,0.35), 0 40px 120px rgba(0,0,0,0.9); }
+          100% { box-shadow: 0 0 40px 8px hsl(25,100%,50%,0.12), 0 40px 120px rgba(0,0,0,0.9); }
+        }
+      `}</style>
+      {/* Backdrop */}
       <motion.div
-        initial={{ scale: 0.82, opacity: 0, y: 32 }}
-        animate={{ scale: 1,    opacity: 1, y: 0  }}
-        exit={{    scale: 0.88, opacity: 0, y: 16 }}
-        transition={{ type: "spring", damping: 28, stiffness: 320 }}
-        className="relative rounded-3xl overflow-hidden"
-        style={{ background: "#000", boxShadow: "0 40px 120px rgba(0,0,0,0.8)", maxHeight: "88vh", maxWidth: "min(92vw, 900px)", width: "100%" }}
-        onClick={e => e.stopPropagation()}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.28 }}
+        className="fixed inset-0 z-[998]"
+        style={{ background: "rgba(0,0,0,0.92)", backdropFilter: "blur(18px)" }}
+        onClick={onClose}
+      />
+      {/* Panel */}
+      <motion.div
+        initial={{ scale: 0.55, opacity: 0, y: 60, rotateX: 8 }}
+        animate={{ scale: 1,    opacity: 1, y: 0,  rotateX: 0 }}
+        exit={{    scale: 0.75, opacity: 0, y: 30, rotateX: 4 }}
+        transition={{ type: "spring", damping: 22, stiffness: 260, mass: 0.8 }}
+        className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-10 pointer-events-none"
+        style={{ perspective: 1200 }}
       >
-        {isLocal ? (
-          <video
-            src={url}
-            className="block w-full"
-            style={{ maxHeight: "88vh", objectFit: "contain", background: "#000" }}
-            autoPlay controls playsInline
-          />
-        ) : (
-          <div style={{ aspectRatio: "16/9" }}>
-            <iframe
-              src={url + "?autoplay=1"}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
+        <div
+          className="relative rounded-3xl overflow-hidden pointer-events-auto"
+          style={{
+            background: "#000",
+            maxHeight: "88vh",
+            maxWidth: "min(92vw, 900px)",
+            width: "100%",
+            animation: "lb-glow-pop 0.7s ease forwards",
+          }}
+          onClick={e => e.stopPropagation()}
+        >
+          {isLocal ? (
+            <video
+              src={url}
+              className="block w-full"
+              style={{ maxHeight: "88vh", objectFit: "contain", background: "#000" }}
+              autoPlay controls playsInline
             />
-          </div>
-        )}
-        {/* close */}
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-base z-10"
-          style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)" }}
-        >✕</button>
+          ) : (
+            <div style={{ aspectRatio: "16/9" }}>
+              <iframe
+                src={url + "?autoplay=1"}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          )}
+          {/* close */}
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-base z-10 hover:scale-110 transition-transform"
+            style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,255,255,0.15)" }}
+          >✕</button>
+        </div>
       </motion.div>
-    </motion.div>
+    </>
   );
 };
 
