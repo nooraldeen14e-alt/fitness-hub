@@ -21,14 +21,16 @@ const SERVICES = [
 ];
 
 const INDUSTRIES = [
+  { label: "Architecture",          slug: "architecture"        },
+  { label: "Automotive",            slug: "automotive"          },
+  { label: "Entertainment & Media", slug: "entertainment-media" },
   { label: "Fashion & Apparel",     slug: "fashion-apparel"     },
   { label: "Fitness & Wellness",    slug: "fitness-wellness"    },
   { label: "Food & Beverage",       slug: "food-beverage"       },
   { label: "Fragrance & Beauty",    slug: "fragrance-beauty"    },
+  { label: "Government",            slug: "government"          },
   { label: "Real Estate",           slug: "real-estate"         },
   { label: "Technology & SaaS",     slug: "technology-saas"     },
-  { label: "Automotive",            slug: "automotive"          },
-  { label: "Entertainment & Media", slug: "entertainment-media" },
 ];
 
 export default function SiteNav({ active = "" }: SiteNavProps) {
