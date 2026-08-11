@@ -80,6 +80,7 @@ const ClientsTicker = () => {
     { name: "Sharqi Gents Salon",     logoUrl: local("sharqi-salon.png") },
     { name: "Sharjah Chamber",        logoUrl: local("sharjah-chamber.png") },
     { name: "Rani",                   logoUrl: local("rani.png") },
+    { name: "Blue Sapphire Token",    logoUrl: local("blue-sapphire-token.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
@@ -878,6 +879,7 @@ const OurClients = () => {
     { name: "Sharqi Gents Salon",     logoUrl: local("sharqi-salon.png") },
     { name: "Sharjah Chamber",        logoUrl: local("sharjah-chamber.png") },
     { name: "Rani",                   logoUrl: local("rani.png") },
+    { name: "Blue Sapphire Token",    logoUrl: local("blue-sapphire-token.png") },
   ];
 
   return (
