@@ -165,6 +165,7 @@ const ClientsTicker = () => {
     { name: "Univ. of Sharjah", logoUrl: local("sharjah-uni.png") },
     { name: "Sharjah Chamber",  logoUrl: local("sharjah-chamber.png") },
     { name: "Sharjah Paintball Park", logoUrl: local("sharjah-paintball.png") },
+    { name: "Righteous Properties",   logoUrl: local("righteous-properties.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
