@@ -7,58 +7,95 @@ import MobileNav from "@/components/MobileNav";
 
 const FunnelVisual = () => {
   const stages = [
-    { label: "Awareness",     shade: 52, w: "100%" },
-    { label: "Engagement",    shade: 47, w: "88%"  },
-    { label: "Consideration", shade: 42, w: "74%"  },
-    { label: "Conversion",    shade: 36, w: "58%"  },
-    { label: "Retention",     shade: 30, w: "42%"  },
+    { label: "Awareness",     sub: "Reach your audience",     icon: "◎" },
+    { label: "Engagement",    sub: "Spark real interaction",   icon: "⚡" },
+    { label: "Consideration", sub: "Build trust & interest",   icon: "◈" },
+    { label: "Conversion",    sub: "Turn interest into action",icon: "✦" },
+    { label: "Retention",     sub: "Keep them coming back",    icon: "∞" },
   ];
 
   return (
-    <div
-      className="w-full max-w-xs mx-auto select-none py-4"
-      style={{ perspective: "520px", perspectiveOrigin: "50% 110%" }}
-    >
-      {/* 3-D tilt wrapper */}
-      <motion.div
-        style={{ transformStyle: "preserve-3d" }}
-        initial={{ rotateX: 28 }}
-        animate={{ rotateX: 28 }}
-      >
-        {stages.map(({ label, shade, w }, i) => (
+    <div className="w-full max-w-sm mx-auto select-none py-2">
+      <style>{`
+        @keyframes flow-pulse {
+          0%, 100% { opacity: 0.15; transform: scaleY(0.6) translateY(-4px); }
+          50%       { opacity: 0.7;  transform: scaleY(1)   translateY(0px);  }
+        }
+        .flow-line { animation: flow-pulse 1.8s ease-in-out infinite; }
+      `}</style>
+
+      {stages.map(({ label, sub, icon }, i) => (
+        <div key={label}>
           <motion.div
-            key={label}
-            className="mx-auto mb-[6px] rounded-xl flex items-center justify-between px-4"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 + i * 0.15, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center gap-3 px-4 py-3 rounded-2xl"
             style={{
-              width: w,
-              height: 46,
-              background: `linear-gradient(135deg, hsl(25,100%,${shade}%) 0%, hsl(25,100%,${shade - 6}%) 100%)`,
-              boxShadow: `0 6px 18px hsl(25,100%,${shade}%,0.35), inset 0 1px 0 rgba(255,255,255,0.18)`,
-              transformStyle: "preserve-3d",
+              background: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.07)",
+              backdropFilter: "blur(6px)",
             }}
-            initial={{ opacity: 0, rotateX: -55, y: -18 }}
-            animate={{ opacity: 1, rotateX: 0, y: 0 }}
-            transition={{ delay: 0.3 + i * 0.13, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="font-mono font-bold text-[11px] uppercase tracking-widest text-black/80">
-              {label}
-            </span>
-            <span className="font-mono text-[10px] text-black/50 font-bold">
+            {/* Step number */}
+            <span className="font-mono text-[10px] text-white/20 font-bold w-5 shrink-0">
               {String(i + 1).padStart(2, "0")}
             </span>
-          </motion.div>
-        ))}
-      </motion.div>
 
-      {/* label */}
+            {/* Icon node */}
+            <div
+              className="w-8 h-8 rounded-full shrink-0 flex items-center justify-center text-sm"
+              style={{
+                background: "hsl(25,100%,50%,0.12)",
+                border: "1px solid hsl(25,100%,50%,0.35)",
+                color: "hsl(25,100%,55%)",
+                boxShadow: "0 0 10px hsl(25,100%,50%,0.2)",
+              }}
+            >
+              {icon}
+            </div>
+
+            {/* Text */}
+            <div className="min-w-0">
+              <p className="font-mono font-bold text-[11px] uppercase tracking-widest text-white/85 leading-none mb-0.5">
+                {label}
+              </p>
+              <p className="font-sans text-[10px] text-white/30 leading-none truncate">{sub}</p>
+            </div>
+
+            {/* Active indicator for first item */}
+            {i === 0 && (
+              <div className="ml-auto shrink-0 w-1.5 h-1.5 rounded-full" style={{ background: "hsl(25,100%,50%)", boxShadow: "0 0 6px hsl(25,100%,50%)" }} />
+            )}
+          </motion.div>
+
+          {/* Connector line between stages */}
+          {i < stages.length - 1 && (
+            <motion.div
+              className="mx-auto my-0.5 flow-line"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.35 + i * 0.15 }}
+              style={{
+                width: 1,
+                height: 14,
+                background: "linear-gradient(to bottom, hsl(25,100%,50%,0.6), transparent)",
+                marginLeft: 74,
+                animationDelay: `${i * 0.36}s`,
+              }}
+            />
+          )}
+        </div>
+      ))}
+
       <motion.div
-        className="flex items-center gap-2 mt-5 justify-center"
+        className="flex items-center gap-2 mt-4 justify-center"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
+        transition={{ delay: 1.4 }}
       >
-        <div className="h-[1px] w-5 bg-primary/50" />
-        <span className="font-mono text-primary text-[10px] uppercase tracking-widest">Full-funnel strategy</span>
-        <div className="h-[1px] w-5 bg-primary/50" />
+        <div className="h-[1px] w-5 bg-primary/40" />
+        <span className="font-mono text-primary/70 text-[10px] uppercase tracking-widest">Full-funnel strategy</span>
+        <div className="h-[1px] w-5 bg-primary/40" />
       </motion.div>
     </div>
   );
