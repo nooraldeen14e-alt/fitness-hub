@@ -113,6 +113,7 @@ const ClientsTicker = () => {
     { name: "Sharjah Chamber",  logoUrl: local("sharjah-chamber.png") },
     { name: "Sharjah Paintball Park", logoUrl: local("sharjah-paintball.png") },
     { name: "Righteous Properties",   logoUrl: local("righteous-properties.png") },
+    { name: "Shurooq Al Sharqia",     logoUrl: local("shurooq-al-sharqia.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
@@ -942,6 +943,7 @@ const OurClients = () => {
     { name: "Sharjah Chamber",  logoUrl: local("sharjah-chamber.png") },
     { name: "Sharjah Paintball Park", logoUrl: local("sharjah-paintball.png") },
     { name: "Righteous Properties",   logoUrl: local("righteous-properties.png") },
+    { name: "Shurooq Al Sharqia",     logoUrl: local("shurooq-al-sharqia.png") },
   ];
 
   return (
