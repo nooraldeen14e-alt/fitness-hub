@@ -610,38 +610,6 @@ export default function About() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          WHERE WE OPERATE
-      ══════════════════════════════════════════════════════ */}
-      <section className="py-28 px-8 md:px-16 lg:px-24" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <div className="max-w-6xl mx-auto">
-          <Reveal className="mb-16 text-center">
-            <p className="font-mono text-[11px] uppercase tracking-[0.3em] mb-4" style={{ color: "hsl(25,100%,50%)" }}>Where We Operate</p>
-            <h2 className="font-display font-black uppercase text-4xl md:text-5xl">Global reach, local understanding.</h2>
-            <p className="text-white/40 text-base mt-4 max-w-lg mx-auto">Three offices. One unified team. Serving clients across the Middle East, Europe, and beyond.</p>
-          </Reveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              { flag: "🇦🇪", name: "UAE",         city: "Dubai — Trade Centre" },
-              { flag: "🇨🇭", name: "Switzerland", city: "Geneva" },
-              { flag: "🇸🇮", name: "Slovenia",    city: "Ljubljana" },
-            ].map((c, i) => (
-              <Reveal key={c.name} delay={i * 0.1}>
-                <div className="rounded-2xl border border-white/8 p-8 flex flex-col gap-4" style={{ background: "rgba(255,255,255,0.02)" }}>
-                  <span className="text-4xl">{c.flag}</span>
-                  <div>
-                    <p className="font-display font-black text-xl uppercase text-white mb-1">{c.name}</p>
-                    <p className="font-mono text-[11px] text-white/35 uppercase tracking-widest">{c.city}</p>
-                  </div>
-                  <div className="w-8 h-[2px]" style={{ background: "hsl(25,100%,50%)" }} />
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
           PROOF OF WORK
       ══════════════════════════════════════════════════════ */}
       <section className="py-28 overflow-hidden" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
