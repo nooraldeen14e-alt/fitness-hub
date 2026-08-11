@@ -28,7 +28,6 @@ const INDUSTRIES = [
   { label: "Real Estate",           slug: "real-estate"         },
   { label: "Technology & SaaS",     slug: "technology-saas"     },
   { label: "Automotive",            slug: "automotive"          },
-  { label: "Healthcare & Clinics",  slug: "healthcare-clinics"  },
   { label: "Entertainment & Media", slug: "entertainment-media" },
 ];
 
