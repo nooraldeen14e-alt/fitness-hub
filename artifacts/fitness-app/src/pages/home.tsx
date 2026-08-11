@@ -82,6 +82,8 @@ const ClientsTicker = () => {
     { name: "Rani",                   logoUrl: local("rani.png") },
     { name: "Blue Sapphire Token",    logoUrl: local("blue-sapphire-token.png") },
     { name: "Meaza",                  logoUrl: local("meaza.png") },
+    { name: "Corniche Hotel Sharjah", logoUrl: local("corniche-hotel.png") },
+    { name: "Charms Education",       logoUrl: local("charms-education.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
@@ -882,6 +884,8 @@ const OurClients = () => {
     { name: "Rani",                   logoUrl: local("rani.png") },
     { name: "Blue Sapphire Token",    logoUrl: local("blue-sapphire-token.png") },
     { name: "Meaza",                  logoUrl: local("meaza.png") },
+    { name: "Corniche Hotel Sharjah", logoUrl: local("corniche-hotel.png") },
+    { name: "Charms Education",       logoUrl: local("charms-education.png") },
   ];
 
   return (
