@@ -54,7 +54,7 @@ const LogoPill = ({ c }: { c: LogoPillEntry }) => {
     );
     if (c.logoUrl && !imgFailed) return (
       <img src={c.logoUrl} alt={c.name} onError={() => setFailed(true)}
-        draggable={false} style={{ width: 26, height: 26, objectFit: "contain", flexShrink: 0 }} />
+        draggable={false} style={{ width: 40, height: 40, objectFit: "contain", flexShrink: 0 }} />
     );
     return null;
   };
@@ -574,7 +574,7 @@ const ClientCard = ({ c }: { c: ClientEntry }) => {
           onError={() => setFailed(true)}
           draggable={false}
           style={{ width: "100%", height: "100%", objectFit: "contain",
-                   pointerEvents: "none", userSelect: "none", padding: "8px" }}
+                   pointerEvents: "none", userSelect: "none", padding: "4px" }}
         />
       );
     }
@@ -600,7 +600,7 @@ const ClientCard = ({ c }: { c: ClientEntry }) => {
       onMouseLeave={onLeave}
       title={c.name}
       style={{ willChange: "transform", background: bg, ...tilt }}
-      className="rounded-2xl aspect-square flex items-center justify-center p-[15%] cursor-default overflow-hidden bg-foreground"
+      className="rounded-2xl aspect-square flex items-center justify-center p-[6%] cursor-default overflow-hidden bg-foreground"
     >
       {renderContent()}
     </div>
