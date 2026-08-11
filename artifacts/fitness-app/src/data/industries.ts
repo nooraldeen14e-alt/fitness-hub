@@ -26,7 +26,7 @@ export const INDUSTRIES: Record<string, {
     name: "Fitness & Wellness",
     tagline: "Building brands people trust with their bodies.",
     description: `Fitness and wellness brands live and die by credibility. Audiences are savvy — they can tell instantly whether a brand actually understands health, or is just selling them something.\n\nWe work with gyms, supplement brands, wellness apps, and personal trainers to build content that educates, inspires, and converts. Our campaigns blend transformation stories, expert positioning, and performance-driven paid media into a full-funnel strategy.\n\nFrom before-and-after reels to long-form podcast content and Google Ads for gym sign-ups — we know what it takes to grow a fitness brand in a crowded market.`,
-    videos: ["/fitness-reel-1.mp4", "/fitness-reel-2.mp4", "/fitness-reel-3.mp4", "/fitness-reel-4.mp4", "/fitness-reel-5.mp4"],
+    videos: ["/fitness-reel-1.mp4", "/fitness-reel-2.mp4", "/fitness-reel-3.mp4", "/fitness-reel-4.mp4"],
   },
   "food-beverage": {
     name: "Food & Beverage",
