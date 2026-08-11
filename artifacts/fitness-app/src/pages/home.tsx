@@ -117,7 +117,7 @@ const ClientsTicker = () => {
   const row2 = clients.filter((_, i) => i % 2 === 1);
 
   return (
-    <section className="relative py-4 overflow-hidden" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+    <section className="relative overflow-hidden" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 98, paddingBottom: 16 }}>
       <style>{`
         @keyframes home-ticker-l { from{transform:translateX(0)} to{transform:translateX(-50%)} }
         @keyframes home-ticker-r { from{transform:translateX(-50%)} to{transform:translateX(0)} }
