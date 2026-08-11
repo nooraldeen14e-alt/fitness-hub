@@ -1219,9 +1219,9 @@ export default function Home() {
       <Navbar />
       
       <main>
+        <ClientsTicker />
         <Hero />
         <ServicesTicker />
-        <ClientsTicker />
         <ProofOfWork />
         <OurClients />
       </main>
