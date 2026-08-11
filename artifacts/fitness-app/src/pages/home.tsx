@@ -74,6 +74,10 @@ const ClientsTicker = () => {
     { name: "Sharjah Paintball Park", logoUrl: local("sharjah-paintball.png") },
     { name: "Righteous Properties",   logoUrl: local("righteous-properties.png") },
     { name: "Shurooq Al Sharqia",     logoUrl: local("shurooq-al-sharqia.png") },
+    { name: "fäm Properties",         logoUrl: local("fam-properties.png") },
+    { name: "Seventy Fitness & Spa",  logoUrl: local("seventy-fitness.png") },
+    { name: "Glitza by Ghaliaa",      logoUrl: local("glitza.png") },
+    { name: "Sharqi Gents Salon",     logoUrl: local("sharqi-salon.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
@@ -866,6 +870,10 @@ const OurClients = () => {
     { name: "Sharjah Paintball Park", logoUrl: local("sharjah-paintball.png") },
     { name: "Righteous Properties",   logoUrl: local("righteous-properties.png") },
     { name: "Shurooq Al Sharqia",     logoUrl: local("shurooq-al-sharqia.png") },
+    { name: "fäm Properties",         logoUrl: local("fam-properties.png") },
+    { name: "Seventy Fitness & Spa",  logoUrl: local("seventy-fitness.png") },
+    { name: "Glitza by Ghaliaa",      logoUrl: local("glitza.png") },
+    { name: "Sharqi Gents Salon",     logoUrl: local("sharqi-salon.png") },
   ];
 
   return (
