@@ -142,6 +142,7 @@ const ClientsTicker = () => {
     { name: "Lexus",                  logoUrl: local("lexus.png") },
     { name: "Sharjah Excellence Award", logoUrl: local("sharjah-excellence-award.png") },
     { name: "Geely",                  logoUrl: local("geely.png") },
+    { name: "Escapology Sharjah",     logoUrl: local("escapology.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
