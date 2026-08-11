@@ -567,7 +567,7 @@ const ClientCard = ({ c }: { c: ClientEntry }) => {
           alt={c.name}
           onError={() => setFailed(true)}
           draggable={false}
-          style={{ width: "72%", height: "72%", objectFit: "contain",
+          style={{ width: "92%", height: "92%", objectFit: "contain",
                    pointerEvents: "none", userSelect: "none" }}
         />
       );
