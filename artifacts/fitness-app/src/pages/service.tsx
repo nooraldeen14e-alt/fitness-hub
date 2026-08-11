@@ -769,6 +769,34 @@ const Navbar = ({ currentSlug }: { currentSlug: string }) => (
           </div>
         </div>
       </div>
+      <div className="relative group">
+        <button className="font-sans font-medium text-sm text-primary hover:text-white transition-colors flex items-center gap-1">
+          Industries
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"
+            className="transition-transform duration-200 group-hover:rotate-180"><path d="M2 4l4 4 4-4"/></svg>
+        </button>
+        <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <div className="bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-56 py-2">
+            {[
+              { label: "Architecture",          slug: "architecture"        },
+              { label: "Automotive",            slug: "automotive"          },
+              { label: "Entertainment & Media", slug: "entertainment-media" },
+              { label: "Fashion & Apparel",     slug: "fashion-apparel"     },
+              { label: "Fitness & Wellness",    slug: "fitness-wellness"    },
+              { label: "Food & Beverage",       slug: "food-beverage"       },
+              { label: "Fragrance & Beauty",    slug: "fragrance-beauty"    },
+              { label: "Government",            slug: "government"          },
+              { label: "Real Estate",           slug: "real-estate"         },
+              { label: "Technology & SaaS",     slug: "technology-saas"     },
+            ].map(({ label, slug }) => (
+              <Link key={slug} href={`/industries/${slug}`}
+                className="block px-5 py-2.5 text-sm font-sans text-white/70 hover:text-white hover:bg-white/5 transition-colors">
+                {label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
       <Link href="/about"   className="font-sans font-medium text-sm text-primary hover:text-white transition-colors">About Us</Link>
       <Link href="/contact" className="font-sans font-medium text-sm text-primary hover:text-white transition-colors">Contact Us</Link>
     </div>
