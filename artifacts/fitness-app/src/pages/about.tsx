@@ -158,6 +158,7 @@ const ClientsTicker = () => {
     { name: "Mash Specialty Coffee",  logoUrl: local("mash-coffee.png") },
     { name: "Twisted Olive",          logoUrl: local("twisted-olive.png") },
     { name: "Fouziana",               logoUrl: local("fouziana.png") },
+    { name: "LinkinCard",             logoUrl: local("linkincard.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
