@@ -32,7 +32,7 @@ export const INDUSTRIES: Record<string, {
     name: "Food & Beverage",
     tagline: "Making your food impossible to scroll past.",
     description: `Food content is the most competitive space on social media — and the most rewarding when done right. We create content that makes people hungry, drives foot traffic, and builds loyal communities around your brand.\n\nOur team handles everything from restaurant photography and short-form video to influencer campaigns and delivery platform optimisation. We know how to capture texture, colour, and atmosphere in a way that translates into reservations and orders.\n\nWe've worked with restaurants, cafés, cloud kitchens, FMCG brands, and food delivery services across the region — and every campaign is built around one goal: making people want to eat what you're making.`,
-    videos: ["/food-reel-1.mp4", "/food-reel-2.mp4", "/food-reel-3.mp4", "/food-reel-4.mp4", "/food-reel-5.mp4", "/food-reel-6.mp4"],
+    videos: ["/food-reel-1.mp4", "/food-reel-2.mp4", "/food-reel-3.mp4", "/food-reel-4.mp4", "/food-reel-5.mp4", "/food-reel-6.mp4", "/food-reel-7.mp4"],
   },
   "fragrance-beauty": {
     name: "Fragrance & Beauty",
