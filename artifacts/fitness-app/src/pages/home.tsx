@@ -54,20 +54,20 @@ const LogoPill = ({ c }: { c: LogoPillEntry }) => {
   const [imgFailed, setFailed] = React.useState(false);
   const logo = () => {
     if (c.si) return (
-      <svg viewBox="0 0 24 24" style={{ width: 20, height: 20, flexShrink: 0 }}>
+      <svg viewBox="0 0 24 24" style={{ width: 14, height: 14, flexShrink: 0 }}>
         <path d={c.si.path} fill={`#${c.si.hex}`} />
       </svg>
     );
     if (c.logoUrl && !imgFailed) return (
       <img src={c.logoUrl} alt={c.name} onError={() => setFailed(true)}
-        draggable={false} style={{ width: 24, height: 24, objectFit: "contain", flexShrink: 0 }} />
+        draggable={false} style={{ width: 16, height: 16, objectFit: "contain", flexShrink: 0 }} />
     );
     return null;
   };
   return (
-    <div className="flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 bg-white/[0.03] whitespace-nowrap select-none">
+    <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/[0.03] whitespace-nowrap select-none">
       {logo()}
-      <span className="font-sans font-semibold text-sm text-white/60">{c.name}</span>
+      <span className="font-sans font-semibold text-xs text-white/60">{c.name}</span>
     </div>
   );
 };
@@ -117,7 +117,7 @@ const ClientsTicker = () => {
   const row2 = clients.filter((_, i) => i % 2 === 1);
 
   return (
-    <section className="relative py-8 overflow-hidden" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+    <section className="relative py-4 overflow-hidden" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
       <style>{`
         @keyframes home-ticker-l { from{transform:translateX(0)} to{transform:translateX(-50%)} }
         @keyframes home-ticker-r { from{transform:translateX(-50%)} to{transform:translateX(0)} }
