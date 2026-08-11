@@ -5,11 +5,6 @@ import { ArrowRight } from "lucide-react";
 import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
 import GlobeScene from "@/components/GlobeScene";
-import {
-  siToyota, siAudi, siVolkswagen, siPorsche, siInfiniti, siRollsroyce,
-  siApple, siSamsung, siAdidas, siDior, siFarfetch,
-  siKfc, siMcdonalds, siRedbull, siCarrefour, siDhl, siDeliveroo,
-} from "simple-icons";
 
 // ─── Navbar ──────────────────────────────────────────────────────────────────
 const AboutNavbar = () => {

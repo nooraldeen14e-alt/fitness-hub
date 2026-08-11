@@ -6,12 +6,6 @@ import MobileNav from "@/components/MobileNav";
 import { ArrowRight, X, Play, Volume2, VolumeX } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
 import { HeroNetworkScene } from "@/components/HeroNetworkScene";
-// simple-icons — locally bundled official SVG logos with brand colours
-import {
-  siToyota, siAudi, siVolkswagen, siFerrari, siPorsche, siInfiniti, siRollsroyce,
-  siApple, siSamsung, siAdidas, siDior, siFarfetch,
-  siKfc, siMcdonalds, siDhl, siRedbull, siDeliveroo, siCarrefour,
-} from "simple-icons";
 
 /* ── Glowing cursor ── */
 const GlowCursor = () => {
@@ -77,14 +71,6 @@ const ClientsTicker = () => {
   const local = (f: string) => `${base}/logos/${f}`;
 
   const clients: LogoPillEntry[] = [
-    { name: "Toyota",      si: siToyota },
-    { name: "Audi",        si: siAudi },
-    { name: "Volkswagen",  si: siVolkswagen },
-    { name: "Ferrari",     logoUrl: local("ferrari.svg") },
-    { name: "Porsche",     si: siPorsche },
-    { name: "Infiniti",    si: siInfiniti },
-    { name: "Rolls Royce", si: siRollsroyce },
-    { name: "Lexus",       logoUrl: local("lexus.svg") },
     { name: "Sharjah Paintball Park", logoUrl: local("sharjah-paintball.png") },
     { name: "Righteous Properties",   logoUrl: local("righteous-properties.png") },
     { name: "Shurooq Al Sharqia",     logoUrl: local("shurooq-al-sharqia.png") },
