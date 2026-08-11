@@ -7,3 +7,5 @@ attached_assets/altitude_gym_1785843570952.MP4 filter=lfs diff=lfs merge=lfs -te
 attached_assets/download_(1)_1786378811447.mp4 filter=lfs diff=lfs merge=lfs -text
 artifacts/fitness-app/public/automotive-reel-5.mp4 filter=lfs diff=lfs merge=lfs -text
 attached_assets/download_(3)_1786379173491.mp4 filter=lfs diff=lfs merge=lfs -text
+artifacts/fitness-app/public/architecture-reel-1.mp4 filter=lfs diff=lfs merge=lfs -text
+attached_assets/Untitled_design_1786438000660.mp4 filter=lfs diff=lfs merge=lfs -text

@@ -81,7 +81,7 @@ export const INDUSTRIES: Record<string, {
     name: "Architecture",
     tagline: "Spaces built to impress. Content built to sell.",
     description: `Architecture is one of the most visual industries in the world — yet most firms still rely on static renders and PDFs to win clients. We change that.\n\nWe produce cinematic walkthroughs, drone coverage, launch campaigns, and social content for architectural firms, real estate developers, and interior design studios across the Middle East and Europe. Our work translates the vision behind a building into content that resonates before the first brick is laid.\n\nFrom concept visualisation to project completion reels, we handle the full content lifecycle — helping firms attract investors, win tenders, and build a brand that stands as tall as their buildings.`,
-    videos: [],
+    videos: ["/architecture-reel-1.mp4"],
   },
 
   "government": {
