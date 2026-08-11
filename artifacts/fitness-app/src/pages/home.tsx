@@ -54,13 +54,13 @@ const LogoPill = ({ c }: { c: LogoPillEntry }) => {
   const [imgFailed, setFailed] = React.useState(false);
   const logo = () => {
     if (c.si) return (
-      <svg viewBox="0 0 24 24" style={{ width: 14, height: 14, flexShrink: 0 }}>
+      <svg viewBox="0 0 24 24" style={{ width: 22, height: 22, flexShrink: 0 }}>
         <path d={c.si.path} fill={`#${c.si.hex}`} />
       </svg>
     );
     if (c.logoUrl && !imgFailed) return (
       <img src={c.logoUrl} alt={c.name} onError={() => setFailed(true)}
-        draggable={false} style={{ width: 16, height: 16, objectFit: "contain", flexShrink: 0 }} />
+        draggable={false} style={{ width: 26, height: 26, objectFit: "contain", flexShrink: 0 }} />
     );
     return null;
   };

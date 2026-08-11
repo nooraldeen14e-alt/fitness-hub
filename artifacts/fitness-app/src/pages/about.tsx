@@ -107,13 +107,13 @@ const LogoPill = ({ c }: { c: ClientEntry }) => {
   const [imgFailed, setFailed] = React.useState(false);
   const logo = () => {
     if (c.si) return (
-      <svg viewBox="0 0 24 24" style={{ width: 20, height: 20, flexShrink: 0 }}>
+      <svg viewBox="0 0 24 24" style={{ width: 28, height: 28, flexShrink: 0 }}>
         <path d={c.si.path} fill={`#${c.si.hex}`} />
       </svg>
     );
     if (c.logoUrl && !imgFailed) return (
       <img src={c.logoUrl} alt={c.name} onError={() => setFailed(true)}
-        draggable={false} style={{ width: 24, height: 24, objectFit: "contain", flexShrink: 0 }} />
+        draggable={false} style={{ width: 32, height: 32, objectFit: "contain", flexShrink: 0 }} />
     );
     return null;
   };
