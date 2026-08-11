@@ -5,179 +5,108 @@ import MobileNav from "@/components/MobileNav";
 
 // ─── Unique hero visuals ──────────────────────────────────────────────────────
 
-const FUNNEL_STAGES = ["AWARENESS", "ENGAGEMENT", "CONSIDERATION", "CONVERSION", "RETENTION"];
+const FUNNEL_STAGES = [
+  { label: "Awareness",     sub: "Reach your audience"       },
+  { label: "Engagement",    sub: "Spark real interaction"    },
+  { label: "Consideration", sub: "Build trust & interest"    },
+  { label: "Conversion",    sub: "Turn interest into action" },
+  { label: "Retention",     sub: "Keep them coming back"     },
+];
 
 const FunnelVisual = () => {
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const animRef   = React.useRef<number>(0);
-  const [hovered, setHovered] = React.useState<number | null>(null);
+  const [active, setActive] = React.useState(0);
 
   React.useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const W = 320, H = 480;
-    canvas.width  = W;
-    canvas.height = H;
-
-    const PAD_TOP = 24, PAD_BOT = 36;
-    const TOP_W = 260, BOT_W = 52;
-    const FUNNEL_H = H - PAD_TOP - PAD_BOT;
-    const STAGE_H  = FUNNEL_H / 5;
-
-    const funnelWidthAt = (y: number) => {
-      const t = Math.max(0, Math.min(1, (y - PAD_TOP) / FUNNEL_H));
-      return TOP_W + (BOT_W - TOP_W) * t;
-    };
-
-    type Particle = {
-      x: number; y: number;
-      vx: number; vy: number;
-      r: number; alpha: number;
-      trail: { x: number; y: number }[];
-    };
-
-    const particles: Particle[] = [];
-    const stageGlow = [0, 0, 0, 0, 0];
-    let frame = 0;
-
-    const spawn = () => {
-      const fw = funnelWidthAt(PAD_TOP + 4);
-      particles.push({
-        x: W / 2 + (Math.random() - 0.5) * fw * 0.75,
-        y: PAD_TOP + 2,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: 0.9 + Math.random() * 0.7,
-        r: 1.4 + Math.random() * 1.6,
-        alpha: 0.75 + Math.random() * 0.25,
-        trail: [],
-      });
-    };
-
-    const draw = () => {
-      ctx.clearRect(0, 0, W, H);
-
-      // ── Draw each stage trapezoid ──
-      for (let s = 0; s < 5; s++) {
-        const y0 = PAD_TOP + s * STAGE_H;
-        const y1 = y0 + STAGE_H;
-        const w0 = funnelWidthAt(y0);
-        const w1 = funnelWidthAt(y1);
-        const xl0 = (W - w0) / 2, xr0 = (W + w0) / 2;
-        const xl1 = (W - w1) / 2, xr1 = (W + w1) / 2;
-
-        const g = stageGlow[s];
-
-        // fill
-        ctx.beginPath();
-        ctx.moveTo(xl0, y0); ctx.lineTo(xr0, y0);
-        ctx.lineTo(xr1, y1); ctx.lineTo(xl1, y1);
-        ctx.closePath();
-        ctx.fillStyle = `hsla(25,100%,50%,${0.03 + g * 0.13})`;
-        ctx.fill();
-
-        // edge lines
-        ctx.strokeStyle = `hsla(25,100%,50%,${0.18 + g * 0.55})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-        // horizontal divider
-        ctx.beginPath();
-        ctx.moveTo(xl0, y0); ctx.lineTo(xr0, y0);
-        ctx.strokeStyle = `rgba(255,255,255,${0.05 + g * 0.1})`;
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
-
-        // stage label
-        const midY = y0 + STAGE_H / 2 + 4;
-        ctx.font = "700 8px monospace";
-        ctx.textAlign = "center";
-        ctx.letterSpacing = "0.25em";
-        ctx.fillStyle = `hsla(25,100%,60%,${0.22 + g * 0.65})`;
-        ctx.fillText(FUNNEL_STAGES[s], W / 2, midY);
-
-        stageGlow[s] *= 0.94;
-      }
-
-      // ── Particles ──
-      if (frame % 22 === 0) spawn();
-
-      for (let i = particles.length - 1; i >= 0; i--) {
-        const p = particles[i];
-
-        p.trail.push({ x: p.x, y: p.y });
-        if (p.trail.length > 9) p.trail.shift();
-
-        p.y += p.vy;
-        p.x += p.vx;
-
-        // constrain to funnel walls
-        const fw = funnelWidthAt(p.y);
-        const lx = (W - fw) / 2 + p.r;
-        const rx = (W + fw) / 2 - p.r;
-        if (p.x < lx) { p.x = lx; p.vx = Math.abs(p.vx) * 0.4; }
-        if (p.x > rx) { p.x = rx; p.vx = -Math.abs(p.vx) * 0.4; }
-
-        // boost stage glow
-        const s = Math.floor((p.y - PAD_TOP) / STAGE_H);
-        if (s >= 0 && s < 5) stageGlow[s] = Math.min(1, stageGlow[s] + 0.18);
-
-        if (p.y > H - PAD_BOT + 24) { particles.splice(i, 1); continue; }
-
-        // trail
-        for (let t = 0; t < p.trail.length; t++) {
-          const pt = p.trail[t];
-          ctx.beginPath();
-          ctx.arc(pt.x, pt.y, p.r * 0.6, 0, Math.PI * 2);
-          ctx.fillStyle = `hsla(25,100%,60%,${(t / p.trail.length) * p.alpha * 0.35})`;
-          ctx.fill();
-        }
-
-        // core
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(30,100%,70%,${p.alpha})`;
-        ctx.fill();
-
-        // soft glow
-        const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
-        grd.addColorStop(0, `hsla(25,100%,60%,${p.alpha * 0.35})`);
-        grd.addColorStop(1, "transparent");
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2);
-        ctx.fillStyle = grd;
-        ctx.fill();
-      }
-
-      // ── Bottom outlet glow ──
-      const lastGlow = stageGlow[4];
-      if (lastGlow > 0.05) {
-        const exitY = H - PAD_BOT;
-        const grd = ctx.createRadialGradient(W / 2, exitY, 0, W / 2, exitY, 28);
-        grd.addColorStop(0, `hsla(25,100%,55%,${lastGlow * 0.55})`);
-        grd.addColorStop(1, "transparent");
-        ctx.beginPath();
-        ctx.arc(W / 2, exitY, 28, 0, Math.PI * 2);
-        ctx.fillStyle = grd;
-        ctx.fill();
-      }
-
-      frame++;
-      animRef.current = requestAnimationFrame(draw);
-    };
-
-    draw();
-    return () => cancelAnimationFrame(animRef.current);
+    const id = setInterval(() => setActive(a => (a + 1) % FUNNEL_STAGES.length), 1800);
+    return () => clearInterval(id);
   }, []);
 
   return (
-    <div className="relative flex justify-center select-none">
-      <canvas
-        ref={canvasRef}
-        style={{ width: 320, height: 480, display: "block" }}
-      />
+    <div className="w-full max-w-xs mx-auto select-none py-4 flex flex-col gap-0">
+      {FUNNEL_STAGES.map(({ label, sub }, i) => {
+        const isActive = active === i;
+        const isPast   = i < active;
+        return (
+          <div key={label} className="flex gap-4 items-stretch">
+            {/* spine */}
+            <div className="flex flex-col items-center w-8 shrink-0">
+              {/* node */}
+              <div
+                className="relative z-10 w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-500"
+                style={{
+                  background: isActive
+                    ? "hsl(25,100%,50%)"
+                    : isPast
+                    ? "rgba(255,255,255,0.06)"
+                    : "rgba(255,255,255,0.04)",
+                  border: isActive
+                    ? "2px solid hsl(25,100%,60%)"
+                    : isPast
+                    ? "1.5px solid rgba(255,255,255,0.15)"
+                    : "1.5px solid rgba(255,255,255,0.08)",
+                  boxShadow: isActive
+                    ? "0 0 18px hsl(25,100%,50%,0.55), 0 0 40px hsl(25,100%,50%,0.2)"
+                    : "none",
+                }}
+              >
+                <span
+                  className="font-mono text-[10px] font-bold transition-colors duration-500"
+                  style={{ color: isActive ? "#000" : isPast ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.18)" }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+
+                {/* ripple on active */}
+                {isActive && (
+                  <motion.span
+                    key={active}
+                    className="absolute inset-0 rounded-full"
+                    initial={{ opacity: 0.6, scale: 1 }}
+                    animate={{ opacity: 0, scale: 2.2 }}
+                    transition={{ duration: 1.2, ease: "easeOut" }}
+                    style={{ background: "hsl(25,100%,50%,0.3)" }}
+                  />
+                )}
+              </div>
+
+              {/* connector line */}
+              {i < FUNNEL_STAGES.length - 1 && (
+                <div className="relative w-[1px] flex-1 my-1 overflow-hidden" style={{ background: "rgba(255,255,255,0.07)" }}>
+                  {isActive && (
+                    <motion.div
+                      key={active}
+                      className="absolute top-0 left-0 w-full"
+                      initial={{ height: "0%", opacity: 1 }}
+                      animate={{ height: "100%", opacity: 0.9 }}
+                      transition={{ duration: 1.6, ease: "easeInOut" }}
+                      style={{ background: "linear-gradient(to bottom, hsl(25,100%,55%), transparent)" }}
+                    />
+                  )}
+                  {isPast && (
+                    <div className="absolute inset-0" style={{ background: "rgba(255,255,255,0.12)" }} />
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* text */}
+            <div className="pb-7 pt-1 flex flex-col justify-start">
+              <p
+                className="font-mono font-bold text-[11px] uppercase tracking-[0.18em] leading-none mb-1 transition-colors duration-500"
+                style={{ color: isActive ? "hsl(25,100%,60%)" : isPast ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.22)" }}
+              >
+                {label}
+              </p>
+              <p
+                className="font-sans text-[11px] leading-snug transition-colors duration-500"
+                style={{ color: isActive ? "rgba(255,255,255,0.55)" : "rgba(255,255,255,0.15)" }}
+              >
+                {sub}
+              </p>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
