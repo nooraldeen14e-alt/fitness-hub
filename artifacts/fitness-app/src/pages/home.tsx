@@ -54,12 +54,12 @@ const LogoPill = ({ c }: { c: LogoPillEntry }) => {
     );
     if (c.logoUrl && !imgFailed) return (
       <img src={c.logoUrl} alt={c.name} onError={() => setFailed(true)}
-        draggable={false} style={{ width: 40, height: 40, objectFit: "contain", flexShrink: 0 }} />
+        draggable={false} style={{ width: 22, height: 22, objectFit: "contain", flexShrink: 0 }} />
     );
     return null;
   };
   return (
-    <div className="flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/[0.03] whitespace-nowrap select-none">
+    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/10 bg-white/[0.03] whitespace-nowrap select-none">
       {logo()}
       <span className="font-sans font-semibold text-xs text-white/60">{c.name}</span>
     </div>
@@ -101,7 +101,7 @@ const ClientsTicker = () => {
   const row2 = clients.filter((_, i) => i % 2 === 1);
 
   return (
-    <section className="relative overflow-hidden" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 98, paddingBottom: 16 }}>
+    <section className="relative overflow-hidden" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 98, paddingBottom: 8 }}>
       <style>{`
         @keyframes home-ticker-l { from{transform:translateX(0)} to{transform:translateX(-50%)} }
         @keyframes home-ticker-r { from{transform:translateX(-50%)} to{transform:translateX(0)} }
@@ -110,7 +110,7 @@ const ClientsTicker = () => {
         .home-tl:hover,.home-tr:hover { animation-play-state:paused; }
       `}</style>
 
-      <div className="overflow-hidden mb-3">
+      <div className="overflow-hidden mb-1.5">
         <div className="home-tl">
           {[...row1, ...row1].map((c, i) => <div key={i} className="px-2"><LogoPill c={c} /></div>)}
         </div>
