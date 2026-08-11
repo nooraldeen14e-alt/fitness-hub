@@ -8,69 +8,68 @@ import GlobeScene from "@/components/GlobeScene";
 
 // ─── Proof of Work filmstrip ─────────────────────────────────────────────────
 const REEL_ROW1 = [
-  { video: "fashion-reel-1.mp4",       category: "Fashion & Apparel"   },
-  { video: "food-reel-1.mp4",          category: "Food & Beverage"     },
-  { video: "tech-reel-1.mp4",          category: "Technology & SaaS"   },
-  { video: "architecture-reel-1.mp4",  category: "Architecture"        },
-  { video: "entertainment-reel-1.mp4", category: "Entertainment"       },
+  { img: "proof-1.png",  views: "515K",  category: "Real Estate"       },
+  { img: "proof-3.png",  views: "507K",  category: "Fitness & Wellness" },
+  { img: "proof-5.png",  views: "2.2M",  category: "Fitness & Wellness" },
+  { img: "proof-7.png",  views: "1.3M",  category: "Fragrance & Beauty" },
+  { img: "proof-9.png",  views: "714K",  category: "Real Estate"        },
 ];
 const REEL_ROW2 = [
-  { video: "fitness-reel-1.mp4",       category: "Fitness & Wellness"  },
-  { video: "beauty-reel-1.mp4",        category: "Fragrance & Beauty"  },
-  { video: "automotive-reel-2.mp4",    category: "Automotive"          },
-  { video: "government-reel.mp4",      category: "Government"          },
-  { video: "entertainment-reel-2.mp4", category: "Entertainment"       },
+  { img: "proof-2.png",  views: "81.7K", category: "Government"         },
+  { img: "proof-4.png",  views: "1.3M",  category: "Fitness & Wellness" },
+  { img: "proof-6.png",  views: "1.6M",  category: "Fitness & Wellness" },
+  { img: "proof-8.png",  views: "1.4M",  category: "Interior Design"    },
+  { img: "proof-10.png", views: "441K",  category: "Entertainment"      },
 ];
 
-const ReelCard = ({ video, category }: { video: string; category: string }) => {
-  const ref   = React.useRef<HTMLVideoElement>(null);
-  const wrap  = React.useRef<HTMLDivElement>(null);
+const ReelCard = ({ img, views, category }: { img: string; views: string; category: string }) => {
   const [hov, setHov] = React.useState(false);
-
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { el.src = `/${video}`; obs.disconnect(); }
-    }, { threshold: 0.1 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [video]);
 
   return (
     <div
-      ref={wrap}
-      className="relative shrink-0 rounded-2xl overflow-hidden"
-      style={{ width: 300, height: 200 }}
+      className="relative shrink-0 rounded-2xl overflow-hidden cursor-pointer"
+      style={{ width: 220, height: 310 }}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
     >
-      <video
-        ref={ref}
-        autoPlay muted loop playsInline
+      {/* photo */}
+      <img
+        src={`/${img}`}
+        alt={category}
+        loading="lazy"
+        decoding="async"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700"
         style={{ transform: hov ? "scale(1.06)" : "scale(1)" }}
       />
-      {/* base vignette */}
-      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%)" }} />
-      {/* hover overlay */}
-      <div
-        className="absolute inset-0 transition-opacity duration-400"
-        style={{ background: "rgba(0,0,0,0.45)", opacity: hov ? 1 : 0 }}
-      />
-      {/* border glow on hover */}
-      <div
-        className="absolute inset-0 rounded-2xl transition-opacity duration-300 pointer-events-none"
-        style={{ boxShadow: "inset 0 0 0 1.5px hsl(25,100%,50%)", opacity: hov ? 1 : 0 }}
-      />
-      {/* category label */}
-      <div
-        className="absolute inset-x-0 bottom-0 p-4 transition-all duration-300"
-        style={{ transform: hov ? "translateY(0)" : "translateY(6px)", opacity: hov ? 1 : 0 }}
-      >
-        <p className="font-mono text-[10px] uppercase tracking-[0.28em] font-bold" style={{ color: "hsl(25,100%,55%)" }}>
+
+      {/* permanent bottom gradient */}
+      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 45%, transparent 70%)" }} />
+
+      {/* hover tint */}
+      <div className="absolute inset-0 transition-opacity duration-300" style={{ background: "rgba(0,0,0,0.28)", opacity: hov ? 1 : 0 }} />
+
+      {/* orange border glow on hover */}
+      <div className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300"
+        style={{ boxShadow: "inset 0 0 0 1.5px hsl(25,100%,50%)", opacity: hov ? 1 : 0 }} />
+
+      {/* views badge — always visible */}
+      <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
+        {/* eye icon */}
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.9 }}>
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span className="font-mono font-bold text-white text-[13px] leading-none" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.8)" }}>
+          {views}
+        </span>
+      </div>
+
+      {/* category label on hover */}
+      <div className="absolute bottom-3 right-3 transition-all duration-300"
+        style={{ opacity: hov ? 1 : 0, transform: hov ? "translateY(0)" : "translateY(4px)" }}>
+        <span className="font-mono text-[9px] uppercase tracking-[0.2em] font-bold" style={{ color: "hsl(25,100%,55%)" }}>
           {category}
-        </p>
+        </span>
       </div>
     </div>
   );
@@ -672,7 +671,7 @@ export default function About() {
           <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #050505, transparent)" }} />
           <div className="flex gap-4 reel-left" style={{ width: "max-content" }}>
             {[...REEL_ROW1, ...REEL_ROW1].map((r, i) => (
-              <ReelCard key={i} video={r.video} category={r.category} />
+              <ReelCard key={i} img={r.img} views={r.views} category={r.category} />
             ))}
           </div>
         </div>
@@ -683,7 +682,7 @@ export default function About() {
           <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #050505, transparent)" }} />
           <div className="flex gap-4 reel-right" style={{ width: "max-content" }}>
             {[...REEL_ROW2, ...REEL_ROW2].map((r, i) => (
-              <ReelCard key={i} video={r.video} category={r.category} />
+              <ReelCard key={i} img={r.img} views={r.views} category={r.category} />
             ))}
           </div>
         </div>
