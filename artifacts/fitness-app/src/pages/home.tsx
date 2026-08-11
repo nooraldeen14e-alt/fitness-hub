@@ -1,23 +1,33 @@
 import React from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
 import { ArrowRight, X, Play, Volume2, VolumeX } from "lucide-react";
 import { LineChart, Line, ResponsiveContainer } from "recharts";
-import { HeroNetworkScene } from "@/components/HeroNetworkScene";
 
-/* ── Glowing cursor ── */
+/* ── Glowing cursor — RAF-throttled to avoid constant re-renders ── */
 const GlowCursor = () => {
   const [pos, setPos] = React.useState({ x: -200, y: -200 });
   const [visible, setVisible] = React.useState(false);
+  const rafId  = React.useRef<number>(0);
+  const latest = React.useRef({ x: -200, y: -200 });
 
   React.useEffect(() => {
-    const move = (e: MouseEvent) => { setPos({ x: e.clientX, y: e.clientY }); setVisible(true); };
+    const move = (e: MouseEvent) => {
+      latest.current = { x: e.clientX, y: e.clientY };
+      setVisible(true);
+      cancelAnimationFrame(rafId.current);
+      rafId.current = requestAnimationFrame(() => setPos({ ...latest.current }));
+    };
     const hide = () => setVisible(false);
-    window.addEventListener("mousemove", move);
+    window.addEventListener("mousemove", move, { passive: true });
     window.addEventListener("mouseleave", hide);
-    return () => { window.removeEventListener("mousemove", move); window.removeEventListener("mouseleave", hide); };
+    return () => {
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseleave", hide);
+      cancelAnimationFrame(rafId.current);
+    };
   }, []);
 
   return (
@@ -54,6 +64,7 @@ const LogoPill = ({ c }: { c: LogoPillEntry }) => {
     );
     if (c.logoUrl && !imgFailed) return (
       <img src={c.logoUrl} alt={c.name} onError={() => setFailed(true)}
+        loading="lazy" decoding="async"
         draggable={false} style={{ width: 22, height: 22, objectFit: "contain", flexShrink: 0 }} />
     );
     return null;
@@ -165,16 +176,6 @@ const ServicesTicker = () => {
   );
 };
 
-const NoiseOverlay = () => (
-  <div className="pointer-events-none fixed inset-0 z-50 h-full w-full opacity-20 mix-blend-overlay">
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="h-full w-full opacity-40">
-      <filter id="noiseFilter">
-        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-      </filter>
-      <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-    </svg>
-  </div>
-);
 
 const TOP_BAR_LOCS = [
   { code: "ae", city: "Dubai",     label: "UAE" },
@@ -419,6 +420,8 @@ const Hero = () => {
             <img
               src="/person-left-nobg.png"
               alt="Team member"
+              loading="eager"
+              decoding="async"
               className="w-full object-cover object-top select-none pointer-events-none"
               style={{ height: "clamp(340px, 65vh, 660px)", display: "block" }}
               draggable={false}
@@ -522,6 +525,8 @@ const Hero = () => {
             <img
               src="/person-right-nobg.png"
               alt="Team member"
+              loading="eager"
+              decoding="async"
               className="w-full object-cover object-top select-none pointer-events-none"
               style={{ height: "clamp(340px, 65vh, 660px)", display: "block" }}
               draggable={false}
@@ -598,6 +603,8 @@ const ClientCard = ({ c }: { c: ClientEntry }) => {
           src={c.logoUrl}
           alt={c.name}
           onError={() => setFailed(true)}
+          loading="lazy"
+          decoding="async"
           draggable={false}
           style={{ width: "100%", height: "100%", objectFit: "contain",
                    pointerEvents: "none", userSelect: "none", padding: "4px" }}
@@ -714,6 +721,18 @@ const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarg
   const [hovered, setHovered] = React.useState(false);
   const [modalSrc, setModalSrc] = React.useState<string | null>(null);
   const [isMuted, setIsMuted] = React.useState(true);
+  const [inView, setInView] = React.useState(false);
+
+  // Only load + play video once card enters viewport (300 px margin)
+  React.useEffect(() => {
+    if (!item.video || !ref.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); observer.disconnect(); } },
+      { rootMargin: "300px" }
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [item.video]);
 
   const toggleMute = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -763,12 +782,12 @@ const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarg
           willChange: "transform",
         }}
       >
-        {/* Image or Video */}
+        {/* Image or Video — src only set once card enters viewport */}
         {item.video ? (
           <video
             ref={videoRef}
-            src={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/${item.video}`}
-            autoPlay muted loop playsInline
+            src={inView ? `${import.meta.env.BASE_URL.replace(/\/$/, "")}/${item.video}` : undefined}
+            autoPlay={inView} muted loop playsInline
             className="w-full h-full object-contain bg-black"
             style={{ transition: "transform 0.6s ease", transform: hovered ? "scale(1.03)" : "scale(1)" }}
           />
@@ -1225,7 +1244,6 @@ const Footer = () => {
 export default function Home() {
   return (
     <div className="bg-black min-h-screen text-foreground selection:bg-primary selection:text-white">
-      <NoiseOverlay />
       <TopBar />
       <Navbar />
       
