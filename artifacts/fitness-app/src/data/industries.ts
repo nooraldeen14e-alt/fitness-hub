@@ -50,7 +50,7 @@ export const INDUSTRIES: Record<string, {
     name: "Technology & SaaS",
     tagline: "Making complex products feel simple and essential.",
     description: `Tech companies often know their product inside out — but struggle to explain why someone should care. We bridge the gap between what you've built and the audience who needs it.\n\nWe work with SaaS companies, fintech startups, and tech platforms to create clear, compelling messaging across every channel. Product explainer videos, LinkedIn thought-leadership, case study content, and performance campaigns that target decision-makers in the right industries.\n\nWhether you're B2B or B2C, pre-launch or scaling, we build the marketing engine your product deserves.`,
-    videos: ["/tech-reel-1.mp4", "/tech-reel-2.mp4", "/tech-reel-3.mp4"],
+    videos: ["/tech-reel-1.mp4", "/tech-reel-2.mp4", "/tech-reel-3.mp4", "/tech-reel-4.mp4", "/tech-reel-5.mp4"],
   },
   "automotive": {
     name: "Automotive",
