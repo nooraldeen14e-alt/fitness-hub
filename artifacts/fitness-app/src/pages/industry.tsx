@@ -262,27 +262,34 @@ export default function IndustryPage() {
           <h2 className="font-display font-black text-3xl md:text-4xl">Our Work in {industry.name}</h2>
         </motion.div>
 
-        {industry.videos.length > 0 ? (
+        {industry.videos.length === 0 ? (
+          <div className="px-6 md:px-16 lg:px-24 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {Array.from({ length: 4 }).map((_, i) => <VideoPlaceholder key={i} index={i} />)}
+          </div>
+        ) : industry.videos.length < 3 ? (
+          /* Too few to loop — plain grid */
+          <div className="px-6 md:px-16 lg:px-24 flex gap-4">
+            {industry.videos.map((entry, i) => (
+              <div key={i} className="shrink-0" style={{ height: 340 }}>
+                <VideoCard entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel preload="auto" />
+              </div>
+            ))}
+          </div>
+        ) : (
           /* Horizontal infinite ticker */
           <div className="overflow-hidden" style={{ WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)" }}>
             <div className="ind-track">
-              {/* first set — preload eagerly */}
               {industry.videos.map((entry, i) => (
                 <div key={`a-${i}`} className="shrink-0" style={{ height: 340 }}>
                   <VideoCard entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel preload="auto" />
                 </div>
               ))}
-              {/* duplicate set — don't preload (seamless loop) */}
               {industry.videos.map((entry, i) => (
                 <div key={`b-${i}`} className="shrink-0" style={{ height: 340 }}>
                   <VideoCard entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel preload="none" />
                 </div>
               ))}
             </div>
-          </div>
-        ) : (
-          <div className="px-6 md:px-16 lg:px-24 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {Array.from({ length: 4 }).map((_, i) => <VideoPlaceholder key={i} index={i} />)}
           </div>
         )}
       </section>
