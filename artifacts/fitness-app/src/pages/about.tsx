@@ -6,6 +6,76 @@ import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
 import GlobeScene from "@/components/GlobeScene";
 
+// ─── Proof of Work filmstrip ─────────────────────────────────────────────────
+const REEL_ROW1 = [
+  { video: "fashion-reel-1.mp4",       category: "Fashion & Apparel"   },
+  { video: "food-reel-1.mp4",          category: "Food & Beverage"     },
+  { video: "tech-reel-1.mp4",          category: "Technology & SaaS"   },
+  { video: "architecture-reel-1.mp4",  category: "Architecture"        },
+  { video: "entertainment-reel-1.mp4", category: "Entertainment"       },
+];
+const REEL_ROW2 = [
+  { video: "fitness-reel-1.mp4",       category: "Fitness & Wellness"  },
+  { video: "beauty-reel-1.mp4",        category: "Fragrance & Beauty"  },
+  { video: "automotive-reel-2.mp4",    category: "Automotive"          },
+  { video: "government-reel.mp4",      category: "Government"          },
+  { video: "entertainment-reel-2.mp4", category: "Entertainment"       },
+];
+
+const ReelCard = ({ video, category }: { video: string; category: string }) => {
+  const ref   = React.useRef<HTMLVideoElement>(null);
+  const wrap  = React.useRef<HTMLDivElement>(null);
+  const [hov, setHov] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { el.src = `/${video}`; obs.disconnect(); }
+    }, { threshold: 0.1 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [video]);
+
+  return (
+    <div
+      ref={wrap}
+      className="relative shrink-0 rounded-2xl overflow-hidden"
+      style={{ width: 300, height: 200 }}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+    >
+      <video
+        ref={ref}
+        autoPlay muted loop playsInline
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700"
+        style={{ transform: hov ? "scale(1.06)" : "scale(1)" }}
+      />
+      {/* base vignette */}
+      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%)" }} />
+      {/* hover overlay */}
+      <div
+        className="absolute inset-0 transition-opacity duration-400"
+        style={{ background: "rgba(0,0,0,0.45)", opacity: hov ? 1 : 0 }}
+      />
+      {/* border glow on hover */}
+      <div
+        className="absolute inset-0 rounded-2xl transition-opacity duration-300 pointer-events-none"
+        style={{ boxShadow: "inset 0 0 0 1.5px hsl(25,100%,50%)", opacity: hov ? 1 : 0 }}
+      />
+      {/* category label */}
+      <div
+        className="absolute inset-x-0 bottom-0 p-4 transition-all duration-300"
+        style={{ transform: hov ? "translateY(0)" : "translateY(6px)", opacity: hov ? 1 : 0 }}
+      >
+        <p className="font-mono text-[10px] uppercase tracking-[0.28em] font-bold" style={{ color: "hsl(25,100%,55%)" }}>
+          {category}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 // ─── Navbar ──────────────────────────────────────────────────────────────────
 const AboutNavbar = () => {
   const [scheduleOpen, setScheduleOpen] = React.useState(false);
@@ -567,6 +637,53 @@ export default function About() {
                   <div className="w-8 h-[2px]" style={{ background: "hsl(25,100%,50%)" }} />
                 </div>
               </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          PROOF OF WORK
+      ══════════════════════════════════════════════════════ */}
+      <section className="py-28 overflow-hidden" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <style>{`
+          @keyframes scroll-left  { from { transform: translateX(0) }    to { transform: translateX(-50%) } }
+          @keyframes scroll-right { from { transform: translateX(-50%) } to { transform: translateX(0) }    }
+          .reel-left  { animation: scroll-left  34s linear infinite; }
+          .reel-right { animation: scroll-right 40s linear infinite; }
+          .reel-left:hover, .reel-right:hover { animation-play-state: paused; }
+        `}</style>
+
+        {/* header */}
+        <div className="px-8 md:px-16 mb-14">
+          <Reveal>
+            <p className="font-mono text-[11px] uppercase tracking-[0.4em] mb-4" style={{ color: "hsl(25,100%,50%)" }}>Proof of Work</p>
+            <h2 className="font-display font-black uppercase text-4xl md:text-5xl leading-tight">
+              Work that<br />
+              <span style={{ color: "hsl(25,100%,50%)" }}>speaks.</span>
+            </h2>
+          </Reveal>
+        </div>
+
+        {/* row 1 — scrolls left */}
+        <div className="relative mb-4 overflow-hidden">
+          {/* edge fades */}
+          <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #050505, transparent)" }} />
+          <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #050505, transparent)" }} />
+          <div className="flex gap-4 reel-left" style={{ width: "max-content" }}>
+            {[...REEL_ROW1, ...REEL_ROW1].map((r, i) => (
+              <ReelCard key={i} video={r.video} category={r.category} />
+            ))}
+          </div>
+        </div>
+
+        {/* row 2 — scrolls right */}
+        <div className="relative overflow-hidden">
+          <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #050505, transparent)" }} />
+          <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #050505, transparent)" }} />
+          <div className="flex gap-4 reel-right" style={{ width: "max-content" }}>
+            {[...REEL_ROW2, ...REEL_ROW2].map((r, i) => (
+              <ReelCard key={i} video={r.video} category={r.category} />
             ))}
           </div>
         </div>
