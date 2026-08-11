@@ -127,7 +127,7 @@ const VideoCard = ({ entry, index, onOpen, carousel, preload = "metadata" }: {
     >
       {/* media — explicit poster > auto ffmpeg thumb > youtube thumbnail */}
       {poster ? (
-        <img src={poster} className="absolute inset-0 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105" alt="thumbnail" style={{ padding: "8%" }} />
+        <img src={poster} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
       ) : autoThumb ? (
         <>
           <img src={autoThumb} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="thumbnail" />
