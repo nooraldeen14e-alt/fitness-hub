@@ -134,6 +134,11 @@ const ClientsTicker = () => {
     { name: "Sharqi Gents Salon",     logoUrl: local("sharqi-salon.png") },
     { name: "Sharjah Chamber",        logoUrl: local("sharjah-chamber.png") },
     { name: "Rani",                   logoUrl: local("rani.png") },
+    { name: "Alpha Point Consulting", logoUrl: local("alpha-point.png") },
+    { name: "Harmony Real Estate",    logoUrl: local("harmony-realestate.png") },
+    { name: "Royal Restaurant",       logoUrl: local("royal-restaurant.png") },
+    { name: "Sharjah Media City",     logoUrl: local("sharjah-media-city.png") },
+    { name: "Lumina Wellness & Spa",  logoUrl: local("lumina-spa.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
