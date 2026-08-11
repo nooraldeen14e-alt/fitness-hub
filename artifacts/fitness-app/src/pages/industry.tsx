@@ -192,6 +192,8 @@ export default function IndustryPage() {
   const slug = params.slug ?? "";
   const industry = INDUSTRIES[slug];
 
+  const [lightboxUrl, setLightboxUrl] = React.useState<string | null>(null);
+
   // Unknown slug → go home
   React.useEffect(() => {
     if (!industry) window.location.replace("/");
@@ -199,7 +201,6 @@ export default function IndustryPage() {
 
   if (!industry) return null;
 
-  const [lightboxUrl, setLightboxUrl] = React.useState<string | null>(null);
   const paragraphs = industry.description.split("\n\n");
 
   return (

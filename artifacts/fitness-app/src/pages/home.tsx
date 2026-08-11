@@ -701,10 +701,14 @@ const VideoModal = ({ src, onClose }: { src: string; onClose: () => void }) => {
 };
 
 const WORK_ITEMS = [
-  { video: "work-vid-1.mp4", category: "Fitness",          client: "Altitude Gym",    size: "large" },
-  { video: "work-vid-2.mp4", category: "Fragrance",        client: "Fragrance Brand", size: "small" },
-  { video: "work-vid-3.mp4", category: "Fashion",          client: "Blends Abaya",    size: "small" },
-  { video: "work-vid-4.mp4", category: "Automobile",        client: "Latest Work",     size: "large" },
+  { video: "fashion-reel-1.mp4",    category: "Fashion & Apparel",   client: "Fashion & Apparel",   size: "large" },
+  { video: "fitness-reel-1.mp4",    category: "Fitness & Wellness",  client: "Fitness & Wellness",  size: "small" },
+  { video: "food-reel-1.mp4",       category: "Food & Beverage",     client: "Food & Beverage",     size: "small" },
+  { video: "beauty-reel-1.mp4",     category: "Fragrance & Beauty",  client: "Fragrance & Beauty",  size: "large" },
+  { video: "tech-reel-1.mp4",       category: "Technology & SaaS",   client: "Technology & SaaS",   size: "large" },
+  { video: "automotive-reel-2.mp4", category: "Automotive",          client: "Automotive",          size: "small" },
+  { video: "architecture-reel-1.mp4", category: "Architecture",      client: "Architecture",        size: "small" },
+  { video: "government-reel.mp4",   category: "Government",          client: "Government",          size: "large" },
 ];
 
 const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarge: boolean; index: number }) => {
