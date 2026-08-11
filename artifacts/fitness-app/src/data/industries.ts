@@ -69,7 +69,14 @@ export const INDUSTRIES: Record<string, {
     name: "Entertainment & Media",
     tagline: "Making noise in the noisiest industry on earth.",
     description: `Entertainment and media brands don't just need to be good — they need to be talked about. Buzz, reach, and cultural relevance are the currency, and we know how to earn all three.\n\nWe work with events, TV shows, streaming platforms, talent agencies, and media brands to build campaigns that get people excited, talking, and showing up. From teaser campaigns and influencer activations to paid social and PR strategy — we understand the mechanics of cultural moments.\n\nOur work spans live events in Sharjah and Dubai, content IPs, and regional media brands that have grown their audiences by six and seven figures.`,
-    videos: [],
+    videos: [
+      { url: "/entertainment-reel-1.mp4", poster: "/entertainment-reel-1-poster.png" },
+      { url: "/entertainment-reel-2.mp4", poster: "/entertainment-reel-2-poster.png" },
+      { url: "/entertainment-reel-3.mp4", poster: "/entertainment-reel-3-poster.png" },
+      { url: "/entertainment-reel-4.mp4", poster: "/entertainment-reel-4-poster.png" },
+      { url: "/entertainment-reel-5.mp4", poster: "/entertainment-reel-5-poster.png" },
+      { url: "/entertainment-reel-6.mp4", poster: "/entertainment-reel-6-poster.png" },
+    ],
   },
   "architecture": {
     name: "Architecture",
