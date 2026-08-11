@@ -81,6 +81,7 @@ const ClientsTicker = () => {
     { name: "Sharjah Chamber",        logoUrl: local("sharjah-chamber.png") },
     { name: "Rani",                   logoUrl: local("rani.png") },
     { name: "Blue Sapphire Token",    logoUrl: local("blue-sapphire-token.png") },
+    { name: "Meaza",                  logoUrl: local("meaza.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
@@ -880,6 +881,7 @@ const OurClients = () => {
     { name: "Sharjah Chamber",        logoUrl: local("sharjah-chamber.png") },
     { name: "Rani",                   logoUrl: local("rani.png") },
     { name: "Blue Sapphire Token",    logoUrl: local("blue-sapphire-token.png") },
+    { name: "Meaza",                  logoUrl: local("meaza.png") },
   ];
 
   return (
