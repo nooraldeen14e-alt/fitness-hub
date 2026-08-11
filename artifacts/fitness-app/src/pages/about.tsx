@@ -261,73 +261,27 @@ export default function About() {
         </div>
 
         {/* content */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0">
-
-          {/* LEFT — Services */}
-          <div className="px-8 md:px-16 py-14 border-r" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
-            <p className="font-mono text-[11px] uppercase tracking-[0.4em] mb-10" style={{ color: "hsl(25,100%,50%)" }}>What We Do</p>
-            <div className="flex flex-col gap-1">
-              {SERVICES.map((s, i) => (
-                <motion.div
-                  key={s.slug}
-                  animate={workOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }}
-                  transition={{ delay: workOpen ? 0.08 + i * 0.07 : 0, duration: 0.45 }}
-                >
-                  <Link
-                    href={`/services/${s.slug}`}
-                    onClick={() => setWorkOpen(false)}
-                    className="group flex items-center gap-6 py-5 border-b hover:border-orange-500/40 transition-all"
-                    style={{ borderColor: "rgba(255,255,255,0.06)" }}
-                  >
-                    <span className="font-mono text-[11px] w-6 shrink-0" style={{ color: "hsl(25,100%,50%)" }}>{s.num}</span>
-                    <span className="font-display font-black uppercase text-2xl md:text-3xl text-white/80 group-hover:text-white transition-colors leading-tight">{s.name}</span>
-                    <span className="ml-auto text-white/20 group-hover:text-orange-500 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 text-lg">↗</span>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* RIGHT — Industries */}
-          <div className="px-8 md:px-16 py-14">
-            <p className="font-mono text-[11px] uppercase tracking-[0.4em] mb-10" style={{ color: "hsl(25,100%,50%)" }}>Industries We Serve</p>
-            <div className="flex flex-wrap gap-3">
-              {INDUSTRY_LIST.map((ind, i) => (
-                <motion.div
-                  key={ind.slug}
-                  animate={workOpen ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.88 }}
-                  transition={{ delay: workOpen ? 0.18 + i * 0.06 : 0, duration: 0.4 }}
-                >
-                  <Link
-                    href={`/industries/${ind.slug}`}
-                    onClick={() => setWorkOpen(false)}
-                    className="group inline-flex items-center gap-2 px-5 py-3 rounded-full border font-display font-bold text-sm uppercase tracking-wider text-white/60 hover:text-white hover:border-orange-500 transition-all"
-                    style={{ borderColor: "rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.02)" }}
-                  >
-                    {ind.name}
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-orange-500">↗</span>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* bottom cta */}
-            <motion.div
-              animate={workOpen ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-              transition={{ delay: workOpen ? 0.7 : 0, duration: 0.5 }}
-              className="mt-16 p-8 rounded-2xl border"
-              style={{ borderColor: "rgba(255,98,0,0.25)", background: "rgba(255,98,0,0.04)" }}
-            >
-              <p className="font-display font-black uppercase text-xl text-white mb-2">Don't see your industry?</p>
-              <p className="text-white/40 text-sm mb-5">We work across every vertical. If you have ambition, we have the system.</p>
-              <button
-                onClick={() => { setWorkOpen(false); setScheduleOpen(true); }}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-display font-bold text-sm uppercase tracking-widest text-white hover:opacity-90 transition-opacity"
-                style={{ background: "hsl(25,100%,50%)" }}
+        <div className="flex-1 px-8 md:px-16 py-14 max-w-3xl mx-auto w-full">
+          <p className="font-mono text-[11px] uppercase tracking-[0.4em] mb-10" style={{ color: "hsl(25,100%,50%)" }}>What We Offer</p>
+          <div className="flex flex-col gap-1">
+            {SERVICES.map((s, i) => (
+              <motion.div
+                key={s.slug}
+                animate={workOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: -24 }}
+                transition={{ delay: workOpen ? 0.08 + i * 0.07 : 0, duration: 0.45 }}
               >
-                Let's Talk <ArrowRight size={14} />
-              </button>
-            </motion.div>
+                <Link
+                  href={`/services/${s.slug}`}
+                  onClick={() => setWorkOpen(false)}
+                  className="group flex items-center gap-6 py-5 border-b hover:border-orange-500/40 transition-all"
+                  style={{ borderColor: "rgba(255,255,255,0.06)" }}
+                >
+                  <span className="font-mono text-[11px] w-6 shrink-0" style={{ color: "hsl(25,100%,50%)" }}>{s.num}</span>
+                  <span className="font-display font-black uppercase text-2xl md:text-3xl text-white/80 group-hover:text-white transition-colors leading-tight">{s.name}</span>
+                  <span className="ml-auto text-white/20 group-hover:text-orange-500 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 text-lg">↗</span>
+                </Link>
+              </motion.div>
+            ))}
           </div>
         </div>
       </motion.div>
