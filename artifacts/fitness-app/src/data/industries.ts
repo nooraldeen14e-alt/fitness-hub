@@ -40,12 +40,6 @@ export const INDUSTRIES: Record<string, {
     description: `Fragrance and beauty brands sell emotion before they sell product. The brand story, the visual world, and the feeling of aspiration — that's what moves units at this level.\n\nWe work with perfume houses, cosmetics brands, and skincare lines to build campaigns that feel premium, authentic, and culturally relevant. From editorial-style content and influencer gifting campaigns to Arabic-language social strategy and paid media, we position your brand exactly where your audience is already spending time.\n\nOur campaigns have driven everything from launch sell-outs to regional brand awareness that rival global houses.`,
     videos: ["/beauty-reel-1.mp4", "/beauty-reel-2.mp4", "/beauty-reel-3.mp4", "/beauty-reel-4.mp4", "/beauty-reel-5.mp4", "/beauty-reel-6.mp4"],
   },
-  "real-estate": {
-    name: "Real Estate",
-    tagline: "Turning properties into brands people want to live in.",
-    description: `Real estate marketing has changed — buyers and investors do their research online long before they call an agent. Your digital presence needs to make the property feel real, the lifestyle feel aspirational, and the developer feel trustworthy.\n\nWe work with developers, agencies, and brokers across the UAE to build campaigns that generate qualified leads, not just impressions. From drone footage and property walkthrough reels to Google Ads targeting GCC investors — we know the full picture.\n\nOur campaigns have driven launches for off-plan projects, built broker brand authority, and positioned developments in Sharjah, Dubai, and beyond as must-have addresses.`,
-    videos: [],
-  },
   "technology-saas": {
     name: "Technology & SaaS",
     tagline: "Making complex products feel simple and essential.",
@@ -64,12 +58,6 @@ export const INDUSTRIES: Record<string, {
       "/automotive-reel-5.mp4",
       { url: "/automotive-reel-6.mp4", poster: "/automotive-reel-6-poster.png" },
     ],
-  },
-  "healthcare-clinics": {
-    name: "Healthcare & Clinics",
-    tagline: "Building the trust that healthcare decisions demand.",
-    description: `Healthcare marketing requires a different kind of authority. Patients aren't buying a product — they're trusting you with their health. Every piece of content needs to be accurate, empathetic, and positioned to build confidence before the appointment is ever booked.\n\nWe work with clinics, hospitals, dental practices, and wellness centres to build digital presences that attract and convert the right patients. Educational content, Google Ads targeting high-intent searches, and community-building across the platforms where your patients are already active.\n\nCompliance is always front of mind. Every campaign we run is built around what's appropriate for healthcare — and what actually works.`,
-    videos: [],
   },
   "entertainment-media": {
     name: "Entertainment & Media",

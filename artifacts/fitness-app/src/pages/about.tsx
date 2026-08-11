@@ -67,10 +67,8 @@ const AboutNavbar = () => {
                   { label: "Fitness & Wellness",    slug: "fitness-wellness"    },
                   { label: "Food & Beverage",       slug: "food-beverage"       },
                   { label: "Fragrance & Beauty",    slug: "fragrance-beauty"    },
-                  { label: "Real Estate",           slug: "real-estate"         },
                   { label: "Technology & SaaS",     slug: "technology-saas"     },
                   { label: "Automotive",            slug: "automotive"          },
-                  { label: "Healthcare & Clinics",  slug: "healthcare-clinics"  },
                   { label: "Entertainment & Media", slug: "entertainment-media" },
                   { label: "Government",            slug: "government"          },
                 ].map(({ label, slug }) => (
@@ -227,10 +225,8 @@ const INDUSTRY_LIST = [
   { name: "Fitness & Wellness",    slug: "fitness-wellness" },
   { name: "Food & Beverage",       slug: "food-beverage" },
   { name: "Fragrance & Beauty",    slug: "fragrance-beauty" },
-  { name: "Real Estate",           slug: "real-estate" },
   { name: "Technology & SaaS",     slug: "technology-saas" },
   { name: "Automotive",            slug: "automotive" },
-  { name: "Healthcare & Clinics",  slug: "healthcare-clinics" },
   { name: "Entertainment & Media", slug: "entertainment-media" },
 ];
 
