@@ -62,6 +62,7 @@ const AboutNavbar = () => {
             <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div className="bg-[#0d0d0d] border border-white/10 rounded-2xl overflow-hidden shadow-2xl w-56 py-2">
                 {[
+                  { label: "Architecture",           slug: "architecture"        },
                   { label: "Fashion & Apparel",     slug: "fashion-apparel"     },
                   { label: "Fitness & Wellness",    slug: "fitness-wellness"    },
                   { label: "Food & Beverage",       slug: "food-beverage"       },

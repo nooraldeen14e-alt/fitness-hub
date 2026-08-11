@@ -77,6 +77,13 @@ export const INDUSTRIES: Record<string, {
     description: `Entertainment and media brands don't just need to be good — they need to be talked about. Buzz, reach, and cultural relevance are the currency, and we know how to earn all three.\n\nWe work with events, TV shows, streaming platforms, talent agencies, and media brands to build campaigns that get people excited, talking, and showing up. From teaser campaigns and influencer activations to paid social and PR strategy — we understand the mechanics of cultural moments.\n\nOur work spans live events in Sharjah and Dubai, content IPs, and regional media brands that have grown their audiences by six and seven figures.`,
     videos: [],
   },
+  "architecture": {
+    name: "Architecture",
+    tagline: "Spaces built to impress. Content built to sell.",
+    description: `Architecture is one of the most visual industries in the world — yet most firms still rely on static renders and PDFs to win clients. We change that.\n\nWe produce cinematic walkthroughs, drone coverage, launch campaigns, and social content for architectural firms, real estate developers, and interior design studios across the Middle East and Europe. Our work translates the vision behind a building into content that resonates before the first brick is laid.\n\nFrom concept visualisation to project completion reels, we handle the full content lifecycle — helping firms attract investors, win tenders, and build a brand that stands as tall as their buildings.`,
+    videos: [],
+  },
+
   "government": {
     name: "Government",
     tagline: "Communicating with clarity, authority, and reach.",
