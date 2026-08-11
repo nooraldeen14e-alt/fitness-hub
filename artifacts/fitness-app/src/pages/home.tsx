@@ -714,7 +714,7 @@ const WORK_ITEMS = [
   { video: "architecture-reel-1.mp4", category: "Architecture",      client: "Architecture",        size: "small" },
   { video: "government-reel.mp4",       category: "Government",          client: "Government",          size: "large" },
   { video: "entertainment-reel-1.mp4",  category: "Entertainment & Media", client: "Entertainment & Media", size: "small" },
-  { video: "real-estate-reel-1.mp4",   category: "Real Estate",           client: "Real Estate",           size: "large" },
+  { video: "real-estate-reel-5.mp4",   category: "Real Estate",           client: "Real Estate",           size: "large" },
 ];
 
 const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarge: boolean; index: number }) => {
