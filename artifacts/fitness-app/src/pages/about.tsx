@@ -161,6 +161,7 @@ const ClientsTicker = () => {
     { name: "Twisted Olive",          logoUrl: local("twisted-olive.png") },
     { name: "Fouziana",               logoUrl: local("fouziana.png") },
     { name: "LinkinCard",             logoUrl: local("linkincard.png") },
+    { name: "KFC",                    logoUrl: local("kfc.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
