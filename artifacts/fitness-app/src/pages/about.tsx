@@ -149,6 +149,8 @@ const ClientsTicker = () => {
     { name: "Rashed Bugaraa",         logoUrl: local("rashed-bugaraa.png") },
     { name: "Savva All Day Lounge",   logoUrl: local("savva-lounge.png") },
     { name: "Rolls Royce",            logoUrl: local("rolls-royce.png") },
+    { name: "Fashion Factor",         logoUrl: local("fashion-factor.png") },
+    { name: "Sharjah Golf & Shooting Club", logoUrl: local("sharjah-golf-club.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
