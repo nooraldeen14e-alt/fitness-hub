@@ -47,6 +47,104 @@ const GlowCursor = () => {
   );
 };
 
+/* ── Clients logo ticker (two-row infinite scroll) ── */
+type LogoPillEntry = { name: string; si?: { path: string; hex: string; title: string }; logoUrl?: string };
+
+const LogoPill = ({ c }: { c: LogoPillEntry }) => {
+  const [imgFailed, setFailed] = React.useState(false);
+  const logo = () => {
+    if (c.si) return (
+      <svg viewBox="0 0 24 24" style={{ width: 20, height: 20, flexShrink: 0 }}>
+        <path d={c.si.path} fill={`#${c.si.hex}`} />
+      </svg>
+    );
+    if (c.logoUrl && !imgFailed) return (
+      <img src={c.logoUrl} alt={c.name} onError={() => setFailed(true)}
+        draggable={false} style={{ width: 24, height: 24, objectFit: "contain", flexShrink: 0 }} />
+    );
+    return null;
+  };
+  return (
+    <div className="flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 bg-white/[0.03] whitespace-nowrap select-none">
+      {logo()}
+      <span className="font-sans font-semibold text-sm text-white/60">{c.name}</span>
+    </div>
+  );
+};
+
+const ClientsTicker = () => {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const local = (f: string) => `${base}/logos/${f}`;
+
+  const clients: LogoPillEntry[] = [
+    { name: "Toyota",      si: siToyota },
+    { name: "Audi",        si: siAudi },
+    { name: "Volkswagen",  si: siVolkswagen },
+    { name: "Ferrari",     logoUrl: local("ferrari.svg") },
+    { name: "Porsche",     si: siPorsche },
+    { name: "Infiniti",    si: siInfiniti },
+    { name: "Rolls Royce", si: siRollsroyce },
+    { name: "Lexus",       logoUrl: local("lexus.svg") },
+    { name: "Apple",       si: siApple },
+    { name: "Samsung",     si: siSamsung },
+    { name: "Canon",       logoUrl: local("canon.svg") },
+    { name: "Amazon",      logoUrl: local("amazon.svg") },
+    { name: "Adidas",      si: siAdidas },
+    { name: "Dior",        si: siDior },
+    { name: "Farfetch",    si: siFarfetch },
+    { name: "Chanel",      logoUrl: local("chanel.svg") },
+    { name: "L'Oréal",     logoUrl: local("loreal.svg") },
+    { name: "KFC",         si: siKfc },
+    { name: "McDonald's",  si: siMcdonalds },
+    { name: "Red Bull",    si: siRedbull },
+    { name: "Costa Coffee",logoUrl: local("costa.svg") },
+    { name: "Subway",      logoUrl: local("subway.svg") },
+    { name: "Carrefour",   si: siCarrefour },
+    { name: "DHL",         si: siDhl },
+    { name: "Deliveroo",   si: siDeliveroo },
+    { name: "Talabat",     logoUrl: local("talabat.svg") },
+    { name: "Emaar",       logoUrl: local("emaar.svg") },
+    { name: "DAMAC",       logoUrl: local("damac.svg") },
+    { name: "Noon",        logoUrl: local("noon.svg") },
+    { name: "Escapology",  logoUrl: local("escapology.png") },
+    { name: "Liv Bank",    logoUrl: local("liv.svg") },
+    { name: "Rani",        logoUrl: local("rani.png") },
+    { name: "Univ. of Sharjah", logoUrl: local("sharjah-uni.png") },
+    { name: "Sharjah Chamber",  logoUrl: local("sharjah-chamber.png") },
+  ];
+
+  const row1 = clients.filter((_, i) => i % 2 === 0);
+  const row2 = clients.filter((_, i) => i % 2 === 1);
+
+  return (
+    <section className="relative py-8 overflow-hidden" style={{ background: "#080808", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      <style>{`
+        @keyframes home-ticker-l { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+        @keyframes home-ticker-r { from{transform:translateX(-50%)} to{transform:translateX(0)} }
+        .home-tl { display:flex; width:max-content; animation:home-ticker-l 30s linear infinite; }
+        .home-tr { display:flex; width:max-content; animation:home-ticker-r 36s linear infinite; }
+        .home-tl:hover,.home-tr:hover { animation-play-state:paused; }
+      `}</style>
+
+      <div className="overflow-hidden mb-3">
+        <div className="home-tl">
+          {[...row1, ...row1].map((c, i) => <div key={i} className="px-2"><LogoPill c={c} /></div>)}
+        </div>
+      </div>
+      <div className="overflow-hidden">
+        <div className="home-tr">
+          {[...row2, ...row2].map((c, i) => <div key={i} className="px-2"><LogoPill c={c} /></div>)}
+        </div>
+      </div>
+
+      <div className="absolute inset-y-0 left-0 w-20 pointer-events-none z-10"
+        style={{ background: "linear-gradient(to right,#080808,transparent)" }} />
+      <div className="absolute inset-y-0 right-0 w-20 pointer-events-none z-10"
+        style={{ background: "linear-gradient(to left,#080808,transparent)" }} />
+    </section>
+  );
+};
+
 /* ── Services ticker ── */
 const ServicesTicker = () => {
   const items = [
@@ -1123,6 +1221,7 @@ export default function Home() {
       <main>
         <Hero />
         <ServicesTicker />
+        <ClientsTicker />
         <ProofOfWork />
         <OurClients />
       </main>
