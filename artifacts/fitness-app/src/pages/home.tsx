@@ -505,7 +505,7 @@ const Hero = () => {
             >
               {[
                 { val: "150+", label: "Brands Scaled" },
-                { val: "19M+", label: "Total Reach" },
+                { val: "350M+", label: "Total Reach" },
                 { val: "3",    label: "Countries" },
               ].map(({ val, label }) => (
                 <div key={label} className="text-center">
