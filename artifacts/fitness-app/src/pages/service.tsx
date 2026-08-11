@@ -839,19 +839,6 @@ export default function ServicePage() {
               style={{ whiteSpace: "pre-line" }}
             >{service.description}</motion.p>
 
-            {/* Stats row */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.65 }}
-              className="flex gap-6 flex-wrap"
-            >
-              {service.stats.map((s, i) => (
-                <div key={i}>
-                  <p className="font-display font-black text-2xl text-primary leading-none">{s.value}</p>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-white/35 mt-1">{s.label}</p>
-                </div>
-              ))}
-            </motion.div>
           </div>
 
           {/* Right: unique visual */}
