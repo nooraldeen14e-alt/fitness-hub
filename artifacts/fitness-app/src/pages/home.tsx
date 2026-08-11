@@ -89,6 +89,9 @@ const ClientsTicker = () => {
     { name: "Sharjah Excellence Award", logoUrl: local("sharjah-excellence-award.png") },
     { name: "Geely",                  logoUrl: local("geely.png") },
     { name: "Escapology Sharjah",     logoUrl: local("escapology.png") },
+    { name: "Altitude The Gym",       logoUrl: local("altitude-gym.png") },
+    { name: "Audi",                   logoUrl: local("audi.png") },
+    { name: "Univ. of Sharjah",       logoUrl: local("university-of-sharjah.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
@@ -896,6 +899,9 @@ const OurClients = () => {
     { name: "Sharjah Excellence Award", logoUrl: local("sharjah-excellence-award.png") },
     { name: "Geely",                  logoUrl: local("geely.png") },
     { name: "Escapology Sharjah",     logoUrl: local("escapology.png") },
+    { name: "Altitude The Gym",       logoUrl: local("altitude-gym.png") },
+    { name: "Audi",                   logoUrl: local("audi.png") },
+    { name: "Univ. of Sharjah",       logoUrl: local("university-of-sharjah.png") },
   ];
 
   return (
