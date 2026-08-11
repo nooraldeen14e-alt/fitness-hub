@@ -84,6 +84,10 @@ const ClientsTicker = () => {
     { name: "Meaza",                  logoUrl: local("meaza.png") },
     { name: "Corniche Hotel Sharjah", logoUrl: local("corniche-hotel.png") },
     { name: "Charms Education",       logoUrl: local("charms-education.png") },
+    { name: "Ferrari",                logoUrl: local("ferrari.png") },
+    { name: "Lexus",                  logoUrl: local("lexus.png") },
+    { name: "Sharjah Excellence Award", logoUrl: local("sharjah-excellence-award.png") },
+    { name: "Geely",                  logoUrl: local("geely.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
@@ -886,6 +890,10 @@ const OurClients = () => {
     { name: "Meaza",                  logoUrl: local("meaza.png") },
     { name: "Corniche Hotel Sharjah", logoUrl: local("corniche-hotel.png") },
     { name: "Charms Education",       logoUrl: local("charms-education.png") },
+    { name: "Ferrari",                logoUrl: local("ferrari.png") },
+    { name: "Lexus",                  logoUrl: local("lexus.png") },
+    { name: "Sharjah Excellence Award", logoUrl: local("sharjah-excellence-award.png") },
+    { name: "Geely",                  logoUrl: local("geely.png") },
   ];
 
   return (
