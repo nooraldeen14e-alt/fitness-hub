@@ -151,6 +151,10 @@ const ClientsTicker = () => {
     { name: "Rolls Royce",            logoUrl: local("rolls-royce.png") },
     { name: "Fashion Factor",         logoUrl: local("fashion-factor.png") },
     { name: "Sharjah Golf & Shooting Club", logoUrl: local("sharjah-golf-club.png") },
+    { name: "W",                      logoUrl: local("w-emblem.png") },
+    { name: "X-Space Real Estate",    logoUrl: local("xspace-realestate.png") },
+    { name: "Casa Di Spicca",         logoUrl: local("casa-di-spicca.png") },
+    { name: "Operation Level Up",     logoUrl: local("operation-level-up.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
