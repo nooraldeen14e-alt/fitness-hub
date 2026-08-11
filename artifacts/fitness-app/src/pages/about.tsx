@@ -132,6 +132,8 @@ const ClientsTicker = () => {
     { name: "Seventy Fitness & Spa",  logoUrl: local("seventy-fitness.png") },
     { name: "Glitza by Ghaliaa",      logoUrl: local("glitza.png") },
     { name: "Sharqi Gents Salon",     logoUrl: local("sharqi-salon.png") },
+    { name: "Sharjah Chamber",        logoUrl: local("sharjah-chamber.png") },
+    { name: "Rani",                   logoUrl: local("rani.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
