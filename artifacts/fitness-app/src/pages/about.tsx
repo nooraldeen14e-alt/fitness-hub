@@ -484,6 +484,52 @@ export default function About() {
       <ClientsTicker />
 
       {/* ══════════════════════════════════════════════════════
+          PROOF OF WORK
+      ══════════════════════════════════════════════════════ */}
+      <section className="py-28 overflow-hidden" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <style>{`
+          @keyframes scroll-left  { from { transform: translateX(0) }    to { transform: translateX(-50%) } }
+          @keyframes scroll-right { from { transform: translateX(-50%) } to { transform: translateX(0) }    }
+          .reel-left  { animation: scroll-left  34s linear infinite; }
+          .reel-right { animation: scroll-right 40s linear infinite; }
+          .reel-left:hover, .reel-right:hover { animation-play-state: paused; }
+        `}</style>
+
+        {/* header */}
+        <div className="px-8 md:px-16 mb-14">
+          <Reveal>
+            <p className="font-mono text-[11px] uppercase tracking-[0.4em] mb-4" style={{ color: "hsl(25,100%,50%)" }}>Proof of Work</p>
+            <h2 className="font-display font-black uppercase text-4xl md:text-5xl leading-tight">
+              Work that<br />
+              <span style={{ color: "hsl(25,100%,50%)" }}>speaks.</span>
+            </h2>
+          </Reveal>
+        </div>
+
+        {/* row 1 — scrolls left */}
+        <div className="relative mb-4 overflow-hidden">
+          <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #050505, transparent)" }} />
+          <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #050505, transparent)" }} />
+          <div className="flex gap-4 reel-left" style={{ width: "max-content" }}>
+            {[...REEL_ROW1, ...REEL_ROW1].map((r, i) => (
+              <ReelCard key={i} img={r.img} views={r.views} category={r.category} />
+            ))}
+          </div>
+        </div>
+
+        {/* row 2 — scrolls right */}
+        <div className="relative overflow-hidden">
+          <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #050505, transparent)" }} />
+          <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #050505, transparent)" }} />
+          <div className="flex gap-4 reel-right" style={{ width: "max-content" }}>
+            {[...REEL_ROW2, ...REEL_ROW2].map((r, i) => (
+              <ReelCard key={i} img={r.img} views={r.views} category={r.category} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
           BRAND MANIFESTO
       ══════════════════════════════════════════════════════ */}
       <section className="relative py-32 px-6 overflow-hidden" style={{ background: "#050505" }}>
@@ -604,53 +650,6 @@ export default function About() {
                   </div>
                 </Link>
               </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
-          PROOF OF WORK
-      ══════════════════════════════════════════════════════ */}
-      <section className="py-28 overflow-hidden" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <style>{`
-          @keyframes scroll-left  { from { transform: translateX(0) }    to { transform: translateX(-50%) } }
-          @keyframes scroll-right { from { transform: translateX(-50%) } to { transform: translateX(0) }    }
-          .reel-left  { animation: scroll-left  34s linear infinite; }
-          .reel-right { animation: scroll-right 40s linear infinite; }
-          .reel-left:hover, .reel-right:hover { animation-play-state: paused; }
-        `}</style>
-
-        {/* header */}
-        <div className="px-8 md:px-16 mb-14">
-          <Reveal>
-            <p className="font-mono text-[11px] uppercase tracking-[0.4em] mb-4" style={{ color: "hsl(25,100%,50%)" }}>Proof of Work</p>
-            <h2 className="font-display font-black uppercase text-4xl md:text-5xl leading-tight">
-              Work that<br />
-              <span style={{ color: "hsl(25,100%,50%)" }}>speaks.</span>
-            </h2>
-          </Reveal>
-        </div>
-
-        {/* row 1 — scrolls left */}
-        <div className="relative mb-4 overflow-hidden">
-          {/* edge fades */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #050505, transparent)" }} />
-          <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #050505, transparent)" }} />
-          <div className="flex gap-4 reel-left" style={{ width: "max-content" }}>
-            {[...REEL_ROW1, ...REEL_ROW1].map((r, i) => (
-              <ReelCard key={i} img={r.img} views={r.views} category={r.category} />
-            ))}
-          </div>
-        </div>
-
-        {/* row 2 — scrolls right */}
-        <div className="relative overflow-hidden">
-          <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #050505, transparent)" }} />
-          <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #050505, transparent)" }} />
-          <div className="flex gap-4 reel-right" style={{ width: "max-content" }}>
-            {[...REEL_ROW2, ...REEL_ROW2].map((r, i) => (
-              <ReelCard key={i} img={r.img} views={r.views} category={r.category} />
             ))}
           </div>
         </div>
