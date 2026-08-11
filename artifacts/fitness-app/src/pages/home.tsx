@@ -101,6 +101,9 @@ const ClientsTicker = () => {
     { name: "X-Space Real Estate",    logoUrl: local("xspace-realestate.png") },
     { name: "Casa Di Spicca",         logoUrl: local("casa-di-spicca.png") },
     { name: "Operation Level Up",     logoUrl: local("operation-level-up.png") },
+    { name: "Mash Specialty Coffee",  logoUrl: local("mash-coffee.png") },
+    { name: "Twisted Olive",          logoUrl: local("twisted-olive.png") },
+    { name: "Fouziana",               logoUrl: local("fouziana.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
@@ -920,6 +923,9 @@ const OurClients = () => {
     { name: "X-Space Real Estate",    logoUrl: local("xspace-realestate.png") },
     { name: "Casa Di Spicca",         logoUrl: local("casa-di-spicca.png") },
     { name: "Operation Level Up",     logoUrl: local("operation-level-up.png") },
+    { name: "Mash Specialty Coffee",  logoUrl: local("mash-coffee.png") },
+    { name: "Twisted Olive",          logoUrl: local("twisted-olive.png") },
+    { name: "Fouziana",               logoUrl: local("fouziana.png") },
   ];
 
   return (
