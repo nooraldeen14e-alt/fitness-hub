@@ -731,7 +731,6 @@ const REEL_ROW2 = [
   { img: "proof-4.png",  views: "1.3M",  category: "Fitness & Wellness" },
   { img: "proof-6.png",  views: "1.6M",  category: "Fitness & Wellness" },
   { img: "proof-8.png",  views: "1.4M",  category: "Interior Design"    },
-  { img: "proof-10.png", views: "441K",  category: "Entertainment"      },
   { img: "proof-12.png", views: "4.2M",  category: "Fitness & Wellness" },
 ];
 
