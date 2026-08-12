@@ -94,6 +94,7 @@ export const INDUSTRIES: Record<string, {
       "/architecture-reel-2.mp4",
       "/architecture-reel-3.mp4",
       "/architecture-reel-4.mp4",
+      { url: "/architecture-reel-5.mp4", poster: "/architecture-reel-5-poster.png" },
     ],
   },
 
