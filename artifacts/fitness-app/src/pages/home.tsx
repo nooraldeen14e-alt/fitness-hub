@@ -1115,11 +1115,11 @@ const Contact = () => {
           Reach Out
         </motion.h2>
 
-        <div className="grid grid-cols-2 lg:grid-cols-2 gap-3 md:gap-12">
-          {/* ── Left: info + form ── */}
+        <div className="flex flex-col gap-12">
+          {/* ── Info + form ── */}
           <div className="flex flex-col gap-4 md:gap-10">
             {/* Info grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
+            <div className="grid grid-cols-2 gap-3 md:gap-6">
               {[
                 {
                   icon: (
@@ -1167,6 +1167,25 @@ const Contact = () => {
                 </motion.div>
               ))}
             </div>
+
+            {/* Google Maps link */}
+            <a
+              href="https://maps.google.com/?q=Dubai,United+Arab+Emirates"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between w-full rounded-2xl border border-white/10 px-5 py-4 bg-white/5 hover:bg-white/10 hover:border-primary transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full flex items-center justify-center shrink-0" style={{ background: "hsl(25,100%,50%)" }}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" className="w-4 h-4"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                </div>
+                <div>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-white/40 mb-0.5">Find us on</p>
+                  <p className="font-sans text-sm font-semibold text-white">Google Maps</p>
+                </div>
+              </div>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4 text-white/30 group-hover:text-primary transition-colors"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+            </a>
 
             {/* Form */}
             <motion.div
@@ -1220,24 +1239,6 @@ const Contact = () => {
             </motion.div>
           </div>
 
-          {/* ── Right: map ── */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="rounded-2xl overflow-hidden border border-white/10 min-h-[220px] md:min-h-[500px] lg:min-h-full"
-          >
-            <iframe
-              title="Swissulife Media Location"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d462562.61292108404!2d54.94793630000001!3d25.075323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496ad9c645%3A0xbf7a3b4b5909f72f!2sDubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
-              width="100%"
-              height="100%"
-              style={{ border: 0, minHeight: "220px", filter: "invert(90%) hue-rotate(180deg)" }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </motion.div>
         </div>
       </div>
     </section>
