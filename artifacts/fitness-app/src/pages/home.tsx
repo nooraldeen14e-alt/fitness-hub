@@ -647,7 +647,7 @@ const ClientCard = ({ c }: { c: ClientEntry }) => {
       onMouseLeave={onLeave}
       title={c.name}
       style={{ willChange: "transform", background: bg, ...tilt }}
-      className="rounded-2xl aspect-square flex items-center justify-center p-[6%] cursor-default overflow-hidden bg-foreground"
+      className="rounded-xl aspect-square flex items-center justify-center p-[4%] md:p-[6%] cursor-default overflow-hidden bg-foreground"
     >
       {renderContent()}
     </div>
@@ -1062,7 +1062,7 @@ const OurClients = () => {
           <p className="font-mono text-primary uppercase tracking-[0.35em] text-xs mb-3">Some of our</p>
           <h2 className="font-display font-bold text-6xl md:text-8xl uppercase text-white/80">Clients</h2>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+        <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3">
           {clients.map((c) => (
             <ClientCard key={c.name} c={c} />
           ))}
