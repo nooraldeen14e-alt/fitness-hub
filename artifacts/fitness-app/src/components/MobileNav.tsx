@@ -1,8 +1,11 @@
 /**
  * MobileNav — hamburger drawer for small screens.
  * Drop-in for every page: <MobileNav active="home" />
+ * The drawer/overlay are portalled to document.body so they escape any
+ * ancestor stacking context (e.g. the fixed z-40 navbar).
  */
 import React from "react";
+import ReactDOM from "react-dom";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
@@ -73,11 +76,67 @@ export default function MobileNav({ active }: { active: Page }) {
   const [open, setOpen] = React.useState(false);
   const close = () => setOpen(false);
 
+  // Lock body scroll while drawer is open
+  React.useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
+  const drawer = (
+    <AnimatePresence>
+      {open && (
+        <>
+          {/* Backdrop — portalled above everything */}
+          <motion.div
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm md:hidden"
+            style={{ zIndex: 99998 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={close}
+          />
+          {/* Drawer panel */}
+          <motion.div
+            className="fixed top-0 right-0 bottom-0 w-72 bg-[#0d0d0d] border-l border-white/10 md:hidden flex flex-col pt-20 px-8 overflow-y-auto"
+            style={{ zIndex: 99999 }}
+            initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
+            transition={{ type: "spring", stiffness: 340, damping: 32 }}
+          >
+            <Link href="/" onClick={close}>
+              <div className={`py-4 text-xl font-display font-bold uppercase tracking-wide border-b border-white/5 transition-colors ${active === "home" ? "text-primary" : "text-white/70 hover:text-white"}`}>
+                Home
+              </div>
+            </Link>
+
+            <Accordion label="We Offer"   items={SERVICES}    onClose={close} />
+            <Accordion label="Industries" items={INDUSTRIES}  onClose={close} />
+
+            <Link href="/about" onClick={close}>
+              <div className={`py-4 text-xl font-display font-bold uppercase tracking-wide border-b border-white/5 transition-colors ${active === "about" ? "text-primary" : "text-white/70 hover:text-white"}`}>
+                About Us
+              </div>
+            </Link>
+            <Link href="/contact" onClick={close}>
+              <div className={`py-4 text-xl font-display font-bold uppercase tracking-wide border-b border-white/5 transition-colors ${active === "contact" ? "text-primary" : "text-white/70 hover:text-white"}`}>
+                Contact Us
+              </div>
+            </Link>
+
+            <Link href="/contact" onClick={close}>
+              <button className="mt-8 mb-10 w-full py-4 rounded-xl font-mono text-sm uppercase tracking-widest text-black font-bold"
+                style={{ background: "hsl(25,100%,50%)" }}>
+                Schedule a Meeting
+              </button>
+            </Link>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+
   return (
     <>
-      {/* Hamburger button — visible only on mobile */}
+      {/* Hamburger button — stays inside the navbar */}
       <button
-        className="md:hidden flex flex-col justify-center gap-[5px] w-8 h-8 z-[1001] relative"
+        className="md:hidden flex flex-col justify-center gap-[5px] w-8 h-8 relative"
         onClick={() => setOpen(o => !o)}
         aria-label="Toggle menu"
       >
@@ -86,50 +145,8 @@ export default function MobileNav({ active }: { active: Page }) {
         <motion.span animate={open ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }} className="block h-[2px] w-full bg-white origin-center" />
       </button>
 
-      {/* Drawer */}
-      <AnimatePresence>
-        {open && (
-          <>
-            <motion.div
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[999] md:hidden"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              onClick={close}
-            />
-            <motion.div
-              className="fixed top-0 right-0 bottom-0 w-72 bg-[#0d0d0d] border-l border-white/10 z-[1000] md:hidden flex flex-col pt-20 px-8 overflow-y-auto"
-              initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 340, damping: 32 }}
-            >
-              <Link href="/" onClick={close}>
-                <div className={`py-4 text-xl font-display font-bold uppercase tracking-wide border-b border-white/5 transition-colors ${active === "home" ? "text-primary" : "text-white/70 hover:text-white"}`}>
-                  Home
-                </div>
-              </Link>
-
-              <Accordion label="We Offer"   items={SERVICES}    onClose={close} />
-              <Accordion label="Industries" items={INDUSTRIES}  onClose={close} />
-
-              <Link href="/about" onClick={close}>
-                <div className={`py-4 text-xl font-display font-bold uppercase tracking-wide border-b border-white/5 transition-colors ${active === "about" ? "text-primary" : "text-white/70 hover:text-white"}`}>
-                  About Us
-                </div>
-              </Link>
-              <Link href="/contact" onClick={close}>
-                <div className={`py-4 text-xl font-display font-bold uppercase tracking-wide border-b border-white/5 transition-colors ${active === "contact" ? "text-primary" : "text-white/70 hover:text-white"}`}>
-                  Contact Us
-                </div>
-              </Link>
-
-              <Link href="/contact" onClick={close}>
-                <button className="mt-8 mb-10 w-full py-4 rounded-xl font-mono text-sm uppercase tracking-widest text-black font-bold"
-                  style={{ background: "hsl(25,100%,50%)" }}>
-                  Schedule a Meeting
-                </button>
-              </Link>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+      {/* Drawer portalled to body — escapes any ancestor stacking context */}
+      {typeof document !== "undefined" && ReactDOM.createPortal(drawer, document.body)}
     </>
   );
 }
