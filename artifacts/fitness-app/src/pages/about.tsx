@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
-import GlobeScene from "@/components/GlobeScene";
+const GlobeScene = React.lazy(() => import("@/components/GlobeScene"));
 
 // ─── Proof of Work filmstrip ─────────────────────────────────────────────────
 const REEL_ROW1 = [
@@ -448,7 +448,9 @@ export default function About() {
 
           {/* Globe canvas — fills panel */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <GlobeScene />
+            <React.Suspense fallback={null}>
+              <GlobeScene />
+            </React.Suspense>
           </div>
 
           {/* Country labels */}

@@ -293,7 +293,7 @@ export default function IndustryPage() {
           <div className="px-6 md:px-16 lg:px-24 flex gap-4">
             {industry.videos.map((entry, i) => (
               <div key={i} className="shrink-0" style={{ height: 340 }}>
-                <VideoCard entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel preload="auto" />
+                <VideoCard entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel preload="metadata" />
               </div>
             ))}
           </div>
@@ -303,7 +303,7 @@ export default function IndustryPage() {
             <div className="ind-track">
               {industry.videos.map((entry, i) => (
                 <div key={`a-${i}`} className="shrink-0" style={{ height: 340 }}>
-                  <VideoCard entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel preload="auto" />
+                  <VideoCard entry={entry} index={i} onOpen={() => setLightboxUrl(videoUrl(entry))} carousel preload="metadata" />
                 </div>
               ))}
               {industry.videos.map((entry, i) => (
