@@ -219,7 +219,7 @@ export default function GlobeScene() {
 
       // ── Clip to sphere ───────────────────────────────────────────────────
       ctx.save();
-      ctx.beginPath(); ctx.arc(cx, cy, R - 0.5, 0, Math.PI * 2); ctx.clip();
+      ctx.beginPath(); ctx.arc(cx, cy, Math.max(0, R - 0.5), 0, Math.PI * 2); ctx.clip();
 
       // ── Non-highlighted country fills ────────────────────────────────────
       for (const shape of shapes) {
