@@ -714,6 +714,8 @@ const REEL_ROW1 = [
   { img: "proof-5.png",  views: "2.2M",  category: "Fitness & Wellness" },
   { img: "proof-7.png",  views: "1.3M",  category: "Fragrance & Beauty" },
   { img: "proof-9.png",  views: "714K",  category: "Real Estate"        },
+  { img: "proof-11.png", views: "3.1M",  category: "Fitness & Wellness" },
+  { img: "proof-13.png", views: "2.7M",  category: "Fitness & Wellness" },
 ];
 const REEL_ROW2 = [
   { img: "proof-2.png",  views: "81.7K", category: "Government"         },
@@ -721,6 +723,7 @@ const REEL_ROW2 = [
   { img: "proof-6.png",  views: "1.6M",  category: "Fitness & Wellness" },
   { img: "proof-8.png",  views: "1.4M",  category: "Interior Design"    },
   { img: "proof-10.png", views: "441K",  category: "Entertainment"      },
+  { img: "proof-12.png", views: "4.2M",  category: "Fitness & Wellness" },
 ];
 
 const ReelCard = ({ img, views, category }: { img: string; views: string; category: string }) => {
