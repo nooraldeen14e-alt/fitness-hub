@@ -20,6 +20,7 @@ export const INDUSTRIES: Record<string, {
       "/fashion-reel-3.mp4",
       "/fashion-reel-4.mp4",
       "/fashion-reel-5.mp4",
+      { url: "/fashion-reel-6.mp4", poster: "/fashion-reel-6-poster.png" },
     ],
   },
   "fitness-wellness": {
