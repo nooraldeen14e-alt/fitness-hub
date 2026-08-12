@@ -117,6 +117,9 @@ const ClientsTicker = () => {
     { name: "Fouziana",               logoUrl: local("fouziana.png") },
     { name: "LinkinCard",             logoUrl: local("linkincard.png") },
     { name: "KFC",                    logoUrl: local("kfc.png") },
+    { name: "NHS",                    logoUrl: local("nhs.png") },
+    { name: "Daym",                   logoUrl: local("daym.png") },
+    { name: "Blends Collection",      logoUrl: local("blends-collection.png") },
   ];
 
   const row1 = clients.filter((_, i) => i % 2 === 0);
@@ -953,6 +956,9 @@ const OurClients = () => {
     { name: "Fouziana",               logoUrl: local("fouziana.png") },
     { name: "LinkinCard",             logoUrl: local("linkincard.png") },
     { name: "KFC",                    logoUrl: local("kfc.png") },
+    { name: "NHS",                    logoUrl: local("nhs.png") },
+    { name: "Daym",                   logoUrl: local("daym.png") },
+    { name: "Blends Collection",      logoUrl: local("blends-collection.png") },
   ];
 
   return (
