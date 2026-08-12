@@ -431,7 +431,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.52, duration: 0.6 }}
-              className="flex flex-wrap items-center justify-center gap-4 mb-14"
+              className="flex flex-wrap items-center justify-center gap-4 mb-6 md:mb-14"
             >
               <button
                 onClick={() => setScheduleOpen(true)}
@@ -450,12 +450,12 @@ const Hero = () => {
               </Link>
             </motion.div>
 
-            {/* Stats row */}
+            {/* Stats row — desktop only (mobile version sits below photos) */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.75, duration: 0.7 }}
-              className="flex items-center gap-8 md:gap-14"
+              className="hidden md:flex items-center gap-14"
               style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "1.75rem" }}
             >
               {[
@@ -492,7 +492,7 @@ const Hero = () => {
         </div>
 
         {/* ── Mobile-only: photos side by side below content ── */}
-        <div className="flex md:hidden w-full" style={{ zIndex: 2 }}>
+        <div className="md:hidden w-full" style={{ zIndex: 2 }}><div className="flex w-full">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -524,6 +524,27 @@ const Hero = () => {
               style={{ height: "90vw", display: "block" }}
               draggable={false}
             />
+          </motion.div>
+        </div>
+
+          {/* Stats — mobile only, below photos */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.75, duration: 0.7 }}
+            className="flex items-center justify-center gap-8 px-6 py-6"
+            style={{ borderTop: "1px solid rgba(255,255,255,0.07)" }}
+          >
+            {[
+              { val: "150+", label: "Brands Scaled" },
+              { val: "350M+", label: "Total Reach" },
+              { val: "3",    label: "Countries" },
+            ].map(({ val, label }) => (
+              <div key={label} className="text-center">
+                <p className="font-display font-black text-white" style={{ fontSize: "clamp(1.5rem, 2.8vw, 2.2rem)", lineHeight: 1 }}>{val}</p>
+                <p className="font-mono text-white/30 uppercase tracking-widest mt-1.5" style={{ fontSize: "0.58rem" }}>{label}</p>
+              </div>
+            ))}
           </motion.div>
         </div>
       </section>
@@ -836,7 +857,7 @@ const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarg
 
   return (
     <motion.div
-      className={`${isLarge ? "md:col-span-7" : "md:col-span-5"}`}
+      className={`col-span-1 ${isLarge ? "md:col-span-7" : "md:col-span-5"}`}
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
@@ -850,9 +871,8 @@ const TiltCard = ({ item, isLarge, index }: { item: typeof WORK_ITEMS[0]; isLarg
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={onLeave}
         onClick={() => item.video && setModalSrc(item.video)}
-        className="relative overflow-hidden rounded-2xl cursor-pointer w-full"
+        className={`relative overflow-hidden rounded-2xl cursor-pointer w-full aspect-[9/16] ${isLarge ? "md:aspect-[16/10]" : "md:aspect-[4/3]"}`}
         style={{
-          aspectRatio: isLarge ? "16/10" : "4/3",
           transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${hovered ? 1.03 : 1})`,
           transition: hovered ? "transform 0.1s ease-out" : "transform 0.6s cubic-bezier(0.16,1,0.3,1)",
           transformStyle: "preserve-3d",
@@ -976,7 +996,7 @@ const ProofOfWork = () => (
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-12 gap-2 md:gap-4">
         {WORK_ITEMS.map((item, i) => (
           <TiltCard key={i} item={item} isLarge={item.size === "large"} index={i} />
         ))}
