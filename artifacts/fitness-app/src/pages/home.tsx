@@ -4,53 +4,6 @@ import { Link } from "wouter";
 import ScheduleModal from "@/components/ScheduleModal";
 import MobileNav from "@/components/MobileNav";
 import { ArrowRight, X, Play, Volume2, VolumeX } from "lucide-react";
-import { LineChart, Line, ResponsiveContainer } from "recharts";
-
-/* ── Glowing cursor — RAF-throttled to avoid constant re-renders ── */
-const GlowCursor = () => {
-  const [pos, setPos] = React.useState({ x: -200, y: -200 });
-  const [visible, setVisible] = React.useState(false);
-  const rafId  = React.useRef<number>(0);
-  const latest = React.useRef({ x: -200, y: -200 });
-
-  React.useEffect(() => {
-    const move = (e: MouseEvent) => {
-      latest.current = { x: e.clientX, y: e.clientY };
-      setVisible(true);
-      cancelAnimationFrame(rafId.current);
-      rafId.current = requestAnimationFrame(() => setPos({ ...latest.current }));
-    };
-    const hide = () => setVisible(false);
-    window.addEventListener("mousemove", move, { passive: true });
-    window.addEventListener("mouseleave", hide);
-    return () => {
-      window.removeEventListener("mousemove", move);
-      window.removeEventListener("mouseleave", hide);
-      cancelAnimationFrame(rafId.current);
-    };
-  }, []);
-
-  return (
-    <div
-      className="pointer-events-none fixed z-[9999]"
-      style={{
-        left: pos.x,
-        top: pos.y,
-        transform: "translate(-50%, -50%)",
-        opacity: visible ? 1 : 0,
-        transition: "left 0.06s linear, top 0.06s linear, opacity 0.3s ease",
-      }}
-    >
-      {/* outer glow */}
-      <div className="absolute rounded-full"
-        style={{ width: 40, height: 40, top: -20, left: -20, background: "hsl(25,100%,50%)", opacity: 0.15, filter: "blur(12px)" }} />
-      {/* inner dot */}
-      <div className="absolute rounded-full"
-        style={{ width: 10, height: 10, top: -5, left: -5, background: "hsl(25,100%,50%)", opacity: 0.9 }} />
-    </div>
-  );
-};
-
 /* ── Clients logo ticker (two-row infinite scroll) ── */
 type LogoPillEntry = { name: string; si?: { path: string; hex: string; title: string }; logoUrl?: string };
 
@@ -419,8 +372,8 @@ const Hero = () => {
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden md:block flex-shrink-0 relative self-end"
-            style={{ width: "clamp(200px, 22vw, 340px)" }}
+            className="absolute bottom-0 left-0 md:static md:flex-shrink-0 md:self-end"
+            style={{ width: "clamp(90px, 26vw, 340px)" }}
           >
             <img
               src="/person-left-nobg.png"
@@ -428,13 +381,13 @@ const Hero = () => {
               loading="eager"
               decoding="async"
               className="w-full object-cover object-top select-none pointer-events-none"
-              style={{ height: "clamp(340px, 65vh, 660px)", display: "block" }}
+              style={{ height: "clamp(200px, 55vh, 660px)", display: "block" }}
               draggable={false}
             />
           </motion.div>
 
           {/* CENTER content */}
-          <div className="flex-1 flex flex-col items-center justify-center text-center px-6 pt-36 pb-16 md:pb-20">
+          <div className="flex-1 flex flex-col items-center justify-center text-center px-[27vw] md:px-6 pt-36 pb-16 md:pb-20">
 
             {/* label */}
             <motion.p
@@ -524,8 +477,8 @@ const Hero = () => {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden md:block flex-shrink-0 relative self-end"
-            style={{ width: "clamp(200px, 22vw, 340px)" }}
+            className="absolute bottom-0 right-0 md:static md:flex-shrink-0 md:self-end"
+            style={{ width: "clamp(90px, 26vw, 340px)" }}
           >
             <img
               src="/person-right-nobg.png"
@@ -533,7 +486,7 @@ const Hero = () => {
               loading="eager"
               decoding="async"
               className="w-full object-cover object-top select-none pointer-events-none"
-              style={{ height: "clamp(340px, 65vh, 660px)", display: "block" }}
+              style={{ height: "clamp(200px, 55vh, 660px)", display: "block" }}
               draggable={false}
             />
           </motion.div>
@@ -1064,55 +1017,6 @@ const OurClients = () => {
   );
 };
 
-
-
-const Stats = () => {
-  const data = [
-    { name: "Q1", value: 100 },
-    { name: "Q2", value: 250 },
-    { name: "Q3", value: 180 },
-    { name: "Q4", value: 400 },
-    { name: "Q5", value: 380 },
-    { name: "Q6", value: 700 },
-    { name: "Q7", value: 650 },
-    { name: "Q8", value: 1000 }
-  ];
-
-  return (
-    <section className="py-14 px-6 bg-primary text-black relative overflow-hidden">
-      {/* Wavy background line */}
-      <div className="absolute inset-0 opacity-[0.08] pointer-events-none w-full h-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
-            <Line type="monotone" dataKey="value" stroke="#000" strokeWidth={12} dot={false} isAnimationActive={false} />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3">
-          {[
-            { value: "3M+",  label: "Total Reach Per Month" },
-            { value: "1.8M", label: "Instagram Reach" },
-            { value: "293K", label: "Monthly Impressions" },
-          ].map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: i * 0.12 }}
-              className={`flex flex-col justify-center py-6 md:py-0 md:px-12 ${i > 0 ? "border-t md:border-t-0 md:border-l border-black/20" : ""}`}
-            >
-              <h4 className="font-display font-black leading-none mb-2" style={{ fontSize: "clamp(3.5rem,7vw,5.5rem)" }}>{stat.value}</h4>
-              <p className="font-mono uppercase text-[11px] font-bold tracking-[0.25em] opacity-70">{stat.label}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 
 
