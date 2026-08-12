@@ -707,6 +707,85 @@ const VideoModal = ({ src, onClose }: { src: string; onClose: () => void }) => {
   );
 };
 
+// ─── Work That Speaks filmstrip ──────────────────────────────────────────────
+const REEL_ROW1 = [
+  { img: "proof-1.png",  views: "515K",  category: "Real Estate"       },
+  { img: "proof-3.png",  views: "507K",  category: "Fitness & Wellness" },
+  { img: "proof-5.png",  views: "2.2M",  category: "Fitness & Wellness" },
+  { img: "proof-7.png",  views: "1.3M",  category: "Fragrance & Beauty" },
+  { img: "proof-9.png",  views: "714K",  category: "Real Estate"        },
+];
+const REEL_ROW2 = [
+  { img: "proof-2.png",  views: "81.7K", category: "Government"         },
+  { img: "proof-4.png",  views: "1.3M",  category: "Fitness & Wellness" },
+  { img: "proof-6.png",  views: "1.6M",  category: "Fitness & Wellness" },
+  { img: "proof-8.png",  views: "1.4M",  category: "Interior Design"    },
+  { img: "proof-10.png", views: "441K",  category: "Entertainment"      },
+];
+
+const ReelCard = ({ img, views, category }: { img: string; views: string; category: string }) => {
+  const [hov, setHov] = React.useState(false);
+  return (
+    <div
+      className="relative shrink-0 rounded-2xl overflow-hidden cursor-pointer"
+      style={{ width: 220, height: 310 }}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+    >
+      <img src={`/${img}`} alt={category} loading="lazy" decoding="async"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700"
+        style={{ transform: hov ? "scale(1.06)" : "scale(1)" }} />
+      <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 45%, transparent 70%)" }} />
+      <div className="absolute inset-0 transition-opacity duration-300" style={{ background: "rgba(0,0,0,0.28)", opacity: hov ? 1 : 0 }} />
+      <div className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-300"
+        style={{ boxShadow: "inset 0 0 0 1.5px hsl(25,100%,50%)", opacity: hov ? 1 : 0 }} />
+      <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.9 }}>
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <span className="font-mono font-bold text-white text-[13px] leading-none" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.8)" }}>{views}</span>
+      </div>
+      <div className="absolute bottom-3 right-3 transition-all duration-300"
+        style={{ opacity: hov ? 1 : 0, transform: hov ? "translateY(0)" : "translateY(4px)" }}>
+        <span className="font-mono text-[9px] uppercase tracking-[0.2em] font-bold" style={{ color: "hsl(25,100%,55%)" }}>{category}</span>
+      </div>
+    </div>
+  );
+};
+
+const WorkThatSpeaks = () => (
+  <section className="py-28 overflow-hidden bg-black" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+    <style>{`
+      @keyframes home-reel-left  { from { transform: translateX(0) }    to { transform: translateX(-50%) } }
+      @keyframes home-reel-right { from { transform: translateX(-50%) } to { transform: translateX(0) }    }
+      .home-reel-l { animation: home-reel-left  34s linear infinite; }
+      .home-reel-r { animation: home-reel-right 40s linear infinite; }
+    `}</style>
+    <div className="px-8 md:px-16 mb-14">
+      <p className="font-mono text-[11px] uppercase tracking-[0.4em] mb-4" style={{ color: "hsl(25,100%,50%)" }}>Proof of Work</p>
+      <h2 className="font-display font-black uppercase text-4xl md:text-5xl leading-tight">
+        Work that<br />
+        <span style={{ color: "hsl(25,100%,50%)" }}>speaks.</span>
+      </h2>
+    </div>
+    <div className="relative mb-4 overflow-hidden">
+      <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #000, transparent)" }} />
+      <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #000, transparent)" }} />
+      <div className="flex gap-4 home-reel-l" style={{ width: "max-content" }}>
+        {[...REEL_ROW1, ...REEL_ROW1].map((r, i) => <ReelCard key={i} img={r.img} views={r.views} category={r.category} />)}
+      </div>
+    </div>
+    <div className="relative overflow-hidden">
+      <div className="absolute left-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to right, #000, transparent)" }} />
+      <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: "linear-gradient(to left, #000, transparent)" }} />
+      <div className="flex gap-4 home-reel-r" style={{ width: "max-content" }}>
+        {[...REEL_ROW2, ...REEL_ROW2].map((r, i) => <ReelCard key={i} img={r.img} views={r.views} category={r.category} />)}
+      </div>
+    </div>
+  </section>
+);
+
 const WORK_ITEMS = [
   { video: "fashion-reel-1.mp4",    category: "Fashion & Apparel",   client: "Fashion & Apparel",   size: "large" },
   { video: "fitness-reel-1.mp4",    category: "Fitness & Wellness",  client: "Fitness & Wellness",  size: "small" },
@@ -1263,6 +1342,7 @@ export default function Home() {
         <Hero />
         <ServicesTicker />
         <ProofOfWork />
+        <WorkThatSpeaks />
         <OurClients />
       </main>
 
