@@ -494,7 +494,6 @@ export default function About() {
           @keyframes scroll-right { from { transform: translateX(-50%) } to { transform: translateX(0) }    }
           .reel-left  { animation: scroll-left  34s linear infinite; }
           .reel-right { animation: scroll-right 40s linear infinite; }
-          .reel-left:hover, .reel-right:hover { animation-play-state: paused; }
         `}</style>
 
         {/* header */}
