@@ -351,8 +351,7 @@ const Hero = () => {
       <ScheduleModal open={scheduleOpen} onClose={() => setScheduleOpen(false)} />
       <section
         id="hero"
-        className="relative w-full bg-[#050505] overflow-hidden"
-        style={{ minHeight: "82vh" }}
+        className="relative w-full bg-[#050505] overflow-hidden md:min-h-[82vh]"
       >
         {/* subtle radial glow behind center text */}
         <div
@@ -364,16 +363,16 @@ const Hero = () => {
           }}
         />
 
-        {/* ── Three-column grid ── */}
+        {/* ── Three-column grid (desktop) ── */}
         <div className="relative w-full h-full flex items-end" style={{ zIndex: 2 }}>
 
-          {/* LEFT person */}
+          {/* LEFT person — desktop only */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute bottom-0 left-0 md:static md:flex-shrink-0 md:self-end"
-            style={{ width: "clamp(90px, 26vw, 340px)" }}
+            className="hidden md:block flex-shrink-0 self-end"
+            style={{ width: "clamp(200px, 22vw, 340px)" }}
           >
             <img
               src="/person-left-nobg.png"
@@ -381,13 +380,13 @@ const Hero = () => {
               loading="eager"
               decoding="async"
               className="w-full object-cover object-top select-none pointer-events-none"
-              style={{ height: "clamp(200px, 55vh, 660px)", display: "block" }}
+              style={{ height: "clamp(340px, 65vh, 660px)", display: "block" }}
               draggable={false}
             />
           </motion.div>
 
           {/* CENTER content */}
-          <div className="flex-1 flex flex-col items-center justify-center text-center px-[27vw] md:px-6 pt-36 pb-16 md:pb-20">
+          <div className="flex-1 flex flex-col items-center justify-center text-center px-6 pt-20 md:pt-36 pb-8 md:pb-20">
 
             {/* label */}
             <motion.p
@@ -472,13 +471,13 @@ const Hero = () => {
             </motion.div>
           </div>
 
-          {/* RIGHT person */}
+          {/* RIGHT person — desktop only */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute bottom-0 right-0 md:static md:flex-shrink-0 md:self-end"
-            style={{ width: "clamp(90px, 26vw, 340px)" }}
+            className="hidden md:block flex-shrink-0 self-end"
+            style={{ width: "clamp(200px, 22vw, 340px)" }}
           >
             <img
               src="/person-right-nobg.png"
@@ -486,7 +485,43 @@ const Hero = () => {
               loading="eager"
               decoding="async"
               className="w-full object-cover object-top select-none pointer-events-none"
-              style={{ height: "clamp(200px, 55vh, 660px)", display: "block" }}
+              style={{ height: "clamp(340px, 65vh, 660px)", display: "block" }}
+              draggable={false}
+            />
+          </motion.div>
+        </div>
+
+        {/* ── Mobile-only: photos side by side below content ── */}
+        <div className="flex md:hidden w-full" style={{ zIndex: 2 }}>
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1"
+          >
+            <img
+              src="/person-left-nobg.png"
+              alt="Team member"
+              loading="eager"
+              decoding="async"
+              className="w-full object-cover object-top select-none pointer-events-none"
+              style={{ height: "90vw", display: "block" }}
+              draggable={false}
+            />
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1"
+          >
+            <img
+              src="/person-right-nobg.png"
+              alt="Team member"
+              loading="eager"
+              decoding="async"
+              className="w-full object-cover object-top select-none pointer-events-none"
+              style={{ height: "90vw", display: "block" }}
               draggable={false}
             />
           </motion.div>
