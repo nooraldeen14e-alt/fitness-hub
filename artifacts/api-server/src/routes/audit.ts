@@ -37,20 +37,52 @@ Rules:
 - topPriorities must be the 3 highest-ROI fixes
 - Return ONLY valid JSON — no markdown fences, no explanation text`;
 
-// Models to try in order — newest first. Skips any that return NOT_FOUND.
-const GEMINI_MODELS = [
-  "gemini-2.5-pro",
-  "gemini-2.5-flash",
-  "gemini-2.5-flash-preview-05-20",
-  "gemini-2.0-flash-001",
-  "gemini-2.0-flash",
-  "gemini-1.5-flash-latest",
-  "gemini-1.5-flash",
-  "gemini-1.5-pro-latest",
-];
+// Preferred keywords — models matching these (in order) rank first
+const PREFERRED = ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-pro", "gemini-1.5-flash"];
+
+async function discoverModels(apiKey: string): Promise<string[]> {
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}&pageSize=100`
+    );
+    if (!res.ok) return [];
+    const data = await res.json() as {
+      models?: { name: string; supportedGenerationMethods?: string[] }[];
+    };
+    const vision = (data.models ?? [])
+      .filter(m =>
+        (m.supportedGenerationMethods ?? []).includes("generateContent") &&
+        /gemini/i.test(m.name) &&
+        !/embedding|aqa|imagen/i.test(m.name)
+      )
+      .map(m => m.name.replace("models/", ""));
+
+    // Sort: preferred first (in priority order), then the rest
+    const sorted: string[] = [];
+    for (const pref of PREFERRED) {
+      const match = vision.filter(v => v.includes(pref.replace("gemini-", "")));
+      sorted.push(...match.filter(m => !sorted.includes(m)));
+    }
+    vision.filter(v => !sorted.includes(v)).forEach(v => sorted.push(v));
+    console.log("Discovered Gemini models:", sorted.slice(0, 6).join(", "));
+    return sorted;
+  } catch (e) {
+    console.error("Model discovery failed:", e);
+    return [];
+  }
+}
 
 async function callGemini(apiKey: string, mimeType: string, base64Data: string) {
-  for (const model of GEMINI_MODELS) {
+  const models = await discoverModels(apiKey);
+  if (models.length === 0) {
+    return {
+      ok: false,
+      errBody: { error: { status: "UNAUTHENTICATED", message: "Could not list models — your API key may be invalid. Get a free key at aistudio.google.com/app/apikey" } },
+    };
+  }
+
+  for (const model of models) {
+    console.log(`Trying model: ${model}`);
     const res = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
       {
@@ -69,15 +101,16 @@ async function callGemini(apiKey: string, mimeType: string, base64Data: string) 
     );
 
     if (!res.ok) {
-      const errBody = await res.json().catch(() => ({})) as { error?: { status?: string; code?: number; message?: string } };
+      const errBody = await res.json().catch(() => ({})) as {
+        error?: { status?: string; code?: number; message?: string };
+      };
       const status = errBody?.error?.status;
       const code   = errBody?.error?.code;
-      // Skip to next model if this one isn't available
       if (status === "NOT_FOUND" || code === 404) {
-        console.log(`Model ${model} not available, trying next…`);
+        console.log(`Model ${model} returned NOT_FOUND, skipping…`);
         continue;
       }
-      // Fatal errors — stop immediately
+      // Non-recoverable error
       return { ok: false, errBody };
     }
 
@@ -86,7 +119,11 @@ async function callGemini(apiKey: string, mimeType: string, base64Data: string) 
     };
     return { ok: true, data, model };
   }
-  return { ok: false, errBody: { error: { message: "No available Gemini vision model found for your API key." } } };
+
+  return {
+    ok: false,
+    errBody: { error: { message: `None of the ${models.length} discovered models accepted the request. Try a different API key.` } },
+  };
 }
 
 router.post("/audit", async (req, res) => {
@@ -127,7 +164,7 @@ router.post("/audit", async (req, res) => {
     }
 
     const raw = result.data!.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-    console.log(`Audit completed using model: ${result.model}`);
+    console.log(`✓ Audit completed using model: ${result.model}`);
     const cleaned = raw.replace(/^```json\s*/i, "").replace(/```\s*$/i, "").trim();
     const audit = JSON.parse(cleaned);
     res.json(audit);
