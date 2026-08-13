@@ -73,9 +73,16 @@ router.post("/audit", async (req, res) => {
     });
 
     if (!openaiRes.ok) {
-      const err = await openaiRes.text();
-      console.error("OpenAI error:", err);
-      res.status(502).json({ error: "AI service error. Please try again." });
+      const errBody = await openaiRes.json().catch(() => ({})) as { error?: { code?: string; message?: string } };
+      console.error("OpenAI error:", JSON.stringify(errBody));
+      const code = errBody?.error?.code;
+      if (code === "credit_balance_exhausted" || code === "insufficient_quota") {
+        res.status(402).json({ error: "Your OpenAI account has no credits. Add credits at platform.openai.com/settings/organization/billing then try again." });
+      } else if (code === "invalid_api_key") {
+        res.status(401).json({ error: "Invalid API key. Check your key at platform.openai.com/api-keys." });
+      } else {
+        res.status(502).json({ error: errBody?.error?.message ?? "AI service error. Please try again." });
+      }
       return;
     }
 
