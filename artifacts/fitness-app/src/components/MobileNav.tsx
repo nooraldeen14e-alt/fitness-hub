@@ -120,6 +120,13 @@ export default function MobileNav({ active }: { active: Page }) {
               </div>
             </Link>
 
+            <Link href="/audit" onClick={close}>
+              <div className="py-4 border-b border-white/5 flex items-center gap-2">
+                <span className="text-xl font-display font-bold uppercase tracking-wide" style={{ color: "hsl(25,100%,50%)" }}>✦ AI Audit</span>
+                <span className="font-mono text-[9px] uppercase tracking-widest px-2 py-0.5 rounded-full" style={{ background: "rgba(255,100,0,0.15)", color: "hsl(25,100%,50%)" }}>Free</span>
+              </div>
+            </Link>
+
             <Link href="/contact" onClick={close}>
               <button className="mt-8 mb-10 w-full py-4 rounded-xl font-mono text-sm uppercase tracking-widest text-black font-bold"
                 style={{ background: "hsl(25,100%,50%)" }}>

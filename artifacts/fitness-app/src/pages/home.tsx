@@ -299,6 +299,12 @@ const Navbar = () => {
 
           <Link href="/about"   className={linkClass("about")}>About Us</Link>
           <Link href="/contact" className={linkClass("contact")}>Contact Us</Link>
+          <Link href="/audit">
+            <span className="flex items-center gap-1.5 px-4 py-1.5 rounded-full border text-xs font-mono uppercase tracking-widest transition-all hover:opacity-90"
+              style={{ borderColor: "hsl(25,100%,50%)", color: "hsl(25,100%,50%)", background: "rgba(255,100,0,0.08)" }}>
+              ✦ AI Audit
+            </span>
+          </Link>
         </div>
 
         {/* CTA + mobile hamburger */}
