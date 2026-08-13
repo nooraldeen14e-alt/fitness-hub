@@ -38,13 +38,12 @@ Rules:
 - Return ONLY valid JSON — no markdown fences, no explanation text`;
 
 router.post("/audit", async (req, res) => {
-  const apiKey = process.env["OPENAI_API_KEY"];
+  const { image, apiKey: clientKey } = req.body as { image?: string; apiKey?: string };
+  const apiKey = clientKey?.trim() || process.env["OPENAI_API_KEY"];
   if (!apiKey) {
-    res.status(500).json({ error: "OPENAI_API_KEY is not set." });
+    res.status(400).json({ error: "No OpenAI API key provided. Enter your key in the audit page." });
     return;
   }
-
-  const { image } = req.body as { image?: string };
   if (!image) {
     res.status(400).json({ error: "Missing image field." });
     return;

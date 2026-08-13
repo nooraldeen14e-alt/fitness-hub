@@ -200,6 +200,8 @@ function DropZone({ onImage }: { onImage: (dataUrl: string) => void }) {
   );
 }
 
+const API_KEY_STORAGE = "swissulife_openai_key";
+
 /* ─── Main Page ─────────────────────────────────────────────────────────── */
 export default function AuditPage() {
   const [image, setImage] = useState<string>("");
@@ -207,6 +209,19 @@ export default function AuditPage() {
   const [result, setResult] = useState<AuditResult | null>(null);
   const [error, setError] = useState<string>("");
   const resultRef = useRef<HTMLDivElement>(null);
+
+  const [apiKey, setApiKey] = useState<string>(() => localStorage.getItem(API_KEY_STORAGE) ?? "");
+  const [keyInput, setKeyInput] = useState("");
+  const [showKeyInput, setShowKeyInput] = useState(false);
+
+  const saveKey = () => {
+    const trimmed = keyInput.trim();
+    if (!trimmed) return;
+    localStorage.setItem(API_KEY_STORAGE, trimmed);
+    setApiKey(trimmed);
+    setKeyInput("");
+    setShowKeyInput(false);
+  };
 
   const runAudit = async () => {
     if (!image) return;
@@ -221,7 +236,7 @@ export default function AuditPage() {
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image }),
+        body: JSON.stringify({ image, apiKey: apiKey || undefined }),
       });
       const data = await res.json();
       if (!res.ok || data.error) throw new Error(data.error ?? "Unknown error");
@@ -263,6 +278,42 @@ export default function AuditPage() {
           </p>
         </motion.div>
 
+        {/* API Key banner */}
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }} className="mb-6">
+          {apiKey && !showKeyInput ? (
+            <div className="flex items-center justify-between rounded-xl border border-green-500/20 bg-green-500/5 px-4 py-3">
+              <div className="flex items-center gap-2">
+                <span className="text-green-400 text-sm">✓</span>
+                <span className="font-mono text-xs text-green-400 uppercase tracking-widest">API key saved</span>
+              </div>
+              <button onClick={() => { setShowKeyInput(true); setKeyInput(""); }} className="font-mono text-[10px] uppercase tracking-widest text-white/30 hover:text-white/60 transition-colors">Change</button>
+            </div>
+          ) : (
+            <div className="rounded-xl border border-white/10 bg-white/3 p-4 flex flex-col gap-3">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-white/40">
+                {apiKey ? "Update your OpenAI API key" : "Enter your OpenAI API key to get started"}
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="password"
+                  placeholder="sk-..."
+                  value={keyInput}
+                  onChange={e => setKeyInput(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && saveKey()}
+                  className="flex-1 bg-white/5 border border-white/10 rounded-lg px-4 py-2.5 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-primary transition-colors font-mono"
+                />
+                <button
+                  onClick={saveKey}
+                  disabled={!keyInput.trim()}
+                  className="px-5 py-2.5 rounded-lg font-mono text-xs uppercase tracking-widest font-bold transition-all disabled:opacity-30"
+                  style={{ background: "hsl(25,100%,50%)", color: "#000" }}
+                >Save</button>
+              </div>
+              <p className="text-white/25 text-[11px]">Get your key at <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/50 transition-colors">platform.openai.com/api-keys</a> · Stored only in your browser</p>
+            </div>
+          )}
+        </motion.div>
+
         {/* Upload */}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}>
           <DropZone onImage={setImage} />
@@ -272,12 +323,12 @@ export default function AuditPage() {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mt-5">
           <button
             onClick={runAudit}
-            disabled={!image || loading}
+            disabled={!image || loading || !apiKey}
             className="w-full py-4 rounded-xl font-mono text-sm uppercase tracking-widest font-bold transition-all duration-200"
             style={{
-              background: image && !loading ? "hsl(25,100%,50%)" : "rgba(255,255,255,0.07)",
-              color: image && !loading ? "#000" : "rgba(255,255,255,0.3)",
-              cursor: image && !loading ? "pointer" : "not-allowed",
+              background: image && !loading && apiKey ? "hsl(25,100%,50%)" : "rgba(255,255,255,0.07)",
+              color: image && !loading && apiKey ? "#000" : "rgba(255,255,255,0.3)",
+              cursor: image && !loading && apiKey ? "pointer" : "not-allowed",
             }}
           >
             {loading ? (
