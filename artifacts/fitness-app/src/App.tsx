@@ -9,6 +9,7 @@ const About       = lazy(() => import('@/pages/about'));
 const Contact     = lazy(() => import('@/pages/contact'));
 const ServicePage = lazy(() => import('@/pages/service'));
 const IndustryPage = lazy(() => import('@/pages/industry'));
+const AuditPage    = lazy(() => import('@/pages/audit'));
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/contact" component={Contact} />
             <Route path="/services/:slug" component={ServicePage} />
             <Route path="/industries/:slug" component={IndustryPage} />
+            <Route path="/audit" component={AuditPage} />
             <Route>{() => { window.location.replace("/"); return null; }}</Route>
           </Switch>
         </Suspense>

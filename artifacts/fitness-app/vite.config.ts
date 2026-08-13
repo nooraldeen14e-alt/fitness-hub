@@ -60,6 +60,13 @@ export default defineConfig({
     host: '0.0.0.0',
     allowedHosts: true,
     hmr: { overlay: false },
+    proxy: {
+      '/api/audit': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/audit/, '/api/audit'),
+      },
+    },
     fs: {
       strict: true,
     },
