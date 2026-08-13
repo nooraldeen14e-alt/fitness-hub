@@ -39,9 +39,10 @@ Rules:
 
 router.post("/audit", async (req, res) => {
   const { image, apiKey: clientKey } = req.body as { image?: string; apiKey?: string };
-  const apiKey = clientKey?.trim() || process.env["OPENAI_API_KEY"];
+  const apiKey = clientKey?.trim() || process.env["GEMINI_API_KEY"] || process.env["OPENAI_API_KEY"];
+
   if (!apiKey) {
-    res.status(400).json({ error: "No OpenAI API key provided. Enter your key in the audit page." });
+    res.status(400).json({ error: "No API key provided. Enter your free Google AI Studio key in the audit page." });
     return;
   }
   if (!image) {
@@ -49,45 +50,51 @@ router.post("/audit", async (req, res) => {
     return;
   }
 
-  try {
-    const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o",
-        max_tokens: 2000,
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          {
-            role: "user",
-            content: [
-              { type: "text", text: "Please audit this website screenshot and return the JSON audit report." },
-              { type: "image_url", image_url: { url: image, detail: "high" } },
-            ],
-          },
-        ],
-      }),
-    });
+  // Strip data URL prefix and get mime type
+  const match = image.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/);
+  if (!match) {
+    res.status(400).json({ error: "Invalid image format." });
+    return;
+  }
+  const mimeType = match[1];
+  const base64Data = match[2];
 
-    if (!openaiRes.ok) {
-      const errBody = await openaiRes.json().catch(() => ({})) as { error?: { code?: string; message?: string } };
-      console.error("OpenAI error:", JSON.stringify(errBody));
-      const code = errBody?.error?.code;
-      if (code === "credit_balance_exhausted" || code === "insufficient_quota") {
-        res.status(402).json({ error: "Your OpenAI account has no credits. Add credits at platform.openai.com/settings/organization/billing then try again." });
-      } else if (code === "invalid_api_key") {
-        res.status(401).json({ error: "Invalid API key. Check your key at platform.openai.com/api-keys." });
+  try {
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: SYSTEM_PROMPT + "\n\nPlease audit this website screenshot and return only the JSON audit report." },
+              { inline_data: { mime_type: mimeType, data: base64Data } },
+            ],
+          }],
+          generationConfig: { maxOutputTokens: 2000, temperature: 0.4 },
+        }),
+      }
+    );
+
+    if (!geminiRes.ok) {
+      const errBody = await geminiRes.json().catch(() => ({})) as { error?: { status?: string; message?: string } };
+      console.error("Gemini error:", JSON.stringify(errBody));
+      const status = errBody?.error?.status;
+      if (status === "INVALID_ARGUMENT" || status === "UNAUTHENTICATED") {
+        res.status(401).json({ error: "Invalid API key. Get a free key at aistudio.google.com/app/apikey" });
+      } else if (status === "RESOURCE_EXHAUSTED") {
+        res.status(429).json({ error: "Free quota exceeded for today. Try again tomorrow — it resets daily." });
       } else {
         res.status(502).json({ error: errBody?.error?.message ?? "AI service error. Please try again." });
       }
       return;
     }
 
-    const data = await openaiRes.json() as { choices: { message: { content: string } }[] };
-    const raw = data.choices?.[0]?.message?.content ?? "";
+    const data = await geminiRes.json() as {
+      candidates?: { content?: { parts?: { text?: string }[] } }[];
+    };
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
     const cleaned = raw.replace(/^```json\s*/i, "").replace(/```\s*$/i, "").trim();
     const audit = JSON.parse(cleaned);
 

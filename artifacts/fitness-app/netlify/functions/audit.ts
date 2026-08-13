@@ -36,103 +36,67 @@ Rules:
 - Return ONLY valid JSON — no markdown fences, no explanation text`;
 
 export const handler: Handler = async (event) => {
-  if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-      },
-      body: "",
-    };
-  }
+  const cors = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+  };
 
-  if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
-  }
+  if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers: cors, body: "" };
+  if (event.httpMethod !== "POST") return { statusCode: 405, body: "Method Not Allowed" };
 
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) {
-    return {
-      statusCode: 500,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ error: "OpenAI API key not configured." }),
-    };
-  }
+  let body: { image?: string; apiKey?: string };
+  try { body = JSON.parse(event.body ?? "{}"); }
+  catch { return { statusCode: 400, body: JSON.stringify({ error: "Invalid JSON." }) }; }
 
-  let body: { image?: string };
-  try {
-    body = JSON.parse(event.body ?? "{}");
-  } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: "Invalid JSON body." }) };
-  }
+  const { image, apiKey: clientKey } = body;
+  const apiKey = clientKey?.trim() || process.env.GEMINI_API_KEY;
 
-  const { image } = body;
-  if (!image) {
-    return { statusCode: 400, body: JSON.stringify({ error: "Missing image field." }) };
-  }
+  if (!apiKey) return { statusCode: 400, headers: cors, body: JSON.stringify({ error: "No API key provided." }) };
+  if (!image)  return { statusCode: 400, headers: cors, body: JSON.stringify({ error: "Missing image." }) };
+
+  const match = image.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/);
+  if (!match) return { statusCode: 400, headers: cors, body: JSON.stringify({ error: "Invalid image format." }) };
+
+  const [, mimeType, base64Data] = match;
 
   try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-4o",
-        max_tokens: 2000,
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          {
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: "Please audit this website screenshot and return the JSON audit report.",
-              },
-              {
-                type: "image_url",
-                image_url: { url: image, detail: "high" },
-              },
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { text: SYSTEM_PROMPT + "\n\nPlease audit this website screenshot and return only the JSON audit report." },
+              { inline_data: { mime_type: mimeType, data: base64Data } },
             ],
-          },
-        ],
-      }),
-    });
+          }],
+          generationConfig: { maxOutputTokens: 2000, temperature: 0.4 },
+        }),
+      }
+    );
 
-    if (!res.ok) {
-      const err = await res.text();
-      console.error("OpenAI error:", err);
-      return {
-        statusCode: 502,
-        headers: { "Access-Control-Allow-Origin": "*" },
-        body: JSON.stringify({ error: "AI service error. Please try again." }),
-      };
+    if (!geminiRes.ok) {
+      const err = await geminiRes.json().catch(() => ({})) as { error?: { status?: string; message?: string } };
+      const status = err?.error?.status;
+      if (status === "RESOURCE_EXHAUSTED") {
+        return { statusCode: 429, headers: cors, body: JSON.stringify({ error: "Free quota exceeded for today. Try again tomorrow." }) };
+      }
+      return { statusCode: 502, headers: cors, body: JSON.stringify({ error: err?.error?.message ?? "AI service error." }) };
     }
 
-    const data = await res.json();
-    const raw = data.choices?.[0]?.message?.content ?? "";
-
-    // Strip markdown fences if model adds them
+    const data = await geminiRes.json() as {
+      candidates?: { content?: { parts?: { text?: string }[] } }[];
+    };
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
     const cleaned = raw.replace(/^```json\s*/i, "").replace(/```\s*$/i, "").trim();
     const audit = JSON.parse(cleaned);
 
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify(audit),
-    };
+    return { statusCode: 200, headers: { ...cors, "Content-Type": "application/json" }, body: JSON.stringify(audit) };
   } catch (err) {
     console.error("Audit function error:", err);
-    return {
-      statusCode: 500,
-      headers: { "Access-Control-Allow-Origin": "*" },
-      body: JSON.stringify({ error: "Something went wrong. Please try again." }),
-    };
+    return { statusCode: 500, headers: cors, body: JSON.stringify({ error: "Something went wrong. Please try again." }) };
   }
 };

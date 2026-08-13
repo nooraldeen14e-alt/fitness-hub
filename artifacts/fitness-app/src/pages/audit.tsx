@@ -200,7 +200,7 @@ function DropZone({ onImage }: { onImage: (dataUrl: string) => void }) {
   );
 }
 
-const API_KEY_STORAGE = "swissulife_openai_key";
+const API_KEY_STORAGE = "swissulife_gemini_key";
 
 /* ─── Main Page ─────────────────────────────────────────────────────────── */
 export default function AuditPage() {
@@ -291,12 +291,12 @@ export default function AuditPage() {
           ) : (
             <div className="rounded-xl border border-white/10 bg-white/3 p-4 flex flex-col gap-3">
               <p className="font-mono text-[10px] uppercase tracking-widest text-white/40">
-                {apiKey ? "Update your OpenAI API key" : "Enter your OpenAI API key to get started"}
+                {apiKey ? "Update your Google AI Studio key" : "Enter your free Google AI Studio key"}
               </p>
               <div className="flex gap-2">
                 <input
                   type="password"
-                  placeholder="sk-..."
+                  placeholder="AIza..."
                   value={keyInput}
                   onChange={e => setKeyInput(e.target.value)}
                   onKeyDown={e => e.key === "Enter" && saveKey()}
@@ -309,7 +309,7 @@ export default function AuditPage() {
                   style={{ background: "hsl(25,100%,50%)", color: "#000" }}
                 >Save</button>
               </div>
-              <p className="text-white/25 text-[11px]">Get your key at <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/50 transition-colors">platform.openai.com/api-keys</a> · Stored only in your browser</p>
+              <p className="text-white/25 text-[11px]">Get a <span className="text-green-400 font-semibold">free</span> key at <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/50 transition-colors">aistudio.google.com</a> · No credit card · Stored only in your browser</p>
             </div>
           )}
         </motion.div>
