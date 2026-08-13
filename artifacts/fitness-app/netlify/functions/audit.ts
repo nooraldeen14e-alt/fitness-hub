@@ -60,40 +60,55 @@ export const handler: Handler = async (event) => {
 
   const [, mimeType, base64Data] = match;
 
-  try {
-    const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{
-            parts: [
-              { text: SYSTEM_PROMPT + "\n\nPlease audit this website screenshot and return only the JSON audit report." },
-              { inline_data: { mime_type: mimeType, data: base64Data } },
-            ],
-          }],
-          generationConfig: { maxOutputTokens: 2000, temperature: 0.4 },
-        }),
-      }
-    );
+  const MODELS = [
+    "gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-preview-05-20",
+    "gemini-2.0-flash-001", "gemini-2.0-flash", "gemini-1.5-flash-latest",
+    "gemini-1.5-flash", "gemini-1.5-pro-latest",
+  ];
 
-    if (!geminiRes.ok) {
-      const err = await geminiRes.json().catch(() => ({})) as { error?: { status?: string; message?: string } };
-      const status = err?.error?.status;
-      if (status === "RESOURCE_EXHAUSTED") {
-        return { statusCode: 429, headers: cors, body: JSON.stringify({ error: "Free quota exceeded for today. Try again tomorrow." }) };
+  try {
+    let raw = "";
+    let lastErr: { status?: string; message?: string } | undefined;
+
+    for (const model of MODELS) {
+      const geminiRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{
+              parts: [
+                { text: SYSTEM_PROMPT + "\n\nPlease audit this website screenshot and return only the JSON audit report." },
+                { inline_data: { mime_type: mimeType, data: base64Data } },
+              ],
+            }],
+            generationConfig: { maxOutputTokens: 2000, temperature: 0.4 },
+          }),
+        }
+      );
+
+      if (!geminiRes.ok) {
+        const err = await geminiRes.json().catch(() => ({})) as { error?: { status?: string; code?: number; message?: string } };
+        if (err?.error?.status === "NOT_FOUND" || err?.error?.code === 404) continue;
+        lastErr = err?.error;
+        break;
       }
-      return { statusCode: 502, headers: cors, body: JSON.stringify({ error: err?.error?.message ?? "AI service error." }) };
+
+      const data = await geminiRes.json() as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
+      raw = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+      break;
     }
 
-    const data = await geminiRes.json() as {
-      candidates?: { content?: { parts?: { text?: string }[] } }[];
-    };
-    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    if (!raw) {
+      const status = lastErr?.status;
+      if (status === "RESOURCE_EXHAUSTED") return { statusCode: 429, headers: cors, body: JSON.stringify({ error: "Free quota exceeded for today. Try again tomorrow." }) };
+      if (status === "UNAUTHENTICATED" || status === "PERMISSION_DENIED") return { statusCode: 401, headers: cors, body: JSON.stringify({ error: "Invalid API key. Get a free key at aistudio.google.com/app/apikey" }) };
+      return { statusCode: 502, headers: cors, body: JSON.stringify({ error: lastErr?.message ?? "No available Gemini model found for your API key." }) };
+    }
+
     const cleaned = raw.replace(/^```json\s*/i, "").replace(/```\s*$/i, "").trim();
     const audit = JSON.parse(cleaned);
-
     return { statusCode: 200, headers: { ...cors, "Content-Type": "application/json" }, body: JSON.stringify(audit) };
   } catch (err) {
     console.error("Audit function error:", err);

@@ -37,31 +37,22 @@ Rules:
 - topPriorities must be the 3 highest-ROI fixes
 - Return ONLY valid JSON — no markdown fences, no explanation text`;
 
-router.post("/audit", async (req, res) => {
-  const { image, apiKey: clientKey } = req.body as { image?: string; apiKey?: string };
-  const apiKey = clientKey?.trim() || process.env["GEMINI_API_KEY"] || process.env["OPENAI_API_KEY"];
+// Models to try in order — newest first. Skips any that return NOT_FOUND.
+const GEMINI_MODELS = [
+  "gemini-2.5-pro",
+  "gemini-2.5-flash",
+  "gemini-2.5-flash-preview-05-20",
+  "gemini-2.0-flash-001",
+  "gemini-2.0-flash",
+  "gemini-1.5-flash-latest",
+  "gemini-1.5-flash",
+  "gemini-1.5-pro-latest",
+];
 
-  if (!apiKey) {
-    res.status(400).json({ error: "No API key provided. Enter your free Google AI Studio key in the audit page." });
-    return;
-  }
-  if (!image) {
-    res.status(400).json({ error: "Missing image field." });
-    return;
-  }
-
-  // Strip data URL prefix and get mime type
-  const match = image.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/);
-  if (!match) {
-    res.status(400).json({ error: "Invalid image format." });
-    return;
-  }
-  const mimeType = match[1];
-  const base64Data = match[2];
-
-  try {
-    const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+async function callGemini(apiKey: string, mimeType: string, base64Data: string) {
+  for (const model of GEMINI_MODELS) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -77,11 +68,55 @@ router.post("/audit", async (req, res) => {
       }
     );
 
-    if (!geminiRes.ok) {
-      const errBody = await geminiRes.json().catch(() => ({})) as { error?: { status?: string; message?: string } };
+    if (!res.ok) {
+      const errBody = await res.json().catch(() => ({})) as { error?: { status?: string; code?: number; message?: string } };
+      const status = errBody?.error?.status;
+      const code   = errBody?.error?.code;
+      // Skip to next model if this one isn't available
+      if (status === "NOT_FOUND" || code === 404) {
+        console.log(`Model ${model} not available, trying next…`);
+        continue;
+      }
+      // Fatal errors — stop immediately
+      return { ok: false, errBody };
+    }
+
+    const data = await res.json() as {
+      candidates?: { content?: { parts?: { text?: string }[] } }[];
+    };
+    return { ok: true, data, model };
+  }
+  return { ok: false, errBody: { error: { message: "No available Gemini vision model found for your API key." } } };
+}
+
+router.post("/audit", async (req, res) => {
+  const { image, apiKey: clientKey } = req.body as { image?: string; apiKey?: string };
+  const apiKey = clientKey?.trim() || process.env["GEMINI_API_KEY"];
+
+  if (!apiKey) {
+    res.status(400).json({ error: "No API key provided. Enter your free Google AI Studio key in the audit page." });
+    return;
+  }
+  if (!image) {
+    res.status(400).json({ error: "Missing image field." });
+    return;
+  }
+
+  const match = image.match(/^data:(image\/[a-zA-Z+]+);base64,(.+)$/);
+  if (!match) {
+    res.status(400).json({ error: "Invalid image format." });
+    return;
+  }
+  const [, mimeType, base64Data] = match;
+
+  try {
+    const result = await callGemini(apiKey, mimeType, base64Data);
+
+    if (!result.ok) {
+      const errBody = result.errBody as { error?: { status?: string; message?: string } };
       console.error("Gemini error:", JSON.stringify(errBody));
       const status = errBody?.error?.status;
-      if (status === "INVALID_ARGUMENT" || status === "UNAUTHENTICATED") {
+      if (status === "UNAUTHENTICATED" || status === "PERMISSION_DENIED") {
         res.status(401).json({ error: "Invalid API key. Get a free key at aistudio.google.com/app/apikey" });
       } else if (status === "RESOURCE_EXHAUSTED") {
         res.status(429).json({ error: "Free quota exceeded for today. Try again tomorrow — it resets daily." });
@@ -91,13 +126,10 @@ router.post("/audit", async (req, res) => {
       return;
     }
 
-    const data = await geminiRes.json() as {
-      candidates?: { content?: { parts?: { text?: string }[] } }[];
-    };
-    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    const raw = result.data!.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+    console.log(`Audit completed using model: ${result.model}`);
     const cleaned = raw.replace(/^```json\s*/i, "").replace(/```\s*$/i, "").trim();
     const audit = JSON.parse(cleaned);
-
     res.json(audit);
   } catch (err) {
     console.error("Audit route error:", err);
